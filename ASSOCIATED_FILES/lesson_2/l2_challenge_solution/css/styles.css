@@ -1,0 +1,24 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: rgb(50, 50, 50);
+    padding: 2rem;
+}
+
+.animated-text {
+    background-color: black;
+    color: lightgreen;
+    word-wrap: break-word;
+    font-size: 1.2rem;
+    height: 20rem;
+    overflow: hidden;
+    padding: 1rem;
+}
+
+hr {
+    margin: 2rem 0;
+}

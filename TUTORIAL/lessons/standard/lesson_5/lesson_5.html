@@ -1,0 +1,2540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>O.O.P THERE IT IS</title>
+    <link rel="icon" href="../../../img/favicon.png">
+    <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+
+<body>
+    <main>
+
+        <header>
+            <a href="../../../index.html">
+                <h2>RETURN TO INDEX</h2>
+            </a>
+            <h1>LESSON 5: MOVING TO CANVAS</h1>
+            <p class="mag">
+                In this lesson you will leave the DOM behind for a much more powerful visual API, HTML5 Canvas 2D.
+            </p>
+            <blockquote>
+                "Who's ear is this?"<br>~ Van Gogh
+            </blockquote>
+        </header>
+
+        <hr>
+
+        <nav>
+            <h2>PREVIEW</h2>
+            <ul class="tab">
+                <a href="#example">
+                    <li>EXAMPLE</li>
+                </a>
+                <a href="#code">
+                    <li>CODE</li>
+                </a>
+                <a href="#what_is_canvas">
+                    <li>WHAT IS CANVAS</li>
+                </a>
+                <a href="#why_canvas">
+                    <li>WHY CANVAS</li>
+                </a>
+                <a href="#hidden_matrix_operations">
+                    <li>HIDDEN MATRIX OPERATIONS</li>
+                </a>
+                <a href="#drawing_shapes">
+                    <li>DRAWING SHAPES</li>
+                </a>
+                <a href="#drawing_images">
+                    <li>DRAWING IMAGES</li>
+                </a>
+                <a href="#composite_operations">
+                    <li>COMPOSITE OPERATIONS</li>
+                </a>
+                <a href="#inheritance">
+                    <li>INHERITANCE</li>
+                </a>
+                <a href="#recursion">
+                    <li>RECURSION</li>
+                </a>
+                <a href="#handling_user_input">
+                    <li>HANDLING USER INPUT</li>
+                </a>
+                <a href="#how_it_works">
+                    <li>HOW IT WORKS</li>
+                </a>
+                <a href="#setup">
+                    <li>SETUP</li>
+                </a>
+                <a href="#constructor">
+                    <li>CONSTRUCTOR</li>
+                </a>
+                <a href="#initialize">
+                    <li>INITIALIZE</li>
+                </a>
+                <a href="#update">
+                    <li>UPDATE</li>
+                </a>
+                <a href="#render">
+                    <li>RENDER</li>
+                </a>
+                <a href="#repeat">
+                    <li>REPEAT</li>
+                </a>
+                <a href="#reset">
+                    <li>RESET</li>
+                </a>
+                <a href="#things_are_getting_messy">
+                    <li>THINGS ARE GETTING MESSY</li>
+                </a>
+                <a href="#visual_breakdown">
+                    <li>VISUAL BREAKDOWN</li>
+                </a>
+                <a href="#challenge">
+                    <li>CHALLENGE</li>
+                </a>
+            </ul>
+        </nav>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="example">EXAMPLE</h3>
+            <a class="inline-block" href="./fountain/fountain.html"><button>TAKE ME TO THE EXAMPLE</button></a>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="code">CODE</h3>
+            <p>HTML</p>
+            <pre class="html">
+<section class="fountain-target" data-scale="2" data-quantity="600"></section>
+            </pre>
+            <p>CSS</p>
+            <pre>
+/* CSS RESET HIDDEN */
+.fountain-target {
+    background-color: black;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: -999;
+}
+            </pre>
+            <p>JAVASCRIPT</p>
+            <pre>
+'use strict';
+
+const fountain = (() => {
+    const give_data = target => {
+        const
+            width = target && target.clientWidth,
+            height = target && target.clientHeight;
+        return { width, height, center: { x: width / 2, y: height / 2 } };
+    };
+
+    class Interface {
+        constructor(options = {}) {
+            this._options = options;
+            this.parent = options.parent || null;
+        }
+
+        initialize() { }
+
+        update() { }
+
+        render() { }
+
+        reset() { }
+
+        get root() {
+            !this._local_root && (this._local_root = this.parent && this.parent.root || this);
+            return this._local_root;
+        }
+
+        get canvas() {
+            return this.root.canvas;
+        }
+
+        get context() {
+            return this.root.context;
+        }
+
+        get hold() {
+            return this.root.hold;
+        }
+    }
+
+    class Element extends Interface {
+        initialize() {
+            if (!this.parent) {
+                throw new Error(`${this.constructor.name}: NO PARENT - REQUIRES PARENT`);
+            }
+            this._waiting = this.hold;
+            this._path = new Path2D();
+            /* CREDIT TO DEV-DOCS FOR HEART PATTERN */
+            this._path.moveTo(7.5, 4.0);
+            this._path.bezierCurveTo(7.5, 3.7, 7.0, 2.5, 5.0, 2.5);
+            this._path.bezierCurveTo(2.0, 2.5, 2.0, 6.25, 2.0, 6.25);
+            this._path.bezierCurveTo(2.0, 8.0, 4.0, 10.2, 7.5, 12.0);
+            this._path.bezierCurveTo(11.0, 10.2, 13.0, 8.0, 13.0, 6.25);
+            this._path.bezierCurveTo(13.0, 6.25, 13.0, 2.5, 10.0, 2.5);
+            this._path.bezierCurveTo(8.5, 2.5, 7.5, 3.7, 7.5, 4.0);
+            /* CREDIT TO DEV-DOCS FOR HEART PATTERN */
+            this.reset();
+        }
+
+        update() {
+            if (this.position.y > this.canvas.height || this.position.y < 0) {
+                this.reset();
+                if (this.hold) {
+                    this.velocity = { x: 0, y: 0 };
+                    this._waiting = true;
+                }
+            }
+            if (!this.hold && this._waiting) {
+                this.reset();
+                this._waiting = false;
+            }
+            this.position.x += this.velocity.x;
+            this.position.y += this.velocity.y;
+            this.velocity.y += 0.1;
+        }
+
+        render() {
+            this.context.fillStyle = this.color;
+            this.context.save();
+            this.context.translate(this.position.x, this.position.y);
+            this.root.scale !== 1 && this.context.scale(this.root.scale, this.root.scale);
+            this.context.fill(this._path);
+            this.context.restore();
+        }
+
+        reset() {
+            this.position = { x: (this.canvas.width / 2), y: this.canvas.height };
+            this.velocity = { x: +`${Math.random() > 0.5 ? '-' : '+'}${Math.random() * 1.5}`, y: ((Math.random() * -20) - 1) };
+            this.color = `rgb(255, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`;
+        }
+    }
+
+    class Manager extends Interface {
+        constructor(options) {
+            super(options);
+            this._initialize();
+        }
+
+        _initialize() {
+            this.target = this._options.target;
+            if (!this.target || !(this.target instanceof HTMLElement)) {
+                throw new Error(`${this.constructor.name}: NO TARGET ELEMENT`);
+            }
+            this._canvas = document.createElement('canvas');
+            this._context = this.canvas.getContext('2d', { alpha: false });
+            this.target.append(this._canvas);
+            window.addEventListener('resize', () => this._resize());
+            this._resize();
+            this.quantity = this._options.quantity || 1000;
+            this.scale = this._options.scale || 1;
+            this.children = new Array(this.quantity)
+                .fill(null)
+                .map(v => new Element({ parent: this }));
+            this.children.forEach(v => v.initialize());
+            this.mousehold = false;
+            this.keyhold = false;
+            this.touchhold = false;
+            document.addEventListener('mousedown', () => this.mousehold = true);
+            document.addEventListener('touchstart', () => this.touchhold = true);
+            document.addEventListener('keydown', () => this.keyhold = true);
+            document.addEventListener('mouseup', () => this.mousehold = false);
+            document.addEventListener('touchend', () => this.touchhold = false);
+            document.addEventListener('keyup', () => this.keyhold = false);
+            this._repeat();
+        }
+
+        _update() {
+            this.children.forEach(v => v.update());
+        }
+
+        _render() {
+            this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            this.children.forEach(v => v.render());
+        }
+
+        _repeat() {
+            this._update();
+            this._render();
+            window.requestAnimationFrame(() => this._repeat());
+        }
+
+        _resize() {
+            const { width, height } = give_data(this.target);
+            this._canvas.width = width;
+            this._canvas.height = height;
+        }
+
+        get hold() {
+            return this.mousehold || this.touchhold || this.keyhold;
+        }
+
+        get canvas() {
+            return this._canvas;
+        }
+
+        get context() {
+            return this._context;
+        }
+    }
+
+    return {
+        Manager
+    };
+})();
+
+window.addEventListener('DOMContentLoaded', () => {
+    Array.from(document.querySelectorAll('.fountain-target')).forEach(target => {
+        new fountain.Manager({
+            scale: +target.dataset.scale,
+            quantity: +target.dataset.quantity,
+            target
+        });
+    });
+});
+            </pre>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="what_is_canvas">WHAT IS CANVAS</h3>
+            <p>
+                A canvas is just a DOM element like any other; rectangular and transparent by default.
+            </p>
+            <p>
+                What makes it special is that it comes with a powerful API that allows you to draw and render all kinds
+                of graphics on it.
+            </p>
+            <blockquote class="blue">
+                NOTE: This includes the WebGL2 API for 3D hardware-accelerated graphics. However this tutorial will be
+                focusing on the 2D API.
+            </blockquote>
+            <p>
+                The 2D API can be accessed by calling "getContext('2d')" on a reference to a canvas element. This is
+                your handle for controlling that canvas instance.
+            </p>
+            <p>HTML</p>
+            <pre class="html">
+<canvas class="drawing_area"></canvas>
+            </pre>
+            <p>JAVASCRIPT</p>
+            <pre>
+const canvas_element = document.querySelector('.drawing_area');
+const canvas_context = canvas_element.getContext('2d');
+            </pre>
+            <p>
+                Once you have a reference to the canvas context, you can render images, video, custom drawn
+                shapes/primitives, and more onto the element with great performance and ease.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="why_canvas">WHY CANVAS</h3>
+            <p>
+                Why use the canvas API after learning how to do animations in the DOM up to this point?
+            </p>
+            <p>
+                Well there are many options for rendering graphics in a web environment:
+            </p>
+            <ul class="tab">
+                <li>DOM - Document Object Model and CSS</li>
+                <li>CSS - Keyframes and DOM Animation API</li>
+                <li class="green">Canvas2D - Partially Hardware-accelerated 2D Graphics via Canvas</li>
+                <li>SVG - Scalable Vector Graphics</li>
+                <li>WebGL2(OpenGL) - Hardware-accelerated 2D or 3D Graphics via Canvas</li>
+                <li>Third Party Graphics Libraries</li>
+            </ul>
+            <p>
+                Comparing them there are benefits and pitfalls to each.
+            </p>
+            <p>
+                For instance WebGL2 and SVG are very powerful and performant graphics API's, but they come with a steep
+                learning curve and a lot more code. WebGL2 is great for 3D graphics and extreme S.I.M.D computations.
+            </p>
+            <p>
+                Simple DOM graphics are usually easier to understand and implement for web developers, just HTML and
+                CSS, but they generally do not perform or scale very well. These are preferred for small scale graphic
+                effects and web pages. They also might produce S.E.O or accessibility problems.
+            </p>
+            <p>
+                CSS Keyframes animations possibly coupled with the DOM Animation API are more performant and provide
+                more control that typical HTML/CSS animations, and are generally easier to learn. However, they don't
+                provide the level of control that you might want in a game, graphic or animation.
+            </p>
+            <p>
+                Third party graphics libraries, which are built on top of the other mentioned API's, are likely the most
+                sensible option. They provide all of the graphics tools and methods you are likely to need and more.
+                They are often well tested and are great for rapid development of production ready graphics or games.
+                However, you would be wise to know the inner workings of these libraries before using them. That means
+                learning the fundamentals first, which you are doing right now!
+            </p>
+            <p class="green">
+                The canvas two dimensional API is pretty easy to learn, pretty performant, and comes with a lot of tools
+                built in. This API is what this tutorial will be using from here on out. This is not to say that you
+                should not learn the others, there are applications for them all.
+            </p>
+            <p>
+                In the end it can be hard to choose from so many options. As a developer you are going to want to get
+                the job done one way or the other. Your circumstances might influence your framework decision, or even
+                make it for you. If you are working on a development team or an existing project, you will probably use
+                whatever tool they/it were already using. If you agreed to develop a web game for a company within two
+                months, you might want you use a third party library to speed up the work flow. This might be the right
+                choice, or it might mean licensing issues. If you take the time to learn the fundamentals, you could
+                code the whole thing from scratch, no license issues and totally customizable. Only you will know what
+                you will need to do, but being dynamic and flexible will be very useful in the long run. If you don't
+                know it, you can learn it.
+            </p>
+            <p>
+                All things considered, canvas is a good choice for this tutorial and will serve you well.
+            </p>
+            <p>
+                The next sections will cover some of the API's usage.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="hidden_matrix_operations">HIDDEN MATRIX OPERATIONS</h3>
+            <p>
+                If you are an expert on geometry, trigonometry, linear algebra, and calculus, then that must be nice.
+                Pat yourself on the back or something.
+            </p>
+            <p>
+                For everyone else in the world you can rest easy knowing that the canvas API abstracts away most of
+                these operations behind a simple set of methods.
+            </p>
+            <blockquote class="red">
+                AUTHORS SECRET: I hate math and I'm pretty sure math hates me too.
+            </blockquote>
+            <p>
+                Most computer graphics are managed using mostly trigonometry and linear algebra(triangles, vectors and
+                matrices). These mathematical objects and methods are the foundation for canvas as well. Luckily you
+                don't have to know how they work to use them.
+            </p>
+            <p>
+                A 2D canvas uses a similar X and Y coordinate system as the DOM does with left and top CSS styles,
+                respectively.
+            </p>
+            <img alt="dev docs visualization of grid" src="../../../img/grid.png">
+            <p>
+                Here you will learn a small set of transformation methods that you will use within your render methods
+                to keep things working nicely.
+            </p>
+            <ol class="tab">
+                <li>SAVE</li>
+                <li>TRANSLATE</li>
+                <li>ROTATE</li>
+                <li>SCALE</li>
+                <li>[DRAW]</li>
+                <li>RESTORE</li>
+            </ol>
+            <blockquote class="blue">
+                NOTE: This lesson code will not take into account local object origins for rotations, that will be in
+                the next lesson.
+            </blockquote>
+            <p>
+                The order of operations here matters.
+            </p>
+            <p>
+                You should always start with SAVE, and end with RESTORE.
+            </p>
+            <p>
+                In the middle you can TRANSLATE, ROTATE, and then SCALE. Depending on your setup, you might not follow
+                this order, but for now stick to this one.
+            </p>
+            <p class="red">
+                If you switch it up you might get unexpected results.
+            </p>
+            <p>
+                The SAVE operation takes the state of the canvas(the transformation matrix and some other stuff), before
+                any transformations, and saves it for later. If this doesn't make any sense to you don't worry, just
+                always start a transformation pipeline with SAVE.
+            </p>
+            <pre>
+canvas_context.save();
+            </pre>
+            <p>
+                The TRANSLATE operation moves the whole canvas's origin(the coordinate { x: 0, y: 0 }) to another point.
+                This means that if you draw something at coordinate { x: 0, y: 0 } but you translated to { x: 20, y: 20
+                }, the object gets drawn at { x: 20, y: 20 }, relative to the canvas's top left point. This is must be
+                done before rotation otherwise the canvas will rotate about { x: 0, y: 0 } instead of the local object
+                origin.
+            </p>
+            <img alt="dev docs visualization of translation" src="../../../img/translation.png">
+            <pre>
+canvas_context.translate(20, 20);
+            </pre>
+            <p>
+                The ROTATE operation rotates the whole canvas around the canvas origin(after translation) by a number of
+                radians(one radian === Math.PI * 2). You will use this operation to rotate an object in place.
+            </p>
+            <img alt="dev docs visualization of rotation" src="../../../img/rotation.png">
+            <pre>
+canvas_context.rotate(Math.PI);
+            </pre>
+            <p>
+                The SCALE operation multiplies the distance between points on the coordinate graph by a value. What this
+                means is if you scale by 2 the object will double in size, if you scale by 0.5 it will shrink by half.
+                The operation takes in an X and Y value.
+            </p>
+            <pre>
+canvas_context.scale(2, 2);
+            </pre>
+            <p>
+                The DRAW step in the pipeline is when you actual draw or render to the canvas, by whatever means you
+                choose.
+            </p>
+            <pre>
+canvas_context.fillRect(10, 10, 50, 50)
+            </pre>
+            <p>
+                Finally the RESTORE operation restores the canvas's transformation state back to before the SAVE
+                operation. This way every object on the canvas can have it's own set of transformation states.
+            </p>
+            <pre>
+canvas_context.restore();
+            </pre>
+            <p>
+                That's it! Math is one of the sticking points for many coders, but if you just stick with it, it will
+                get easier. Just remember to save and restore before every set of operations.
+            </p>
+            <p>
+                Later lessons will expand on each of these concepts in more detail.
+            </p>
+            <p>
+                Now you can move on to some of the different drawing tools for canvas.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="drawing_shapes">DRAWING SHAPES</h3>
+            <p>
+                Canvas provides you with a simple but powerful set of drawing methods that if used properly can produce
+                complex graphics with simple code.
+            </p>
+            <p>
+                Out of the box canvas is capable of drawing:
+            </p>
+            <ul class="tab">
+                <li>RECTANGLES</li>
+                <li>ARCS AND CIRCLES AND ELLIPSES</li>
+                <li>QUADRATIC AND BEZIER CURVES</li>
+                <li>COMPLEX PATHS AND SHAPES</li>
+            </ul>
+            <blockquote class="blue">
+                NOTE: This course is not intended to be a full canvas tutorial, so it is reccomended that you take a
+                look at the Dev-Docs tutorial linked at the bottom of this page to get a more thorough grasp of canvas.
+            </blockquote>
+            <h4>
+                STYLES
+            </h4>
+            <p>
+                Canvas style settings are held in state that you can change at any point.
+            </p>
+            <p>
+                You can imagine a color pallet for a painter; the current state is the color that you have on the
+                brush.
+            </p>
+            <p>
+                There are many state settings, but the most obvious is the fill and stroke color. Once you set these
+                they will stay until they are changed again.
+            </p>
+            <blockquote class="yellow">
+                INFO: To fill is to draw the entire contents of a shape with the selected color. To stroke is to only
+                color the outline or border with the selected color. These two colors can be different from each other.
+            </blockquote>
+            <pre>
+canvas_context.fillStyle = 'rgb(255, 0, 0)';
+canvas_context.strokeStyle = 'rgb(0, 255, 0)';
+            </pre>
+            <h4>
+                RECTANGLES
+            </h4>
+            <p>
+                Rectangles are simple to draw with canvas as you only have to define two coordinates.
+            </p>
+            <p>
+                You can fill, stroke, or clear(turn transparent or black depending on settings) a rectangle by the two
+                points, as passed in (x1, y1, x2, y2);
+            </p>
+            <pre>
+canvas_context.fillRect(0, 0, 10, 10);
+canvas_context.strokeRect(0, 0, 10, 10);
+canvas_context.clearRect(2.5, 2.5, 7.5, 7.5);
+            </pre>
+            <p>
+                This code would fill a square, stroke it, and then clear a sub-square within it.
+            </p>
+            <h4>
+                ARCS, CIRCLES AND ELLIPSES
+            </h4>
+            <p>
+                Arcs and circles allow you to draw around a point like a compass.
+            </p>
+            <blockquote class="blue">
+                Ellipses work like an arc but allow for different x and y radii.
+            </blockquote>
+            <p>
+                Stroke will draw where the compass pencil touches the paper, fill will fill the pie as far as it was
+                drawn.
+            </p>
+            <pre>
+canvas_context.arc(x, y, radius, start_angle, end_angle, anticlockwise_flag);
+canvas_context.stroke();
+canvas_context.fill();
+            </pre>
+            <h4>
+                QUADRATIC AND BEZIER CURVES
+            </h4>
+            <p>
+                Don't let the names scare you off, they are pretty simple to understand.
+            </p>
+            <p>
+                These guys can however be difficult to wrangle without a graphic design tool to create and export paths.
+            </p>
+            <p>
+                That being said they work like so.
+            </p>
+            <p>
+                Quadratic curves take a starting coordinate, an ending coordinate, and a control point coordinate.
+            </p>
+            <p>
+                Bezier curves work similarly but they have two control points, their varied distances can create complex
+                organic curves.
+            </p>
+            <img alt="dev docs visualization of curves" src="../../../img/curves.png">
+            <p>
+                The starting point must be declared before the function call.
+            </p>
+            <pre>
+canvas_context.moveTo(10, 10);
+canvas_context.quadraticCurveTo(25, 25, 25, 62.5);
+canvas_context.fill();
+
+canvas_context.moveTo(100, 100);
+canvas_context.bezierCurveTo(75, 37, 70, 25, 50, 25);
+canvas_context.stroke();
+            </pre>
+            <h4>
+                COMPLEX PATHS AND SHAPES
+            </h4>
+            <p>
+                You can manually draw any two dimensional shape, or combination of other segments or shapes, using a
+                pen-like tool.
+            </p>
+            <p>
+                You tell canvas the color of the pen. You can place the pen down at a coordinate. Then you can drag the
+                pen to another coordinate. You can lift the pen off the canvas and place it somewhere else, or any
+                combination of it all. Once you are ready you simply call fill or stroke and canvas will draw the whole
+                path you created.
+            </p>
+            <p>
+                Use "moveTo" to lift and place the pen at a coordinate.
+            </p>
+            <p>
+                Then use any of the path methods to draw from that point.
+            </p>
+            <p>
+                Finally call fill or stroke to complete the drawing operation.
+            </p>
+            <pre>
+canvas_context.moveTo(250, 250);
+canvas_context.lineTo(1050, 250);
+canvas_context.lineTo(250, 1050);
+canvas_context.fill();
+            </pre>
+            <p>
+                This code draws a triangle.
+            </p>
+            <h4>
+                COMPUTE ONCE DRAW MULTIPLE
+            </h4>
+            <p>
+                Since these complex drawing methods can take some time to compute, you can use a Path2D object to store
+                the computed path.
+            </p>
+            <p>
+                This way you only compute the path once, but can draw it as many times as you like.
+            </p>
+            <p>
+                This can significantly improve performance for similar actions.
+            </p>
+            <pre>
+const path = new Path2D();
+path.moveTo(7.5, 4.0);
+path.bezierCurveTo(7.5, 3.7, 7.0, 2.5, 5.0, 2.5);
+path.bezierCurveTo(8.5, 2.5, 7.5, 3.7, 7.5, 4.0);
+canvas_context.stroke(path);
+canvas_context.fill(path);
+            </pre>
+            <p>
+                That sums up the shape drawing toolset for canvas. You should however look through the canvas docs to
+                learn them all and play around with them.
+            </p>
+            <p>
+                Now on to drawing images.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="drawing_images">DRAWING IMAGES</h3>
+            <p>
+                Whether you are making a game or post-processing profile photos, canvas is a great place to render
+                images.
+            </p>
+            <p>
+                Canvas provides a very dynamic method for drawing pre-loaded images to a canvas.
+            </p>
+            <pre>
+canvas_context.drawImage();
+            </pre>
+            <p>
+                The method can take one of three sets of arguments.
+            </p>
+            <pre>
+canvas_context.drawImage(image, dx, dy);
+canvas_context.drawImage(image, dx, dy, dWidth, dHeight);
+canvas_context.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+            </pre>
+            <p>
+                The first is the image to render ad the x and y coordinates of where to place the top left of the image.
+            </p>
+            <p>
+                The second includes two arguments to define how to scale the image by x and y.
+            </p>
+            <p>
+                The third includes arguments to define the sub-rectangle of the image that you wish to render.
+            </p>
+            <img alt="dev docs visualization of slicing images" src="../../../img/slicing.jpeg">
+            <p>
+                The following code would load and draw an image at it's default, with the top left at the canvas origin.
+            </p>
+            <pre>
+const img = new Image();
+const prom = new Promise(resolve => img.addEventListener('load', resolve))
+img.src = '../fake_path/fake.png';
+await prom;
+canvas_context.drawImage(img, 0, 0)
+            </pre>
+            <blockquote class="yellow">
+                MINI-CHALLENGE: How would you go about implementing spritesheets like in lesson three using the third
+                method listed here?
+            </blockquote>
+            <p>
+                The image drawing method for canvas is powerful and flexible, allowing you to implement scaling and
+                cropping with ease.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="composite_operations">COMPOSITE OPERATIONS</h3>
+            <p>
+                Canvas comes with some special settings that allow you to implement very interesting effects.
+            </p>
+            <p>
+                This is the global composite operation state setting.
+            </p>
+            <pre>
+canvas_context.globalCompositeOperation = 'source-over';
+            </pre>
+            <p>
+                This setting allows you to take control of how one path or image is drawn relative to the pixels that
+                were already drawn on the canvas in that spot.
+            </p>
+            <p>
+                There are a ton of options, too much to go over in this lesson. So you are encouraged too explore the
+                canvas docs to learn more.
+            </p>
+            <p>
+                That being said here is a list of types and definitions as provided by Dev-docs.
+            </p>
+            <ul class="tab">
+                <li>
+                    source-over
+                    <ul>
+                        <li>
+                            This is the default setting and draws new shapes on top of the existing canvas content.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    source-in
+                    <ul>
+                        <li>
+                            The new shape is drawn only where both the new shape and the destination canvas overlap.
+                            Everything else is made transparent.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    source-out
+                    <ul>
+                        <li>
+                            The new shape is drawn where it doesn't overlap the existing canvas content.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    source-atop
+                    <ul>
+                        <li>
+                            The new shape is only drawn where it overlaps the existing canvas content.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    destination-over
+                    <ul>
+                        <li>
+                            New shapes are drawn behind the existing canvas content.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    destination-in
+                    <ul>
+                        <li>
+                            The existing canvas content is kept where both the new shape and existing canvas content
+                            overlap. Everything else is made transparent.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    destination-out
+                    <ul>
+                        <li>
+                            The existing content is kept where it doesn't overlap the new shape.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    destination-atop
+                    <ul>
+                        <li>
+                            The existing canvas is only kept where it overlaps the new shape. The new shape is drawn
+                            behind the canvas content.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    lighter
+                    <ul>
+                        <li>
+                            Where both shapes overlap the color is determined by adding color values.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    copy
+                    <ul>
+                        <li>
+                            Only the new shape is shown.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    xor
+                    <ul>
+                        <li>
+                            Shapes are made transparent where both overlap and drawn normal everywhere else.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    multiply
+                    <ul>
+                        <li>
+                            The pixels are of the top layer are multiplied with the corresponding pixel of the bottom
+                            layer. A darker picture is the result.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    screen
+                    <ul>
+                        <li>
+                            The pixels are inverted, multiplied, and inverted again. A lighter picture is the result
+                            (opposite of multiply)
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    overlay
+                    <ul>
+                        <li>
+                            A combination of multiply and screen. Dark parts on the base layer become darker, and light
+                            parts become lighter.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    darken
+                    <ul>
+                        <li>
+                            Retains the darkest pixels of both layers.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    lighten
+                    <ul>
+                        <li>
+                            Retains the lightest pixels of both layers.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    color-dodge
+                    <ul>
+                        <li>
+                            Divides the bottom layer by the inverted top layer.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    color-burn
+                    <ul>
+                        <li>
+                            Divides the inverted bottom layer by the top layer, and then inverts the result.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    hard-light
+                    <ul>
+                        <li>
+                            A combination of multiply and screen like overlay, but with top and bottom layer swapped.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    difference
+                    <ul>
+                        <li>
+                            A softer version of hard-light. Pure black or white does not result in pure black or white.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    soft-light
+                    <ul>
+                        <li>
+                            Subtracts the bottom layer from the top layer or the other way round to always get a
+                            positive value.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    exclusion
+                    <ul>
+                        <li>
+                            Like difference, but with lower contrast.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    hue
+                    <ul>
+                        <li>
+                            Preserves the luma and chroma of the bottom layer, while adopting the hue of the top layer.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    saturation
+                    <ul>
+                        <li>
+                            Preserves the luma and hue of the bottom layer, while adopting the chroma of the top layer.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    color
+                    <ul>
+                        <li>
+                            Preserves the luma of the bottom layer, while adopting the hue and chroma of the top layer.
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    luminosity
+                    <ul>
+                        <li>
+                            Preserves the hue and chroma of the bottom layer, while adopting the luma of the top layer.
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+            <p>
+                The "globalCompositeOperation" setting can be a powerful tool to implement common graphics rendering
+                techniques when needed.
+            </p>
+            <p>
+                It is up to you to experiment with and research the canvas API if you want to become a master.
+            </p>
+            <p>
+                Now it is time to get back to the object oriented side of things.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="inheritance">INHERITANCE</h3>
+            <p>
+                Inheritance is at the heart of O.O.P.
+            </p>
+            <p>
+                Inheritance is the practice of one class inheriting the properties and methods of a super(aka parent)
+                class while maintaining it's own independent properties and methods.
+            </p>
+            <p>
+                This means that you can modularize logic and code that instances will share into super and sub classes.
+            </p>
+            <p>
+                You can create a kind of family tree of classes that start with the most generic at the root and are the
+                most specific on the leaves.
+            </p>
+            <p>
+                In JAVASCRIPT inheritance can be implemented using the "extends" and "super" keywords.
+            </p>
+            <p>
+                You can take a look at this example code where you have a super class of Dog(also the root class) and a
+                sub class of Wolf.
+            </p>
+            <pre>
+class Dog {
+    constructor(name = `Feral ${this.constructor.name}`) {
+        this.name = name;
+    }
+    
+    bark() {
+        console.log(`${this.name} barks!`)
+    }
+    
+    receive_petting() {
+        console.log(`${this.name} is happy.`);
+    }
+}
+
+class Wolf <span class="yellow">extends</span> Dog {
+    constructor(name) {
+        <span class="yellow">super(name);</span>
+        this.hungry = true;
+    }
+    
+    receive_petting() {
+        this.bite();
+        <span class="yellow">super.receive_petting();</span>
+    }
+    
+    bite() {
+        console.log(`${this.name} bites you!`);
+    }
+}
+            </pre>
+            <p>
+                Dog receives his/her name via the constructor, it is stored as a property. The default is 'Feral [class
+                name]', in Dogs case 'Feral Dog'.
+            </p>
+            <p>
+                Dog also has bark and receive_pet methods.
+            </p>
+            <p>
+                Wolf is an extension(or sub class) of Dog. This is defined by the 'extends' keyword in the class
+                declaration.
+            </p>
+            <p>
+                Wolfs constructor calls it's super classes constructor and passes the name argument up the chain. This
+                is done with the call 'super()'. Because of this, Wolf preserves the default value of its super class
+                Dog. Wolf is also hungry.
+            </p>
+            <p>
+                Wolf also has all of the methods of Dog, including bark. Wolf has an additional bite method. Wolf does
+                have another version of receive_petting that is overriding the method from Dog. In order to preserve the
+                functionality of the Dog receive_petting method while adding more to it, the method calls the method of
+                the Dog super class within itself after executing using the super keyword to access the super class.
+            </p>
+            <pre>
+const fido = new Dog('Fido');
+const anonymous = new Wolf();
+
+fido.bark();
+// OUTPUTS Fido barks!
+
+fido.receive_petting();
+// OUTPUTS Fido is happy.
+
+anonymous.bark();
+// OUTPUTS Feral Wolf barks!
+
+anonymous.receive_petting();
+// OUTPUTS Feral Wolf bites you!
+// OUTPUTS Feral Wolf is happy.
+            </pre>
+            <p>
+                The 'instanceof' keyword acts as a conditional check to see if the left hand operand is an instance or
+                descendant of the right hand operand class. This can be nice tool to check an instance to see if it
+                matches the class or super class you want.
+            </p>
+            <pre>
+console.log(fido instanceof Dog);
+// OUTPUTS true
+
+console.log(fido instanceof Wolf);
+// OUTPUTS false
+
+console.log(anonymous instanceof Dog);
+// OUTPUTS true
+
+console.log(anonymous instanceof Wolf);
+// OUTPUTS true
+            </pre>
+            <p>
+                You can see that fido is a Dog but not a Wolf, anonymous is a Dog and a Wolf.
+            </p>
+            <p>
+                By modularizing functionality into super classes, sub classes can be much more concise and semantic.
+            </p>
+            <p>
+                Though some would argue against it in favor of composition, inheritance is a powerful tool that if used
+                properly can help you build a robust tree of object prototypes.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="recursion">RECURSION</h3>
+            <p>
+                Recursion is an ancient concept fundamental to the structure if reality itself.
+            </p>
+            <img alt="oroboros" src="../../../img/oroboros.jpg">
+            <p>
+                Recursion occurs when a thing is defined in terms of itself or of its type
+            </p>
+            <p class="yellow">
+                In JAVASCRIPT, recursion is when a function calls itself within itself.
+            </p>
+            <p>
+                Recursion is an incredibly powerful conceptual tool that is often the solution to problems that are hard
+                to wrap your head around.
+            </p>
+            <p>
+                Any task that can be handled with recursion can also be handled with iteration(looping). However there
+                are times when it makes much more sense to use recursion.
+            </p>
+            <p class="yellow">
+                Recursion is called for when you DON'T know how many times you will need to repeat.
+            </p>
+            <blockquote class="red">
+                WARNING: Recursive calls can create an expensively large callstack, or blow the callstack completely.
+                Make sure that you do not create infinite recursion outside of a generator function. Also be mindful
+                that recursion may not fit the problem at hand, iteration may be better. Or maybe a combination of the
+                two. Iteration can be a means of "flattening".
+            </blockquote>
+            <p>
+                Take a look at the following recursive factorial function.
+            </p>
+            <blockquote class="blue">
+                NOTE: The factorial of a non-negative integer number, is the product(output of multiplication) of all
+                positive integers less than or equal to that number. For example, factorial(5) === 5 * 4 * 3 * 2 * 1 ===
+                120.
+            </blockquote>
+            <blockquote class="blue">
+                NOTE: An integer is a number with no decimal values. For example, 2 is an integer, 2.25 is not. 2.25 is
+                a floating point number.
+            </blockquote>
+            <pre>
+const factorial = (number, accumulator = 1) => !number ? accumulator : factorial(number - 1, accumulator * number);
+            </pre>
+            <p>
+                Or without the ternary.
+            </p>
+            <pre>
+const factorial = (number, accumulator = 1) => number && factorial(number - 1, accumulator * number) || accumulator;
+            </pre>
+            <p>
+                Or the long version.
+            </p>
+            <pre>
+const factorial = (number, accumulator = 1) => {
+    number = Math.abs(Math.trunc(number));
+    if (number === 0) {
+        return accumulator;
+    }
+    return factorial(number - 1, accumulator * number);
+}
+            </pre>
+            <p>
+                They all work essentially the same.
+            </p>
+            <pre>
+console.log(factorial(5));
+// OUTPUTS 120
+            </pre>
+            <p>
+                Breaking it down piece by piece.
+            </p>
+            <p>
+                The parameters for the function take expect a number that the function will run on. There is also an
+                accumulator that is initialized as the number 1. This is because the first multiplication should produce
+                itself, which is what happens when you multiply any number by 1.
+            </p>
+            <pre>
+const factorial = (<span class="yellow">number, accumulator = 1</span>) => { }
+            </pre>
+            <p>
+                Then you can pre-process the input number to make sure it is a non-negative integer, using "Math.abs()"
+                to force a positive number and "Math.trunc()" to force an integer.
+            </p>
+            <pre>
+const factorial = (number, accumulator = 1) => {
+    <span class="yellow">number = Math.abs(Math.trunc(number));</span>
+}
+            </pre>
+            <p>
+                Next you define the base case. When "number" is zero the function is complete and you can return the
+                product(accumulator). This will fire up through the call stack the final product.
+            </p>
+            <pre>
+const factorial = (number, accumulator = 1) => {
+    number = Math.abs(Math.trunc(number));
+    <span class="yellow">if (number === 0) {
+        return accumulator;
+    }</span>
+}
+            </pre>
+            <p>
+                If the base case has not yet been reached, you recurse. This means you return the output of a call to
+                the same
+                function with a different subset of arguments. In this case number as number minus one, and the product
+                of the accumulator multiplied by the number as the new accumulator value.
+            </p>
+            <pre>
+const factorial = (number, accumulator = 1) => {
+    number = Math.abs(Math.trunc(number));
+    if (number === 0) {
+        return accumulator;
+    }
+    <span class="yellow">return factorial(number - 1, accumulator * number);</span>
+}
+            </pre>
+            <p>
+                This process of repetition will continue counting down "number" and multiplying "accumulator" by
+                "number" until "number" reaches zero and then it will return "accumulator" all the way back to the first
+                call to the function.
+            </p>
+            <p>
+                This simple example showcases the fundamentals of recursion. Technically this is tail recursion as the
+                recursive function call is the LAST thing to occur in the function each time.
+            </p>
+            <h4>RECURSION CONCEPTS:</h4>
+            <ul>
+                <li>BASE CASE</li>
+                <li>ALL PATHS LEAD TO BASE CASE</li>
+                <li>DEPTH FIRST SEARCH</li>
+                <li>POWER AND SEMANTICS</li>
+                <li>RECURSIVE CLASS GETTERS</li>
+            </ul>
+            <h4>BASE CASE</h4>
+            <p>
+                In recursive functions the base case is a condition that when met ends the recursion and returns up the
+                call stack.
+            </p>
+            <p class="red">
+                There always needs to be a base case in a recursive function otherwise it could repeat infinitely.
+            </p>
+            <p>
+                The base case in the example code above is when "number" reaches zero.
+            </p>
+            <pre>
+const factorial = (number, accumulator = 1) => {
+    number = Math.abs(Math.trunc(number));
+    <span class="yellow">if (number === 0) {
+        return accumulator;
+    }</span>
+    return factorial(number - 1, accumulator * number);
+}
+            </pre>
+            <p>
+                The base case should come before the recursion case. Like a roadblock, the function must pass the base
+                case test before continuing to repeat.
+            </p>
+            <h4>ALL PATHS LEAD TO BASE CASE</h4>
+            <p>
+                It is imperative that no matter what, the base case will eventually occur.
+            </p>
+            <blockquote class="red">
+                WARNING: If you do not confirm that function parameters are valid, a user could cause an infinite
+                recursive loop. This is possible with the shorthand factorial functions in the code above. If for
+                example you input a floating point number(2.25) it would recurse forever.
+            </blockquote>
+            <p>
+                In tail recursion as above the conditional check for the base case occurs before a call to recurse.
+            </p>
+            <p>
+                Take a look at the code.
+            </p>
+            <pre>
+const factorial = (number, accumulator = 1) => {
+    <span class="yellow">number = Math.abs(Math.trunc(number));</span>
+    if (<span class="yellow">number === 0</span>) {
+        return accumulator;
+    }
+    return factorial(<span class="yellow">number - 1</span>, accumulator * number);
+}
+            </pre>
+            <p>
+                Because "number" is guaranteed by the first line to be a positive integer or zero and because every time
+                the function recurses it is decremented by one. It will inevitably become zero at some point. It WILL
+                count down until it reaches zero.
+            </p>
+            <p>
+                No matter what number the user puts in(as long as it's a number...) the function will eventually stop
+                and return a value, the accumulator.
+            </p>
+            <h4>DEPTH FIRST SEARCH</h4>
+            <p>
+                Recursion is very useful for implementing a depth first search.
+            </p>
+            <blockquote class="blue">
+                NOTE: Depth First Search or DFS is a term to describe an algorithm for searching a tree or graph data
+                structure by "drilling" down to the deepest level first and then working back up recursively. As opposed
+                to Breadth First Search(BFS), which searches each "level" completely before moving down to search more
+                levels. BFS is usually implemented iteratively as opposed to recursively.
+            </blockquote>
+            <p>
+                Imagine you had a multidimensional array of unknown dimensions.
+            </p>
+            <pre>
+const tree =
+[
+    [
+      [1 , 2 , 3 , 4 , 5 ],
+      [6 , 7 , 8 , 9 ,[10, 11, 12]]
+    ],
+    [
+      [13, 14, 15, 16, 17]
+    ],
+    [
+      [18, 19, 20, 21, 22]
+    ],
+]
+            </pre>
+            <p>
+                Okay so you do know how many dimensions but IMAGINE you don't.
+            </p>
+            <p>
+                You need to search it for say the number 13 and determine if it exists anywhere in the data structure.
+            </p>
+            <p>
+                DFS is a possible solution.
+            </p>
+            <pre>
+const tree_contains = (node, look_for) => {
+    if (node === look_for) {
+        return true;
+    }
+    return node instanceof Array && node.some(v => tree_contains(v, look_for));
+}
+            </pre>
+            <p>
+                Or a one-liner.
+            </p>
+            <pre>
+const tree_contains = (node, look_for) => node === look_for ? true : node instanceof Array ? node.some(v => tree_contains(v, look_for)) : false;
+            </pre>
+            <blockquote class="blue">
+                NOTE: Array.some() is an array method that runs a function on every element of the array until it
+                returns true or it runs out of elements and returns false.
+            </blockquote>
+            <p>
+                What happens is that when the function is called and the data structure is passed in alongside the thing
+                you are searching for, it tells you if it exists in the data structure.
+            </p>
+            <pre>
+tree_contains(tree, 13);
+// OUTPUTS true
+            </pre>
+            <p>
+                It does this by first checking if the current node(array or number in this case) is what it is looking
+                for. If it is then it returns(base case), otherwise if the node is an array, it loops over it calling
+                tree_contains on each recursively UNTIL it finds a match. Else it return false.
+            </p>
+            <p>
+                In this way every time it comes across an array, it starts looking in that array, and if any of those
+                elements are arrays, it starts looking in them, forever until it runs out of nodes or finds a match.
+            </p>
+            <p>
+                If you look at the data structure above, the elements are numbers or arrays and the numbers correspond
+                to the order in which the DFS algorithm will look at them.
+            </p>
+            <pre data-throttle="20" class="highlight_loop">
+const tree =
+<span data-tick="0.1">[
+    <span data-tick="0.2">[
+      <span data-tick="0.3">[<span data-tick="0.5">1</span> , <span data-tick="1">2</span> , <span data-tick="2">3</span> , <span data-tick="3">4</span> , <span data-tick="4">5</span> ],</span>
+      <span data-tick="4.5">[<span data-tick="5">6</span> , <span data-tick="6">7</span> , <span data-tick="7">8</span> , <span data-tick="8">9</span> ,<span data-tick="8.5">[<span data-tick="9">10</span>, <span data-tick="10">11</span>, <span data-tick="11">12</span>]</span>]</span>
+    ],
+    <span data-tick="11.5">[
+      <span data-tick="11.7">[<span data-tick="12">13</span>, 14, 15, 16, 17]</span>
+    ],</span>
+    [
+      [18, 19, 20, 21, 22]
+    ],</span>
+]</span>
+            </pre>
+            <p>
+                Technically this algorithm uses a combination of recursion and iteration but rules are meant to be
+                broken, it works!
+            </p>
+            <p>
+                By using recursion you can traverse an unknown or potentially infinite data set, DFS is an example of
+                this.
+            </p>
+            <h4>POWER AND SEMANTICS</h4>
+            <p>
+                Though it is true that recursion is interchangeable with iteration in most programming languages with
+                some changes. There are reasons why you would want to use recursion.
+            </p>
+            <p>
+                In recursion you might not need a work stack. As with iteration certain problems would require you to
+                keep a state of the work to be done, with recursion the algorithm does not need to know WHERE it is to
+                keep functioning the same way.
+            </p>
+            <p>
+                Some languages(turing complete) don't even allow you to use loops at all! These languages are attempting
+                to implement the purest of functional programming.
+            </p>
+            <p>
+                Often times the recursive solution just fits the problem better than iteration. Recursion might be more
+                how a human would solve a problem rather than a computer.
+            </p>
+            <p>
+                Recursion can also shorten up your code and make it much more expressive of your algorithmic intention.
+            </p>
+            <h4>RECURSIVE CLASS GETTERS</h4>
+            <p>
+                You can use the nature of class getters and setters to create simple but powerful algorithms for
+                traversing the prototype or universe chain, among other things.
+            </p>
+            <pre>
+get root() {
+    return this.parent && this.parent.root || this;
+}
+            </pre>
+            <p>
+                This getter will search vertically up the universe chain of parents until it finds an object with no
+                parent, the root.
+            </p>
+            <p>
+                This only works because every object in the chain inherits the same getter with the same recursive
+                logic.
+            </p>
+            <p>
+                The power of recursion is expressed in the simplicity of this getter.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="handling_user_input">HANDLING USER INPUT</h3>
+            <p>
+                Up until this point, none of the examples have allowed user input to effect the state of the animations.
+            </p>
+            <p>
+                This example implements this with a rather simple binary on off switch.
+            </p>
+            <p>
+                As user input gets more complex and integrated into the functionality of an app, it can become more
+                difficult to manage the timing.
+            </p>
+            <p>
+                As user input in the browser environment is handled by events, you will use event listeners to await
+                these event.
+            </p>
+            <p>
+                Keep in mind that many events can occur in VERY rapid succession, likely much more often than you need
+                to effectively handle user input in a timely manner.
+            </p>
+            <p>
+                One way of combatting this timing issue is to DEBOUNCE the events.
+            </p>
+            <p>
+                This essentially means that within a specific interval of time, you only accept one event that you will
+                handle. If someone clicked 50 times in a hundredth of a second, you only run a click handler once for
+                that interval.
+            </p>
+            <p>
+                This is implemented in the animation environment by an intermediary function that changes state in
+                response to EVERY event. These intermediary functions are small and do not effect the state of animation
+                or game, but rather just state of information about user input at the time.
+            </p>
+            <p>
+                The next step is to add an additional phase to the animation loop flow. HANDLE INPUT.
+            </p>
+            <p>
+                During this phase you will analyze the state of the user input data that may have been changed by the
+                intermediary functions between animation ticks. Then actual animation or game state is UPDATED. In this
+                way handle input is an extension of the UPDATE phase and does not explicitly get it's own category.
+            </p>
+            <p>
+                The benefit of debouncing and abstracting away the user input is that you are in control of WHEN you
+                handle the users actions. It can also GREATLY improve performance by not repeating an event handler that
+                modifies state of animation or game more than once a tick.
+            </p>
+            <p>
+                In future lessons, the handle input phase will be abstracted into its own class to manage all of the
+                different types of input in a centralized and controlled way that the entire app can benefit from.
+            </p>
+            <p>
+                For now, this simple implementation will do.
+            </p>
+            <p>
+                Finally, now that you are done with all of that O.O.P theory, you can move on to how the example code
+                works.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="how_it_works">HOW IT WORKS</h3>
+            <p>
+                The animation is essentially a never ending fountain of colored hearts that can be collected and
+                released by the user.
+            </p>
+            <p>
+                You may want to skip to the bottom of the page and take a look at the <a href="#visual_breakdown"
+                    class="inline-block">visual breakdown</a> example of the animation.
+            </p>
+            <p>
+                The nature of the animation itself is not that much more complex than the previous lesson, however the
+                code is extended further and canvas is used instead of the DOM.
+            </p>
+            <p>
+                Essentially each heart is just a JAVASCRIPT object with:
+            </p>
+            <ul class="tab">
+                <li>Semi-random color.</li>
+                <li>Randomly generated x and y velocity within a limited range.</li>
+                <li>Center bottom position vector.</li>
+                <li>All of the logic from the Interface and Element classes inherited.</li>
+            </ul>
+            <p>
+                Each time the animation updates:
+            </p>
+            <ul class="tab">
+                <li>The position of each heart is added with the velocity of each to produce a new position.</li>
+                <li>Conditionals check to make sure the heart is within the bounds of the element.</li>
+                <li>If the heart is out of bounds, it is reset at bottom center with new state.</li>
+                <li>The y velocity of every heart is increased slightly to mimic gravity.</li>
+                <li>If the user is holding down a key, touch, or mouse the hearts are suspended at bottom center until
+                    the user releases.</li>
+            </ul>
+            <p>
+                Each time the animation renders:
+            </p>
+            <ul class="tab">
+                <li>Each heart is drawn using the Path2D object created during initialization at the position vector
+                    with the state color.</li>
+                <li>The hearts arc visually from the center up and out.</li>
+            </ul>
+            <p>
+                Considering that no images or DOM nodes were used in this animation(other than the canvas element
+                itself), this animation is pretty cool.
+            </p>
+            <p>
+                Now to the code.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="setup">SETUP</h3>
+            <p>
+                Even though the rendering destination of this animation is the canvas, you will still need a bit of HTML
+                and CSS to prepare things.
+            </p>
+            <h4>HTML</h4>
+            <pre class="html">
+<section class="fountain-target" data-scale="2" data-quantity="600"></section>
+            </pre>
+            <p>
+                Just like before a target HTML element with scale and quantity data attributes.
+            </p>
+            <h4>CSS</h4>
+            <pre>
+/* CSS RESET HIDDEN */
+
+.fountain-target {
+    background-color: black;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: -999;
+}
+            </pre>
+            <p>
+                Also similar to before, this just gives you a frame in which the canvas will expand to fit. The
+                container is black and fitted to the entire viewport.
+            </p>
+            <p>
+                Simple enough, now on to the constructors.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="constructor">CONSTRUCTOR</h3>
+            <p>
+                This animation uses three classes instead of two like last lesson.
+            </p>
+            <p>
+                The reason for this is to abstract away any shared functionality of the two main classes into a third
+                parent class. This reduces code size and complexity while also implementing powerful inheritance.
+            </p>
+            <p>
+                You can call this root class Interface. All other animation objects within the universe will inherit
+                from this root class.
+            </p>
+            <pre>
+const fountain = (() => {
+    // GIVE_DATA HIDDEN
+    
+    <span class="yellow">class Interface { }</span>
+
+    class Element extends Interface { }
+    
+    class Manager extends Interface { }
+    // RETURN OBJECT HIDDEN
+})();
+            </pre>
+            <p>
+                The constructor contains the logic to accept an options object and store it locally. It also stores the
+                parent property of the object, if it exists, locally as well.
+            </p>
+            <pre>
+const fountain = (() => {
+    // GIVE_DATA HIDDEN
+    
+    class Interface {
+        <span class="yellow">constructor(options = {}) {
+            this._options = options;
+            this.parent = options.parent || null;
+        }</span>
+    }
+
+    class Element extends Interface { }
+    
+    class Manager extends Interface { }
+    // RETURN OBJECT HIDDEN
+})();
+            </pre>
+            <p>
+                The class also includes all of the standard animation methods that you can expect instances to use. They
+                are blank, but since they exist, prevent errors when it is called on an instance. For instance if you
+                created an object instance that inherits from Interface but has no reset method of it's own and you
+                tried to call reset on that instance. It would not throw an error, it just wouldn't do anything.
+            </p>
+            <pre>
+const fountain = (() => {
+    // GIVE_DATA HIDDEN
+    
+    class Interface {
+        constructor(options = {}) {
+            this._options = options;
+            this.parent = options.parent || null;
+        }
+        
+        <span class="yellow">initialize() { }
+
+        update() { }
+        
+        render() { }
+        
+        reset() { }</span>
+    }
+
+    class Element extends Interface { }
+    
+    class Manager extends Interface { }
+    // RETURN OBJECT HIDDEN
+})();
+            </pre>
+            <p>
+                The class also contains some getters that define how ALL classes that inherit from Interface will
+                acquire certain properties, ones that you want all instances to be able to access.
+            </p>
+            <pre>
+const fountain = (() => {
+    // GIVE_DATA HIDDEN
+    
+    class Interface {
+        constructor(options = {}) {
+            this._options = options;
+            this.parent = options.parent || null;
+        }
+        
+        initialize() { }
+
+        update() { }
+        
+        render() { }
+        
+        reset() { }
+        
+        <span class="yellow">get root() {
+            !this._local_root && (this._local_root = this.parent && this.parent.root || this);
+            return this._local_root;
+        }
+        
+        get canvas() {
+            return this.root.canvas;
+        }
+        
+        get context() {
+            return this.root.context;
+        }
+        
+        get hold() {
+            return this.root.hold;
+        }</span>
+    }
+
+    class Element extends Interface { }
+    
+    class Manager extends Interface { }
+    // RETURN OBJECT HIDDEN
+})();
+            </pre>
+            <p>
+                Most of the getters simply point to the root to acquire the property from there, instead of itself. This
+                is so the value requested only has to be stored in one central location, the root, instead of many. The
+                root getter itself though is a bit more involved.
+            </p>
+            <pre>
+get root() {
+    !this._local_root && (this._local_root = this.parent && this.parent.root || this);
+    return this._local_root;
+}
+            </pre>
+            <p>
+                This getter uses recursion to fire up the universe ancestry chain to the very top. It also stores the
+                product of this search as a local property so the search only has to run once. After that the getter
+                simply returns the local reference to the root of the instance universe.
+            </p>
+            <p>
+                That's it for the Interface class. It's job is only to be inherited from; it should never be
+                instantiated itself.
+            </p>
+            <p>
+                The next two classes constructors are also simple.
+            </p>
+            <p>
+                For the Manager class it just preserves the logic of the override by calling super and passing up the
+                options object. Then it calls it's own "_initialize()" method to fire things off.
+            </p>
+            <pre>
+const fountain = (() => {
+    // GIVE_DATA HIDDEN
+    // INTERFACE CLASS HIDDEN
+
+    class Element extends Interface { }
+    
+    <span class="yellow">class Manager extends Interface {
+        constructor(options) {
+            super(options);
+            this._initialize();
+        }
+    }</span>
+    // RETURN OBJECT HIDDEN
+})();
+// ACTIVATION LOOP HIDDEN
+            </pre>
+            <p>
+                Since this is intended to be the universe root class it has to have some special getters that override
+                the Interface getters.
+            </p>
+            <pre>
+const fountain = (() => {
+    // GIVE_DATA HIDDEN
+    // INTERFACE CLASS HIDDEN
+
+    class Element extends Interface { }
+    
+    class Manager extends Interface {
+        constructor(options) {
+            super(options);
+            this._initialize();
+        }
+    }
+    
+    <span class="yellow">get hold() {
+        return this.mousehold || this.touchhold || this.keyhold;
+    }
+    
+    get canvas() {
+        return this._canvas;
+    }
+    
+    get context() {
+        return this._context;
+    }</span>
+    // RETURN OBJECT HIDDEN
+})();
+// ACTIVATION LOOP HIDDEN
+            </pre>
+            <p>
+                Hold represents if ANY of the three input options are active.
+            </p>
+            <p>
+                The other two simply make available the hidden canvas and context properties of the instance for all
+                other instances to use.
+            </p>
+            <p>
+                The Element class doesn't even have a constructor or getters at all because the constructor it inherits
+                from Interface already does everything it needs. Easy.
+            </p>
+            <p>
+                Finally the activation loop iterates over all destination DOM nodes to instantiate the universes.
+            </p>
+            <pre>
+const fountain = (() => {
+    // GIVE_DATA HIDDEN
+    // INTERFACE CLASS HIDDEN
+    // MANAGER CLASS HIDDEN
+    // ELEMENT CLASS HIDDEN
+    // RETURN OBJECT HIDDEN
+})();
+
+<span class="yellow">window.addEventListener('DOMContentLoaded', () => {
+    Array.from(document.querySelectorAll('.fountain-target')).forEach(target => {
+        new fountain.Manager({
+            scale: +target.dataset.scale,
+            quantity: +target.dataset.quantity,
+            target
+        });
+    });
+});</span>
+            </pre>
+            <p>
+                Same as before it creates new Manager instances for every destination node. The only difference is the
+                use of a plus sign prefix on the values. This is just to ensure that the values data type is Number and
+                not a String, which is the default data type from the DOM. Since you want numbers you can just prefix
+                with a plus sign. For example:
+            </p>
+            <pre>
+const stringy_number = '42';
+const regular_number = +stringy_number;
+            </pre>
+            <p>
+                Now for the initialization phase.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="initialize">INITIALIZE</h3>
+            <p>
+                There are now two remaining classes to handle the initialization for, Manager and Element. You can start
+                with Manager.
+            </p>
+            <pre>
+class Manager extends Interface {
+    // CONSTRUCTOR HIDDEN
+    
+    <span class="yellow">_initialize() { }</span>
+    
+    // OTHER STUFF HIDDEN
+}
+            </pre>
+            <p>
+                This first thing, like before, will be to store and verify the presence of a target element.
+            </p>
+            <pre>
+_initialize() {
+    <span class="yellow">this.target = this._options.target;
+    if (!this.target || !(this.target instanceof HTMLElement)) {
+        throw new Error(`${this.constructor.name}: NO TARGET ELEMENT`);
+    }</span>
+}
+            </pre>
+            <p>
+                The next thing will be to create, get context from, and append a canvas element to the target element.
+            </p>
+            <pre>
+_initialize() {
+    this.target = this._options.target;
+    if (!this.target || !(this.target instanceof HTMLElement)) {
+        throw new Error(`${this.constructor.name}: NO TARGET ELEMENT`);
+    }
+    <span class="yellow">this._canvas = document.createElement('canvas');
+    this._context = this.canvas.getContext('2d', { alpha: false });
+    this.target.append(this._canvas);</span>
+}
+            </pre>
+            <blockquote class="blue">
+                NOTE: The "{ alpha: false }" argument to the "getContext()" call is not required. In this case it is
+                added since there is no desire to have a transparent canvas background. This improves performance, but
+                if you want transparency you would not include it.
+            </blockquote>
+            <p>
+                Next a window resize event listener is attached and linked to the instance resize method. The method is
+                also called once explicitly to ensure proper sizing of the canvas to fit the destination element. You
+                don't want the canvas to skew if the user resizing their browser window.
+            </p>
+            <pre>
+_initialize() {
+    this.target = this._options.target;
+    if (!this.target || !(this.target instanceof HTMLElement)) {
+        throw new Error(`${this.constructor.name}: NO TARGET ELEMENT`);
+    }
+    this._canvas = document.createElement('canvas');
+    this._context = this.canvas.getContext('2d', { alpha: false });
+    this.target.append(this._canvas);
+    <span class="yellow">window.addEventListener('resize', () => this._resize());
+    this._resize();</span>
+}
+            </pre>
+            <p>
+                The next step should be very familiar from the last lesson as it collects data from the options object,
+                populates the children based on input, and initializes them.
+            </p>
+            <pre>
+_initialize() {
+    this.target = this._options.target;
+    if (!this.target || !(this.target instanceof HTMLElement)) {
+        throw new Error(`${this.constructor.name}: NO TARGET ELEMENT`);
+    }
+    this._canvas = document.createElement('canvas');
+    this._context = this.canvas.getContext('2d', { alpha: false });
+    this.target.append(this._canvas);
+    window.addEventListener('resize', () => this._resize());
+    this._resize();
+    <span class="yellow">this.quantity = this._options.quantity || 1000;
+    this.scale = this._options.scale || 1;
+    this.children = new Array(this.quantity)
+        .fill(null)
+        .map(v => new Element({ parent: this }));
+    this.children.forEach(v => v.initialize());</span>
+}
+            </pre>
+            <p>
+                The last step is to create local state to represent user input for mouse, keyboard and touch. Then to
+                attach event listeners to reflect these state variables. Finally to call the instance repeat method in
+                order to kick off the main animation loop.
+            </p>
+            <pre>
+_initialize() {
+    this.target = this._options.target;
+    if (!this.target || !(this.target instanceof HTMLElement)) {
+        throw new Error(`${this.constructor.name}: NO TARGET ELEMENT`);
+    }
+    this._canvas = document.createElement('canvas');
+    this._context = this.canvas.getContext('2d', { alpha: false });
+    this.target.append(this._canvas);
+    window.addEventListener('resize', () => this._resize());
+    this._resize();
+    this.quantity = this._options.quantity || 1000;
+    this.scale = this._options.scale || 1;
+    this.children = new Array(this.quantity)
+        .fill(null)
+        .map(v => new Element({ parent: this }));
+    this.children.forEach(v => v.initialize());
+    <span class="yellow">this.mousehold = false;
+    this.keyhold = false;
+    this.touchhold = false;
+    document.addEventListener('mousedown', () => this.mousehold = true);
+    document.addEventListener('touchstart', () => this.touchhold = true);
+    document.addEventListener('keydown', () => this.keyhold = true);
+    document.addEventListener('mouseup', () => this.mousehold = false);
+    document.addEventListener('touchend', () => this.touchhold = false);
+    document.addEventListener('keyup', () => this.keyhold = false);
+    this._repeat();</span>
+}
+            </pre>
+            <p>
+                That's it for the Manager class initialization, the Element class is somewhat simpler.
+            </p>
+            <pre>
+class Element extends Interface {
+    <span class="yellow">initialize() { }</span>
+}
+            </pre>
+            <p>
+                Step one is to check for a parent, which is required.
+            </p>
+            <pre>
+class Element extends Interface {
+    initialize() {
+        <span class="yellow">if (!this.parent) {
+            throw new Error(`${this.constructor.name}: NO PARENT - REQUIRES PARENT`);
+        }</span>
+    }
+}
+            </pre>
+            <p>
+                Next since this object could be told to "wait" by the user input, it needs a state property to represent
+                that.
+            </p>
+            <pre>
+class Element extends Interface {
+    initialize() {
+        if (!this.parent) {
+            throw new Error(`${this.constructor.name}: NO PARENT - REQUIRES PARENT`);
+        }
+        <span class="yellow">this._waiting = this.hold;</span>
+    }
+}
+            </pre>
+            <p>
+                To improve performance, since this animation is using a complex curve heart pattern(from dev-docs), it
+                is smart to calculate the path only once and store the result for later use. The actual path pipeline is
+                fairly complex, composed of bezier curves, see the section on drawing shapes earlier in this lesson.
+            </p>
+            <pre>
+class Element extends Interface {
+    initialize() {
+        if (!this.parent) {
+            throw new Error(`${this.constructor.name}: NO PARENT - REQUIRES PARENT`);
+        }
+        this._waiting = this.hold;
+        <span class="yellow">this._path = new Path2D();
+        /* CREDIT TO DEV-DOCS FOR HEART PATTERN */
+        this._path.moveTo(7.5, 4.0);
+        this._path.bezierCurveTo(7.5, 3.7, 7.0, 2.5, 5.0, 2.5);
+        this._path.bezierCurveTo(2.0, 2.5, 2.0, 6.25, 2.0, 6.25);
+        this._path.bezierCurveTo(2.0, 8.0, 4.0, 10.2, 7.5, 12.0);
+        this._path.bezierCurveTo(11.0, 10.2, 13.0, 8.0, 13.0, 6.25);
+        this._path.bezierCurveTo(13.0, 6.25, 13.0, 2.5, 10.0, 2.5);
+        this._path.bezierCurveTo(8.5, 2.5, 7.5, 3.7, 7.5, 4.0);
+        /* CREDIT TO DEV-DOCS FOR HEART PATTERN */</span>
+    }
+}
+            </pre>
+            <p>
+                Last will be the initial call to reset to set the heart position and velocity vectors for the first
+                time.
+            </p>
+            <pre>
+class Element extends Interface {
+    initialize() {
+        if (!this.parent) {
+            throw new Error(`${this.constructor.name}: NO PARENT - REQUIRES PARENT`);
+        }
+        this._waiting = this.hold;
+        this._path = new Path2D();
+        /* CREDIT TO DEV-DOCS FOR HEART PATTERN */
+        this._path.moveTo(7.5, 4.0);
+        this._path.bezierCurveTo(7.5, 3.7, 7.0, 2.5, 5.0, 2.5);
+        this._path.bezierCurveTo(2.0, 2.5, 2.0, 6.25, 2.0, 6.25);
+        this._path.bezierCurveTo(2.0, 8.0, 4.0, 10.2, 7.5, 12.0);
+        this._path.bezierCurveTo(11.0, 10.2, 13.0, 8.0, 13.0, 6.25);
+        this._path.bezierCurveTo(13.0, 6.25, 13.0, 2.5, 10.0, 2.5);
+        this._path.bezierCurveTo(8.5, 2.5, 7.5, 3.7, 7.5, 4.0);
+        /* CREDIT TO DEV-DOCS FOR HEART PATTERN */
+        <span class="yellow">this.reset();</span>
+    }
+}
+            </pre>
+            <p>
+                Sometimes instead of declaring the same set of instructions multiple times for initialize and reset you
+                can combine them into one method, as seen here. This modularizes code at the expense of recucing
+                semantics(just a little), a worthwhile trade.
+            </p>
+            <p>
+                That concludes the initialization phase for this animation. On to the update phase.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="update">UPDATE</h3>
+            <p>
+                Like above you can start with the update method for the Manager class.
+            </p>
+            <pre>
+class Manager extends Interface {
+    // OTHER STUFF HIDDEN
+    <span class="yellow">_update() {
+        this.children.forEach(v => v.update());
+    }</span>
+}
+            </pre>
+            <p>
+                It is incredibly simple, just to call update for all of it's children.
+            </p>
+            <p>
+                Now for the Element class update method.
+            </p>
+            <pre>
+class Element extends Interface {
+    // OTHER STUFF HIDDEN
+    <span class="yellow">update() { }</span>
+}
+            </pre>
+            <p>
+                The first step in an element update will be do check to see if it is within canvas bounds.
+            </p>
+            <pre>
+update() {
+    <span class="yellow">if (this.position.y > this.canvas.height || this.position.y < 0) { }</span>
+}
+            </pre>
+            <p>
+                If it is out of bounds, then reset. Also now is the time to check to see if the user is holding down an
+                input device, telling the hearts to wait. If user is holding then set velocity to zeros and the waiting
+                property to true.
+            </p>
+            <pre>
+update() {
+    if (this.position.y > this.canvas.height || this.position.y < 0) {
+        <span class="yellow">this.reset();
+        if (this.hold) {
+            this.velocity = { x: 0, y: 0 };
+            this._waiting = true;
+        }</span>
+    }
+}
+            </pre>
+            <p>
+                Next you can check to see if both that the user is not holding and that the element is already waiting.
+                If it is then simply reset and set waiting to false. This signifies that the user has released hold and
+                the heart element should launch.
+            </p>
+            <pre>
+update() {
+    if (this.position.y > this.canvas.height || this.position.y < 0) {
+        this.reset();
+        if (this.hold) {
+            this.velocity = { x: 0, y: 0 };
+            this._waiting = true;
+        }
+    }
+    <span class="yellow">if (!this.hold && this._waiting) {
+        this.reset();
+        this._waiting = false;
+    }</span>
+}
+            </pre>
+            <p>
+                Finally, like the previous lesson, you add the velocity to the position to produce a new position. You
+                also want to add a little to the y velocity to simulate some gravity and force the element back down
+                over time.
+            </p>
+            <pre>
+update() {
+    if (this.position.y > this.canvas.height || this.position.y < 0) {
+        this.reset();
+        if (this.hold) {
+            this.velocity = { x: 0, y: 0 };
+            this._waiting = true;
+        }
+    }
+    if (!this.hold && this._waiting) {
+        this.reset();
+        this._waiting = false;
+    }
+    <span class="yellow">this.position.x += this.velocity.x;
+    this.position.y += this.velocity.y;
+    this.velocity.y += 0.1;</span>
+}
+            </pre>
+            <blockquote class="blue">
+                NOTE: Remember that canvas origin is top left by default so a positive y velocity means GOING DOWN.
+            </blockquote>
+            <p>
+                That's it for update, now render.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="render">RENDER</h3>
+            <p>
+                Like above you can start with the Manager class render method.
+            </p>
+            <pre>
+class Manager extends Interface {
+    _render() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.children.forEach(v => v.render());
+    }
+}
+            </pre>
+            <p>
+                Again this Manager class method is very minimal. The manager will clear the entire canvas to a blank
+                state. Then it will call render on all of it's children.
+            </p>
+            <p>
+                Now for the Element class render method.
+            </p>
+            <pre>
+class Element extends Interface {
+    <span class="yellow">render() { }</span>
+}
+            </pre>
+            <p>
+                First you set the state variable of the canvas fill color to the element color.
+            </p>
+            <pre>
+render() {
+    <span class="yellow">this.context.fillStyle = this.color;</span>
+}
+            </pre>
+            <p>
+                Now this is where the canvas matrix transformation pipeline comes into play. You SAVE, TRANSLATE(to the
+                element position), SCALE(to the root scale), DRAW(fill the path object from initialization), and
+                RESTORE.
+            </p>
+            <pre>
+render() {
+    this.context.fillStyle = this.color;
+    <span class="yellow">this.context.save();
+    this.context.translate(this.position.x, this.position.y);
+    this.root.scale !== 1 && this.context.scale(this.root.scale, this.root.scale);
+    this.context.fill(this._path);
+    this.context.restore();</span>
+}
+            </pre>
+            <p>
+                Also note that there is a check to make sure scale is not 1 before scaling. This kind of conditional can
+                greatly improve performance by not performing unnecessary execution. For instance, when you
+                scale(multiply) by 1, it does nothing, so you can skip it.
+            </p>
+            <p>
+                That's it for the rendering phase, now repeat.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="repeat">REPEAT</h3>
+            <p>
+                Same as the previous lesson, only the Manager class has a repeat method.
+            </p>
+            <pre>
+class Manager extends Interface {
+    _repeat() {
+        this._update();
+        this._render();
+        window.requestAnimationFrame(() => this._repeat());
+    }
+}
+            </pre>
+            <p>
+                All it does is call the instance update and render functions then repeat.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="reset">RESET</h3>
+            <p>
+                The Manager class has no unique reset method so you can look at the Element class reset method.
+            </p>
+            <pre>
+class Element extends Interface {
+    <span class="yellow">reset() { }</span>
+}
+            </pre>
+            <p>
+                The first step to reset an element instance will be to reset the position to bottom center, the
+                launchpad.
+            </p>
+            <pre>
+reset() {
+    <span class="yellow">this.position = { x: (this.canvas.width / 2), y: this.canvas.height };</span>
+}
+            </pre>
+            <p>
+                This is simple. The y value will be the canvas height(the bottom of the canvas) and the x value will be
+                half the canvas width(middle).
+            </p>
+            <p>
+                Now the next step is to generate a new starting velocity. Because you want the element to veer in one
+                direction left or right a little, you need to randomize the x value a bit within a range. Also since you
+                don't want all elements to have the same vertical velocity, you do the same for y.
+            </p>
+            <pre>
+reset() {
+    this.position = { x: (this.canvas.width / 2), y: this.canvas.height };
+    <span class="yellow">this.velocity = { x: +`${Math.random() > 0.5 ? '-' : '+'}${Math.random() * 1.5}`, y: ((Math.random() * -20) - 1) };</span>
+}
+            </pre>
+            <p>
+                You can break it down a bit, for x:
+            </p>
+            <p>
+                First you parse the product of string interpolation into a number using the plus sign prefix.
+            </p>
+            <pre>
+<span class="yellow">+`</span>${Math.random() > 0.5 ? '-' : '+'}${Math.random() * 1.5}<span class="yellow">`</span>
+            </pre>
+            <p>
+                Next a ternary statement determines based on a 50/50 chance wether to include a negative or positive
+                sign in the string.
+            </p>
+            <pre>
++`<span class="yellow">${Math.random() > 0.5 ? '-' : '+'}</span>${Math.random() * 1.5}`
+            </pre>
+            <p>
+                Lastly the product of a random number is multiplied by 1.5 to scale it up a bit.
+            </p>
+            <pre>
++`${Math.random() > 0.5 ? '-' : '+'}<span class="yellow">${Math.random() * 1.5}</span>`
+            </pre>
+            <p>
+                For the y value.
+            </p>
+            <pre>
+<span class="yellow">((Math.random() * -20) - 1)</span>
+            </pre>
+            <p>
+                Simple, just a random number between 1 and 21, forced to be negative.
+            </p>
+            <p>
+                This may look like Chinese at first glance but when you break it down it is very simple.
+            </p>
+            <p>
+                The final step in the reset method will be to generate a new semi-random color within a range. Since the
+                elements are hearts, shades of red seem fitting. So the red in rgb is fixed at 255, or 100%. The rest of
+                the rgb values will be random 0 to 255. Math.round() forces an integer value to improve performance.
+            </p>
+            <pre>
+reset() {
+    this.position = { x: (this.canvas.width / 2), y: this.canvas.height };
+    this.velocity = { x: +`${Math.random() > 0.5 ? '-' : '+'}${Math.random() * 1.5}`, y: ((Math.random() * -20) - 1) };
+    <span class="yellow">this.color = `rgb(255, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`;</span>
+}
+            </pre>
+            <p>
+                That concludes the reset phase and the code walkthrough as a whole.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="things_are_getting_messy">THINGS ARE GETTING MESSY</h3>
+            <p>
+                There is no doubt that the codebase is starting to get pretty large. Since part of the goal of object
+                oriented programming is to reduce code complexity, it may be time to start modularizing more.
+            </p>
+            <p>
+                In the next lessons you will look into modularizing different categories of functionality into classes
+                of their own.
+            </p>
+            <p>
+                You will also look into building a set of utility functions for common uses.
+            </p>
+            <p>
+                Finally you will probably want to figure out a Vector class because of their common use in building
+                games and animations.
+            </p>
+            <p>
+                The nice part about building a good class is that once you finish, you might not have to go back and
+                change anything again. You can just keep reusing the class wherever you want. Build once, use many.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="visual_breakdown">VISUAL BREAKDOWN</h3>
+            <section class="gray-border padded">
+                <h4>SPEED CONTROL</h4>
+                <section class="center gray-border padded" style="max-width:400px;">
+                    <input value="2" min="1" max="11" step="0.1" type="range" list="range_span">
+                    <datalist id="range_span">
+                        <option value="1" label="0%">
+                        <option value="2">
+                        <option value="3">
+                        <option value="4">
+                        <option value="5" label="50%">
+                        <option value="6">
+                        <option value="7">
+                        <option value="8">
+                        <option value="9">
+                        <option value="10">
+                        <option value="11" label="100%">
+                    </datalist>
+                </section>
+                <br>
+                <h5>WARNING: This visualization fills the shape after every line drawn whereas in reality it would not
+                    fill until after all lines were drawn. This is simply for visualization purposes, watch carefully.
+                    The Path2D object initialization has also been removed and the drawing moved to render.</h5>
+            </section>
+            <br>
+            <article style="width: 400px;height:200px;position:relative;background-color:black;" class="fountain-target"
+                data-quantity="20"></article>
+            <br>
+            <pre class="visual_breakdown_pre" style="font-size:0.5rem;">
+class Element extends Interface {
+    // CONSTRUCTOR AND INITIALIZATION HIDDEN
+    update() {
+        <span data-state="element_check_bounds">if (this.position.y > this.canvas.height || this.position.y < 0) {</span>
+            <span data-state="element_out_of_bounds">this.reset()</span>
+            <span data-state="element_check_hold">if (this.hold) {</span>
+                <span data-state="element_suspend">this.velocity = { x: 0, y: 0 };
+                this.waiting = true;</span>
+            }
+        }
+        <span data-state="element_check_waiting">if (!this.hold && this.waiting) {</span>
+            <span data-state="element_not_waiting">this.reset();
+            this.waiting = false;</span>
+        }
+        <span data-state="element_state_1">this.position.x += this.velocity.x;</span>
+        <span data-state="element_state_2">this.position.y += this.velocity.y;</span>
+        <span data-state="element_state_3">this.velocity.y += 0.1;</span>
+    }
+    render() {
+        <span data-state="element_color">this.context.fillStyle = this.color;</span>
+        <span data-state="element_save">this.context.save();</span>
+        <span data-state="element_translate">this.context.translate(this.position.x, this.position.y);</span>
+        <span data-state="element_scale">this.context.scale(this.root.scale, this.root.scale);</span>
+        <span data-state="element_begin_path">this.context.beginPath();</span>
+        /* CREDIT TO DEV-DOCS FOR HEART PATTERN */
+        <span data-state="element_path_1">this.context.moveTo(7.5, 4.0);</span>
+        <span data-state="element_path_2">this.context.bezierCurveTo(7.5, 3.7, 7.0, 2.5, 5.0, 2.5);</span>
+        <span data-state="element_path_3">this.context.bezierCurveTo(2.0, 2.5, 2.0, 6.25, 2.0, 6.25);</span>
+        <span data-state="element_path_4">this.context.bezierCurveTo(2.0, 8.0, 4.0, 10.2, 7.5, 12.0);</span>
+        <span data-state="element_path_5">this.context.bezierCurveTo(11.0, 10.2, 13.0, 8.0, 13.0, 6.25);</span>
+        <span data-state="element_path_6">this.context.bezierCurveTo(13.0, 6.25, 13.0, 2.5, 10.0, 2.5);</span>
+        <span data-state="element_path_7">this.context.bezierCurveTo(8.5, 2.5, 7.5, 3.7, 7.5, 4.0);</span>
+        /* CREDIT TO DEV-DOCS FOR HEART PATTERN */
+        <span data-state="element_fill">this.context.fill();</span>
+        <span data-state="element_restore">this.context.restore()</span>
+    }
+    reset() {
+        <span data-state="element_reset_position">this.position = { x: (this.canvas.width / 2), y: this.canvas.height };</span>
+        <span data-state="element_reset_velocity">this.velocity = { x: +`${Math.random() > 0.5 ? '-' : '+'}${Math.random() * 1.5}`, y: ((Math.random() * -20) - 1) };</span>
+        <span data-state="element_reset_color">this.color = `rgb(255, ${Math.round(Math.random() * 255)}, ${Math.round(Math.random() * 255)})`;</span>
+    }
+    // OTHERS HIDDEN
+}
+
+class Manager extends Interface {
+    // CONSTRUCTOR AND INITIALIZATION HIDDEN
+    _update() {
+        <span data-state="manager_update">this.children.forEach(v => v.update());</span>
+    }
+    _render() {
+        <span data-state="manager_clear">this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);</span>
+        <span data-state="manager_render">this.children.forEach(v => v.render());</span>
+    }
+    _repeat() {
+        <span data-state="manager_repeat_update">this._update();</span>
+        <span data-state="manager_repeat_render">this._render();</span>
+        window.requestAnimationFrame(() => this._repeat());
+    }
+    // OTHERS HIDDEN
+}
+            </pre>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="challenge">CHALLENGE</h3>
+            <p>Your challenge will be to create a launching mortars animation like the example video.</p>
+            <video controls alt="a canvas mortars animation" type="video/mov"
+                src="../../../video/mortars_animation.mov"></video>
+            <blockquote class="blue">
+                NOTE: This challenge will be the most involved yet. Don't be discouraged if you struggle. There is a lot
+                going on and the struggle is where learning occurs. You got it, just take it one piece at a time.
+            </blockquote>
+            <p class="red">REMEMBER: DO NOT LOOK AT THE SOLUTION CODE BEFORE TRYING THE CHALLENGE YOURSELF!</p>
+            <p>Instructions:</p>
+            <ol class="tab">
+                <li>Go to the ASSOCIATED_FILES related to this lesson and open l5_challenge in your code editor.</li>
+                <li>Open the index.html file in your browser.</li>
+                <li>You do not need to edit the HTML.</li>
+                <li>Open the script.js file in your code editor.</li>
+                <li>Your goal will be to create a full program using what you have learned so far to implement the
+                    animation shown in the video.</li>
+                <li>If you are feeling adventurous, try and implement stars exploding in a circle instead of a
+                    rectangle.</li>
+                <li>Regardless of how you come to a solution, the important part is that you are prepared to EXPLAIN
+                    EVERY PART of your code in detail.</li>
+            </ol>
+            <p>Good Luck!</p>
+            <blockquote>HINT: Check out the links at the bottom of this page for some useful stuff.</blockquote>
+        </article>
+
+        <hr>
+
+        <article>
+            <h2>ADDITIONAL RESOURCES</h2>
+            <p>
+                Each lesson will explain and provide research resources for a general concept or skill. It is highly
+                recommended that you take the time to review lessons, research subjects, and practice on your own
+                between lessons.
+            </p>
+            <p>
+                At the end of each lesson will be a challenge, completing these assignments is paramount to your
+                retention of the taught material. The struggle is where the learning really occurs, embrace it.
+            </p>
+            <h4>LINKS:</h4>
+            <a href="https://devdocs.io/dom/canvas_api">CANVAS DOCS</a>
+            <a href="https://devdocs.io/dom/canvas_api/tutorial">CANVAS TUTORIAL</a>
+            <a href="https://devdocs.io/dom/canvas_api/tutorial/transformations">CANVAS TRANSFORMATIONS</a>
+            <a href="https://devdocs.io/dom/canvas_api/tutorial/drawing_shapes">CANVAS DRAWING SHAPES</a>
+            <a href="https://devdocs.io/dom/canvas_api/tutorial/using_images">CANVAS DRAWING IMAGES</a>
+            <a href="https://devdocs.io/javascript/classes/constructor">CONSTRUCTOR</a>
+            <a href="https://devdocs.io/javascript/classes/extends">EXTENDS</a>
+            <a href="https://devdocs.io/javascript/operators/super">SUPER</a>
+            <a href="https://devdocs.io/javascript/global_objects/array/some">ARRAY SOME</a>
+        </article>
+
+        <hr>
+
+        <a href="../../../index.html">
+            <h2>RETURN TO INDEX</h2>
+        </a>
+
+    </main>
+    <script src="../../../js/set_timeout.js"></script>
+    <script src="../../../js/post_processing.js"></script>
+    <script src="../../../js/dynamic_navbar.js"></script>
+    <script src="../../../js/highlight_loop.js"></script>
+    <script src="./fountain_breakdown.js"></script>
+</body>
+
+</html>

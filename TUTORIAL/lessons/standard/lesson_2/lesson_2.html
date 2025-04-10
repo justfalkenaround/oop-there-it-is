@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>O.O.P THERE IT IS</title>
+    <link rel="icon" href="../../../img/favicon.png">
+    <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+
+<body>
+    <main>
+
+        <header>
+            <a href="../../../index.html">
+                <h2>RETURN TO INDEX</h2>
+            </a>
+            <h1>LESSON 2: ANIMATION BASICS</h1>
+            <p class="mag">
+                In this lesson you will be introduced to the basics of animation with JAVASCRIPT in the browser. The
+                goal will be to create a basic text animation.
+            </p>
+
+            <blockquote>
+                "The only true wisdom is in knowing you know nothing."<br>~ Socrates
+            </blockquote>
+        </header>
+
+        <hr>
+
+        <nav>
+            <h2>PREVIEW</h2>
+            <ul class="tab">
+                <a href="#example">
+                    <li>EXAMPLE</li>
+                </a>
+                <a href="#code">
+                    <li>CODE</li>
+                </a>
+                <a href="#page_setup">
+                    <li>PAGE SETUP</li>
+                </a>
+                <a href="#initialization">
+                    <li>INITIALIZATION</li>
+                </a>
+                <a href="#looping">
+                    <li>LOOPING</li>
+                </a>
+                <a href="#throttling">
+                    <li>THROTTLING</li>
+                </a>
+                <a href="#updating_and_rendering">
+                    <li>UPDATING AND RENDERING</li>
+                </a>
+                <a href="#resetting">
+                    <li>RESETTING</li>
+                </a>
+                <a href="#visual_breakdown">
+                    <li>VISUAL BREAKDOWN</li>
+                </a>
+                <a href="#challenge">
+                    <li>CHALLENGE</li>
+                </a>
+            </ul>
+        </nav>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="example">EXAMPLE</h3>
+            <p>The following is an example of a basic text animation in the DOM.</p>
+            <aside class="animated-text">
+                Malicious software:<br><br>
+
+                A computer user can be tricked or forced into downloading software onto a computer that is of
+                malicious intent. Such software comes in many forms, such as viruses, Trojan horses, spyware, and
+                worms.<br><br>
+
+                Malware, short for malicious software, is any software used to disrupt computer operation, gather
+                sensitive information, or gain access to private computer systems. Malware is defined by its
+                malicious intent, acting against the requirements of the computer user, and does not include
+                software that causes unintentional harm due to some deficiency. The term badware is sometimes used,
+                and applied to both true (malicious) malware and unintentionally harmful software.
+            </aside>
+            <blockquote>Sadly this lesson will not be teaching that type of coding.</blockquote>
+            <p>
+                In order to create an animation like this, or any animation for the most part, you will have to become
+                familiar with some fundamental concepts.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="code">CODE</h3>
+            <p>Here are some snippets of code that can produce the effect.</p>
+            <p>HTML</p>
+            <pre class="html">
+<aside class="animated-text">
+    Malicious software:<br><br>
+
+    A computer user can be tricked or forced into downloading software onto a computer that is of
+    malicious intent. Such software comes in many forms, such as viruses, Trojan horses, spyware, and
+    worms.<br><br>
+
+    Malware, short for malicious software, is any software used to disrupt computer operation, gather
+    sensitive information, or gain access to private computer systems. Malware is defined by its
+    malicious intent, acting against the requirements of the computer user, and does not include
+    software that causes unintentional harm due to some deficiency. The term badware is sometimes used,
+    and applied to both true (malicious) malware and unintentionally harmful software.
+</aside>
+            </pre>
+            <p>CSS</p>
+            <pre>
+.animated-text {
+    background-color: black;
+    color: lightgreen;
+    word-wrap: break-word;
+    font-size: 1.2rem;
+    height: 20rem;
+    overflow: hidden;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+            </pre>
+            <p>JAVASCRIPT</p>
+            <pre>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', () => {
+    const element = document.querySelector('.animated-text');
+    let work = element.innerText.split('');
+    let delay = 0;
+    let count = 0;
+    element.innerText = '';
+    
+    const animate = () => {
+        ++count;
+        if (count % 3 === 0) {
+            element.innerText = element.innerText.substring(0, element.innerText.length - 1);
+            if (delay <= 0) {
+                if (work.length === 0) {
+                    work = element.innerText.split('');
+                    delay = 0;
+                    count = 0;
+                    element.innerText = '';
+                }
+                let char = work.shift();
+                if (char === ' ') {
+                    element.innerHTML += '&<span></span>nbsp;';
+                }
+                else if (char === '.') {
+                    element.innerText += char;
+                    delay = 20;
+                }
+                else {
+                    element.innerText += char;
+                }
+            }
+            else {
+                --delay;
+            }
+            element.innerText += '|';
+        }
+        window.requestAnimationFrame(animate);
+    };
+    animate();
+});
+            </pre>
+            <p class="yellow">Worry not, you will have the chance to go over every piece in detail.</p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="page_setup">PAGE SETUP</h3>
+            <p>
+                First thing first you need to setup the HTML and CSS for your page. Since the nature of this animation
+                is using the DOM, you will need to prepare elements for styling. In future lessons you will ditch HTML
+                and CSS for the most part and stick to JAVASCRIPT land. This will give you better control and
+                efficiency.
+            </p>
+            <p>For now lets keep it simple.</p>
+            <p>
+                Using the HTML and CSS code provided above, without the JAVASCRIPT, you can see that the HTML aside
+                element is rendered on the page with a black background, fixed height, and green text.
+            </p>
+            <p>Something like this:</p>
+            <aside class="animated-text">
+                Malicious software:<br><br>
+
+                A computer user can be tricked or forced into downloading software onto a computer that is of
+                malicious intent. Such software comes in many forms, such as viruses, Trojan horses, spyware, and
+                worms.<br><br>
+
+                Malware, short for malicious software, is any software used to disrupt computer operation, gather
+                sensitive information, or gain access to private computer systems. Malware is defined by its
+                malicious intent, acting against the requirements of the computer user, and does not include
+                software that causes unintentional harm due to some deficiency. The term badware is sometimes used,
+                and applied to both true (malicious) malware and unintentionally harmful software.
+            </aside>
+            <p>
+                The text could be anything, this is just some sample text from wikipedia. However since you don't want
+                the height of the element to shrink and grow with the text, you will need to make sure the text actually
+                fits in the box. That is something called "page shift" and it is to be avoided. This has been resolved
+                for now with a fixed CSS height and overflow.
+            </p>
+            <blockquote class="blue">
+                NOTE: For DOM animations, you want to emphasize content first. If for some reason someone had JAVASCRIPT
+                disabled or wanted to disable the animations, you should provide the means for that functionality. This
+                is achieved to some extent in this app by placing the text on the page first, and then altering it
+                afterwards with JAVASCRIPT. These lessons will not go into much detail about accessibility but know that
+                it is important to think of all of your users.
+            </blockquote>
+            <p>Now that you have your element ready to be animated lets move on to the JAVASCRIPT.</p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="initialization">INITIALIZATION</h3>
+            <p>The general workflow of many animations will be similar. They often start with some setup steps, grouped
+                together in a process called initialization.</p>
+            <p>Looking at the JAVASCRIPT code above you can go over it piece by piece.</p>
+            <p>
+                First you can see that there is an event listener on the document waiting for all of the page content to
+                load before running your main function, this is common practice.
+            </p>
+            <pre>
+document.addEventListener('DOMContentLoaded', () => {
+            </pre>
+            <p>The animation wouldn't work if the text had not loaded yet.</p>
+            <p>Then you can see the initialization steps being taken.</p>
+            <pre>
+const element = document.querySelector('.animated-text');
+let work = element.innerText.split('');
+let delay = 0;
+let count = 0;
+element.innerText = '';
+            </pre>
+            <p>
+                First you find the element in the DOM you want to target, the one with a class of ".animated-text". This
+                is achieved with the "document.querySelector()" method. You then store the reference to that element in
+                a JAVASCRIPT variable, "element".
+            </p>
+            <pre>
+const element = document.querySelector('.animated-text');
+            </pre>
+            <p>
+                Since the reference to the element will not change, the keyword "const" is used. If you were to try and
+                overwrite this variable JAVASCRIPT would throw an error. This keyword should be used if possible, to
+                improve efficiency, and improve control.
+            </p>
+            <p>
+                Next, you take all of the text("innerText") of the element and split all of the characters into an
+                array. You can do this using the "String.split()" method. If you split by an empty string, it just
+                splits every single character.
+            </p>
+            <pre>
+let work = element.innerText.split('');
+            </pre>
+            <p>
+                You store the new array in a variable named work, initialized with the "let" keyword since you might
+                overwrite it later.
+            </p>
+            <p>
+                The reasoning behind this is as follows. Since the nature of our animation is to remove all of the text
+                from the element and then slowly place it back piece by piece. You need to have a data structure to
+                define this list of reconstruction steps. An array is perfect, it keeps all of the characters in the
+                order you want, and defines your stack of work to get done.
+            </p>
+            <p>Next you declare two variables, delay and count with the "let" keyword.</p>
+            <pre>
+let delay = 0;
+let count = 0;
+            </pre>
+            <p>
+                These will come in handy later. Delay will be a value essentially representing the number of frames
+                you want the animation to wait before continuing. Count will track the number of frames that have
+                occurred in the life of the animation.
+            </p>
+            <p>
+                For instance, when the cursor, in this animation a pipe("|") character, reaches a period, this implies
+                the end of a sentence. So you will add some delay, just like a pause after a sentence someone was
+                reading. The cursor waits a bit, then continues "typing".
+            </p>
+            <p>
+                Finally you will want to clear the text from the element completely. You already have all of the
+                characters stored in the work array, so you can just set the innerText to an empty string, nothing.
+            </p>
+            <pre>
+element.innerText = '';
+            </pre>
+            <p>
+                This should leave you with a blank element, ready to receive text.
+            </p>
+            <aside class="animated-text"></aside>
+            <p>
+                That concludes your initialization phase of the animation and should leave you with all of the in memory
+                data and variables you will need to perform the trick.
+            </p>
+            <p>Now on to the guts of animation, looping.</p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="looping">LOOPING</h3>
+            <p>
+                When it comes to just about any animation, the flow is usually the same.
+            </p>
+            <ol class="tab">
+                <li>Initialize</li>
+                <li>Update</li>
+                <li>Render</li>
+                <li>Repeat Without Initialization</li>
+            </ol>
+            <p>
+                Regardless of the type of animation, the same process will apply. This is not without exceptions though.
+                More advanced techniques involve calculating paths and curves ahead of time and or having third parting
+                tracking of real time instead of "computer time".
+            </p>
+            <p>
+                For the sake of this tutorial, you don't have to worry. You can stick with the process of initialize
+                only once, update, render, repeat.
+            </p>
+            <p>
+                INITIALIZE:<br>
+                In the initialization phase you are going to do any preparation and setup work for your application and
+                or animation. As covered previously for this animation.
+            </p>
+            <p>
+                UPDATE:<br>
+                In the update phase you are going to perform any changes or updates to the state of the animation,
+                usually in memory. In the case of this animation it will mean adding a character, waiting, resetting,
+                ect.
+            </p>
+            <p>
+                RENDER:<br>
+                In the render phase you will actually display the state of the animation to the user. In the case of
+                this DOM animation, the update phase and the render phase are blended together. In the following lessons
+                you will learn much more refined implementations.
+            </p>
+            <p>
+                REPEAT:<br>
+                In the repeat phase you simple start the process over at the update phase. Unless the app/animation/game
+                is "over", in which case you might not repeat anymore. Maybe the game is paused, then you would repeat
+                but skip the update and render phases until the game is not paused anymore.
+            </p>
+            <p>You will want to start by implementing the repeat phase.</p>
+            <p>
+                So how do you do this? Well there are SO many ways, and most of them are probably just fine. For your
+                case in the browser you can use a method of the window object "window.requestAnimationFrame()". This
+                will be the beating heart of your application and is an efficient and scale-able method to implement
+                animation, for your purposes.
+            </p>
+            <p>Take a look at a condensed version of the JAVASCRIPT code from before.</p>
+            <pre>
+document.addEventListener('DOMContentLoaded', () => {
+    // INITIALIZATION PHASE
+    
+    const animate = () => {
+        // UPDATE PHASE
+        // RENDER PHASE
+        <span class="yellow">window.requestAnimationFrame(animate);</span>
+    };
+    animate();
+});
+            </pre>
+            <p>
+                You see the you declare an arrow function named "animate". This can be seen as the repeat phase, this
+                function is going to be called, over and over again for the life of the app.
+            </p>
+            <p>Lets break it down.</p>
+            <p>
+                The function is declared.
+            </p>
+            <pre>
+const animate = () => {
+    // UPDATE PHASE
+    // RENDER PHASE
+    window.requestAnimationFrame(animate);
+};
+            </pre>
+            <p>The function is called.</p>
+            <pre>
+animate();
+            </pre>
+            <p>The function does stuff.</p>
+            <pre>
+// UPDATE PHASE
+// RENDER PHASE
+            </pre>
+            <p>Then the function makes a call to "window.requestAnimationFrame()", passing ITSELF as the argument.</p>
+            <pre>
+window.requestAnimationFrame(animate);
+            </pre>
+            <p>
+                Essentially what will happen is the window will wait for the next convenient time slot, usually about
+                16.6667 milliseconds apart if everything is going well. Then it will call the function it was passed, in
+                this case, the animate function. Then that function call will call requestAnimationFrame again on
+                itself, and the process will go on and on forever until something stops it.
+            </p>
+            <p>Like a controlled, infinite loop.</p>
+            <pre data-throttle="30" class="highlight_loop">
+document.addEventListener('DOMContentLoaded', () => {
+    // INITIALIZATION PHASE
+    
+    <span data-tick="0">const animate = () => {
+        <span data-tick="1">// UPDATE PHASE</span>
+        <span data-tick="2">// RENDER PHASE</span>
+        <span data-tick="3">window.requestAnimationFrame(<span data-tick="4">animate</span>);</span>
+    };</span>
+    animate();
+});
+            </pre>
+            <p>A regular synchronous JAVASCRIPT infinite loop or recursive function would blow the call stack very
+                quickly, and does not let
+                you control the time dimension.</p>
+            <pre data-class="red" data-throttle="10" class="highlight_loop">
+document.addEventListener('DOMContentLoaded', () => {
+    // BAD CODE
+    
+    <span data-tick="0">const animate = () => {
+        <span data-tick="1">// ERROR PHASE</span>
+        <span data-tick="2">// ERROR PHASE</span>
+        <span data-tick="3">animate();</span>
+    };</span>
+    animate();
+});
+            </pre>
+            <p>
+                This asynchronous functionality allows you to do repeat actions across the dimension of time, at least
+                computer time, which may not coincide with REAL time. If your computer is very slow, or you are
+                performing a ton of expensive(processing wise) stuff in the function, you may have a frame-rate less
+                that the desired 16.6667 milliseconds. This means that there may be 20 or 40 or 200 milliseconds between
+                each "window.requestAnimationFrame()" callback. This would appear as "lag" and choppy animation, or
+                other weird stuff in your application.
+            </p>
+            <blockquote class="blue">NOTE: "window.requestAnimationFrame()" will be referred to as "RAF" from now on for
+                brevity.
+            </blockquote>
+            <p>
+                Not gonna lie, time is a really hard concept to wrap your mind around. In future lessons you may get
+                exposed
+                to more problems with time. Don't be discouraged if you feel like saying "Brain Hurty, Time Is Mean To
+                Me!".
+            </p>
+            <p>
+                Fortunately, for the <em>time</em> being(pun intended), you can assume that "RAF" will occur every
+                16.6667 milliseconds and not worry about the rest.
+            </p>
+            <p>
+                This is still very fast though, for humans. Try the following code out in your browsers JAVASCRIPT
+                console.
+            </p>
+            <pre>
+let counter_variable = 0;
+const animate = () => {
+    ++counter_variable;
+    console.log(counter_variable);
+    window.requestAnimationFrame(animate);
+};
+animate();
+            </pre>
+            <p>You should see that the function counts pretty quickly, spitting numbers into the console forever.</p>
+            <p>In the next section you will learn about slowing down time a bit for your purposes, throttling.</p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="throttling">THROTTLING</h3>
+            <p>Throttling is simply the process of artificially "slowing" down time, or the flow of the application.</p>
+            <p>If "RAF" is our beating heart, throttling is a lower heart rate.</p>
+            <p>Take another look at the example function from the previous section.</p>
+            <pre>
+let counter_variable = 0;
+const animate = () => {
+    ++counter_variable;
+    console.log(counter_variable);
+    window.requestAnimationFrame(animate);
+};
+animate();
+            </pre>
+            <p>In this function you declare a variable called "counter_variable" as 0 to act as a counter.</p>
+            <pre>
+let counter_variable = 0;
+            </pre>
+            <p>Then you declare your animation function and call it once explicitly.</p>
+            <pre>
+const animate = () => {
+    // DO STUFF
+};
+animate();
+            </pre>
+            <p>Within the function you increment(add 1 to) the counter and then console.log the counter.</p>
+            <pre>
+++counter_variable;
+console.log(counter_variable);
+            </pre>
+            <p>Then you repeat, the counter growing by 1 every time RAF occurs.</p>
+            <pre>
+window.requestAnimationFrame(animate);
+            </pre>
+            <p>For the purpose of your application this is a bit fast, say we want the console.logs to happen 3x slower.
+            </p>
+            <p>
+                This can be achieved by using a nifty trick with the modulus(%) operator, it is like the division(/)
+                operator but it only provides the REMAINDER.
+            </p>
+            <p>EXAMPLE: (4 % 3 === 1): 3 goes into 4 once with a remainder of 1.</p>
+            <p>
+                Try an example of the same code but conditionally only calling console.log when the counter variable
+                modulus 3 is zero, no remainder, multiple of 3. A third of the time.
+            </p>
+            <pre>
+let counter_variable = 0;
+const animate = () => {
+    ++counter_variable;
+    <span class="yellow">if (counter_variable % 3 === 0) {</span>
+        console.log(counter_variable);
+    <span class="yellow">}</span>
+    window.requestAnimationFrame(animate);
+};
+animate();
+            </pre>
+            <p>Slower than before, 3x. Lets try even slower.</p>
+            <pre>
+let counter_variable = 0;
+const animate = () => {
+    ++counter_variable;
+    if (counter_variable % <span class="yellow">30</span> === 0) {
+        console.log(counter_variable);
+    }
+    window.requestAnimationFrame(animate);
+};
+animate();
+            </pre>
+            <p>
+                Much slower now. As you can see, the throttling can be controlled by the number that you modulus your
+                counter by. That number times slower in fact. Since the number is 30 right now, it is 30 times slower.
+            </p>
+            <p>
+                You can see this because the console.log is only happening when counter is a multiple of 30. 1 out of 30
+                of the times "RAF" occurs.
+            </p>
+            <p>
+                To be clear the "RAF" and the function occur every 16.6667 milliseconds STILL, it is just that you only
+                take action, console.log, once every 30 "RAF"'s. Slowing down the actions, but not the actual "RAF"
+                loop.
+            </p>
+            <p>
+                This is far more efficient than using techniques such as "window.setTimeout()" or "window.setInterval()"
+                as both of these methods BLOCK the thread of execution in the browser, whereas "RAF" does not block, it
+                performs calculation and action at the most efficient time.
+            </p>
+            <p>Now that you know how to wrangle time and use "RAF" it is time you come back to the project at hand with
+                update and render.</p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="updating_and_rendering">UPDATING AND RENDERING</h3>
+            <p>Now you should have a animation loop set up with some throttling, like such.</p>
+            <pre>
+document.addEventListener('DOMContentLoaded', () => {
+    const element = document.querySelector('.animated-text');
+    let work = element.innerText.split('');
+    let delay = 0;
+    let count = 0;
+    element.innerText = '';
+    
+    const animate = () => {
+        ++count;
+        if (count % 3 === 0) {
+            <span class="yellow">// UPDATE PHASE
+            // RENDER PHASE</span>
+        }
+        window.requestAnimationFrame(animate);
+    };
+    animate();
+});
+            </pre>
+            <p>
+                This is the initialization phase combined with the code snippets from the last two sections. As you can
+                see, it is getting closer to the finished product provided at the beginning of the lesson.
+            </p>
+            <p>It is still missing the code for the update and render phases though.</p>
+            <p>You can work through the thought process step by step.</p>
+            <p>First you can remove the character off the beginning of the work array, aka "STACK"; store it in a
+                variable.</p>
+            <pre>
+let char = work.shift();
+            </pre>
+            <blockquote class="blue">NOTE: "shift()" is a method of all arrays that removes the FIRST element of an
+                array.
+            </blockquote>
+            <p>Then it is just a matter of concatenating the character into the elements text, right?</p>
+            <pre>
+element.innerText += char;
+            </pre>
+            <p>
+                This <em>will</em> technically implement the animation. But you might notice some "holes" in the logic.
+            </p>
+            <pre>
+document.addEventListener('DOMContentLoaded', () => {
+    const element = document.querySelector('.animated-text');
+    let work = element.innerText.split('');
+    let delay = 0;
+    let count = 0;
+    element.innerText = '';
+    
+    const animate = () => {
+        ++count;
+        if (count % 3 === 0) {
+            <span class="yellow">let char = work.shift();
+            element.innerText += char;</span>
+        }
+        window.requestAnimationFrame(animate);
+    };
+    animate();
+});
+            </pre>
+            <p>
+                One of the most important lessons to learn about programming in general is to start with the simplest
+                solution, then work your way out to the most robust version, trying things over and over along the way.
+                Eventually thinking about edge cases and error handling.
+            </p>
+            <p>
+                Sometimes making a list of things to complete can be helpful, then tackling them one at a time.
+            </p>
+            <ol>
+                <li>
+                    What will happen when it comes across a space character; how does html interpret spaces?
+                </li>
+                <li>
+                    What should it do when it comes across the end of a sentence, a period?
+                </li>
+                <li>
+                    What about the cursor thing, the pipe "|"?
+                </li>
+                <li>
+                    What will happen when the work array runs empty?
+                </li>
+            </ol>
+            <p>
+                Addressing the first question. Due to the nature of HTML and the nature of this specific animation, the
+                DOM might see a trailing space character as excess whitespace and automatically truncate it("cut it
+                off"). This would leave all of your words jumbled together with no spaces.
+            </p>
+            <pre class="green">
+Acomputerusercanbetrickedorforcedintodownloadingsoftwareontoacomputer...
+            </pre>
+            <p>
+                To combat this issue you can, though it is not the most elegant way, concatenate on a
+                "non-breaking-space" character instead of a regular space. HTML will not truncate a non-breaking space
+                character.
+            </p>
+            <p>
+                You of course only want to do this when you come across a space character, otherwise you will just
+                concatenate as normal.
+            </p>
+            <p>
+                Your code might look something like this now.
+            </p>
+            <pre>
+document.addEventListener('DOMContentLoaded', () => {
+    const element = document.querySelector('.animated-text');
+    let work = element.innerText.split('');
+    let delay = 0;
+    let count = 0;
+    element.innerText = '';
+    
+    const animate = () => {
+        ++count;
+        if (count % 3 === 0) {
+            let char = work.shift();
+            <span class="yellow">if (char === ' ') {
+                element.innerHTML += '&<span></span>nbsp;';
+            }
+            else {</span>
+                element.innerText += char;
+            <span class="yellow">}</span>
+        }
+        window.requestAnimationFrame(animate);
+    };
+    animate();
+});
+            </pre>
+            <p>
+                This solves your spacing problem, now when the animation comes across a space, it acts differently than
+                any other character. This is a logical fork in the road, every time, the function will take different
+                paths of action.
+            </p>
+            <p>
+                The next question, what to do at a period? You could just "pause" or "delay" the animation for a short
+                period of time. Like someone taking a breath after reading a sentence.
+            </p>
+            <p>
+                To do this, you already declared a delay variable, you just need to use it.
+            </p>
+            <p>
+                First you can declare a "short circuit" in your animation loop, so that you keep looping, but instead of
+                updating and rendering you just wait.
+            </p>
+            <pre>
+document.addEventListener('DOMContentLoaded', () => {
+    const element = document.querySelector('.animated-text');
+    let work = element.innerText.split('');
+    let delay = 0;
+    let count = 0;
+    element.innerText = '';
+    
+    const animate = () => {
+        ++count;
+        if (count % 3 === 0) {
+            <span class="yellow">if (delay <= 0) {</span>
+                let char = work.shift();
+                if (char === ' ') {
+                    element.innerHTML += '&nbsp;';
+                }
+                else {
+                    element.innerText += char;
+                }
+            <span class="yellow">}
+            else {
+                --delay;
+            }</span>
+        }
+        window.requestAnimationFrame(animate);
+    };
+    animate();
+});
+            </pre>
+            <p>
+                Here using conditional flow, if there is any positive value to the delay variable, the app will simply
+                decrement the delay variable and try again until it is less than zero.
+            </p>
+            <p>
+                This will in essence allow you to set a timer using the delay variable so that the app does nothing
+                until the timer runs out. Then it will go back to normal animation.
+            </p>
+            <p>
+                But how about the period? Well all you need to do is add an else if to the conditional chain so that
+                some delay is added to your timer when it sees a period.
+            </p>
+            <pre>
+document.addEventListener('DOMContentLoaded', () => {
+    const element = document.querySelector('.animated-text');
+    let work = element.innerText.split('');
+    let delay = 0;
+    let count = 0;
+    element.innerText = '';
+    
+    const animate = () => {
+        ++count;
+        if (count % 3 === 0) {
+            if (delay <= 0) {
+                let char = work.shift();
+                if (char === ' ') {
+                    element.innerHTML += '&nbsp;';
+                }
+                <span class="yellow">else if (char === '.') {
+                    element.innerText += char;
+                    delay = 20;
+                }</span>
+                else {
+                    element.innerText += char;
+                }
+            }
+            else {
+                --delay;
+            }
+        }
+        window.requestAnimationFrame(animate);
+    };
+    animate();
+});
+            </pre>
+            <p>
+                This will solve your end of sentence problem, and really increases the cool hacky feel of the animation.
+            </p>
+            <p>
+                The next question, what about the cursor thing?
+            </p>
+            <p>
+                Well the cursor is really just a pipe character("|"). But for it to feel like a real cursor, it needs to
+                always be at the end of the text. This will be a problem since your concatenating, you don't want the
+                pipe, or pipes, to get trapped in the text.
+            </p>
+            <pre class="green">
+I| |a|m| |a|n| |e|r|r|o|r|||||||||
+            </pre>
+            <p>
+                A solution might be to remove the pipe at the beginning of the update/render phase, do stuff, the add it
+                back at the end of the update/render phase.
+            </p>
+            <pre>
+document.addEventListener('DOMContentLoaded', () => {
+    const element = document.querySelector('.animated-text');
+    let work = element.innerText.split('');
+    let delay = 0;
+    let count = 0;
+    element.innerText = '';
+    
+    const animate = () => {
+        ++count;
+        if (count % 3 === 0) {
+            <span class="yellow">element.innerText = element.innerText.substring(0, element.innerText.length - 1);</span>
+            if (delay <= 0) {
+                let char = work.shift();
+                if (char === ' ') {
+                    element.innerHTML += '&nbsp;';
+                }
+                else if (char === '.') {
+                    element.innerText += char;
+                    delay = 20;
+                }
+                else {
+                    element.innerText += char;
+                }
+            }
+            else {
+                --delay;
+            }
+            <span class="yellow">element.innerText += '|';</span>
+        }
+        window.requestAnimationFrame(animate);
+    };
+    animate();
+});
+            </pre>
+            <p>
+                The first added line here removes the very last character of the elements innerText, which will always
+                either be the pipe, or nothing at all.
+            </p>
+            <pre>
+element.innerText = element.innerText.substring(0, element.innerText.length - 1);
+            </pre>
+            <p>
+                The second added line will then put it back.
+            </p>
+            <pre>
+element.innerText += '|';
+            </pre>
+            <p>
+                This should create the desired effect of a "cursor" the leads the text as it appears on the page.
+            </p>
+            <p>
+                The last question, "What will happen when the work array runs empty?".
+            </p>
+            <p>
+                When ".shift()" is called on the empty array it will return "undefined" instead of a valid character.
+                You will start to see "undefined" being added to your element's text over and over forever.
+            </p>
+            <pre>
+I am the end of the text.<span class="red">undefinedundefinedundefinedundefinedundefinedundefined</span>
+            </pre>
+            <p>
+                This is not good. You want the process to repeat forever, so you need to reset the STATE of the
+                animation when it reaches the "end".
+            </p>
+            <p>
+                Because of the importance, this will be addressed in the next section, resetting.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="resetting">RESETTING</h3>
+            <p>
+                This section will be short, but do not underestimate the importance of resetting.
+            </p>
+            <p>
+                For most animations, games, and applications, you will come across a point when it is time to reset
+                things back to the way they started. This is called resetting state.
+            </p>
+            <p>
+                However, in order to do this you need to know WHAT things to reset and WHAT to reset them back to.
+            </p>
+            <p>
+                For this simple animation there is not much to be done, however as applications become more complex, you
+                can easily overlook something when defining your reset function.
+            </p>
+            <p>
+                For this reason it is recommended that you define and build out your reset function FIRST and then add
+                to it as you add to your application anything you want to be reset. Another option is to take notes
+                every time you create a piece of code that will need to be reset.
+            </p>
+            <p>
+                Here is an example of a list of notes about how to reset this app.
+            </p>
+            <pre>
+RESET LIST:
+  - WORK ARRAY == REFILL WITH THE ELEMENT TEXT CHARACTERS
+  - DELAY == STARTED AT ZERO == SET TO ZERO
+  - COUNT == STARTED AT ZERO == SET TO ZERO
+  - ELEMENT TEXT == SHOULD BE EMPTY STRING
+            </pre>
+            <p>
+                Implementing this in your case is simple. Just set all of these variables to their corresponding
+                starting values when the animation is over, when the work array is empty.
+            </p>
+            <pre>
+document.addEventListener('DOMContentLoaded', () => {
+    const element = document.querySelector('.animated-text');
+    let work = element.innerText.split('');
+    let delay = 0;
+    let count = 0;
+    element.innerText = '';
+    
+    const animate = () => {
+        ++count;
+        if (count % 3 === 0) {
+            element.innerText = element.innerText.substring(0, element.innerText.length - 1);
+            if (delay <= 0) {
+                <span class="yellow">if (work.length === 0) {
+                    work = element.innerText.split('');
+                    delay = 0;
+                    count = 0;
+                    element.innerText = '';
+                }</span>
+                let char = work.shift();
+                if (char === ' ') {
+                    element.innerHTML += '&nbsp;';
+                }
+                else if (char === '.') {
+                    element.innerText += char;
+                    delay = 20;
+                }
+                else {
+                    element.innerText += char;
+                }
+            }
+            else {
+                --delay;
+            }
+            element.innerText += '|';
+        }
+        window.requestAnimationFrame(animate);
+    };
+    animate();
+});
+            </pre>
+            <p>
+                Here you add as the FIRST thing in the update/render phase, a check to see if the work array is empty.
+            </p>
+            <pre>
+if (work.length === 0) {
+            </pre>
+            <p>
+                If it is empty, meaning the end of the animation, you simply reset the variables on the list back to
+                what they started at.
+            </p>
+            <pre>
+work = element.innerText.split('');
+delay = 0;
+count = 0;
+element.innerText = '';
+            </pre>
+            <p>
+                Just like during initialization.
+            </p>
+            <blockquote>
+                That's it! The animation is complete and functioning smoothly, nice job.
+            </blockquote>
+            <p>
+                Check out the visual breakdown below of ALL of the code provided in this lesson alongside the animation.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="visual_breakdown">VISUAL BREAKDOWN</h3>
+            <p>Check out the following visualization of the animation in action. The timing has been slowed down and the
+                active code highlighted. This is how the animation flows.</p>
+            <pre class="animated-text-pre" style="font-size: 0.8rem;">
+'use strict';
+
+document.addEventListener('DOMContentLoaded', () => {
+    <span data-class="red" data-state="initial">const element = document.querySelector('.animated-text');
+    let work = element.innerText.split('');
+    let delay = 0;
+    let count = 0;
+    element.innerText = '';</span>
+    
+    const animate = () => {
+        <span data-class="red" data-state="count">++count;</span>
+        if (count % 3 === 0) {
+            <span data-class="red" data-state="pipe_off">element.innerText = element.innerText.substring(0, element.innerText.length - 1);</span>
+            <span data-class="yellow" data-state="check_delay">if (delay <= 0) {</span>
+                <span data-class="yellow" data-state="check_reset">if (work.length === 0) {</span>
+                    <span data-class="red" data-state="reset">work = element.innerText.split('');
+                    delay = 0;
+                    count = 0;
+                    element.innerText = '';</span>
+                }
+                <span data-class="red" data-state="shift">let char = work.shift();</span>
+                <span data-class="yellow" data-state="check_space">if (char === ' ') {</span>
+                    <span data-class="red" data-state="space">element.innerHTML += '&<span></span>nbsp;';</span>
+                }
+                <span data-class="yellow" data-state="check_period">else if (char === '.') {</span>
+                    <span data-class="red" data-state="period">element.innerText += char;
+                    delay = 20;</span>
+                }
+                <span data-class="yellow" data-state="check_regular">else {</span>
+                    <span data-class="red" data-state="regular">element.innerText += char;</span>
+                }
+            }
+            else {
+                <span data-class="green" data-state="delay">--delay;</span>
+            }
+            <span data-class="red" data-state="pipe_on">element.innerText += '|';</span>
+        }
+        <span data-class="red" data-state="repeat">window.requestAnimationFrame(animate);</span>
+    };
+    animate();
+});
+            </pre>
+            <aside class="animated-text animated-text-custom">
+                Malicious software:<br><br>
+                A computer user can be tricked or forced into downloading software onto a computer that is of
+                malicious intent.
+            </aside>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="challenge">CHALLENGE</h3>
+            <p>Now that you know how to create an animation such as the one above, your task will be to extend the
+                implementation.</p>
+            <p class="red">REMEMBER: DO NOT LOOK AT THE SOLUTION CODE BEFORE TRYING THE CHALLENGE YOURSELF!</p>
+            <p>Instructions:</p>
+            <ol class="tab">
+                <li>Go to the ASSOCIATED_FILES related to this lesson and open l2_challenge in your code editor.</li>
+                <li>Open the index.html file in your browser.</li>
+                <li>You will see a collection of elements with a class of .animated-text and some ipsum text.</li>
+                <li>You do not need to edit the html.</li>
+                <li>Open the script.js file in your code editor.</li>
+                <li>Your goal will be to complete this function.</li>
+                <li>The function should implement the animation technique taught in this lesson.</li>
+                <li>However this function should target multiple elements, any with a class of ".animated-text".</li>
+                <li>The function should also make it so that ONLY elements that are in the browsers viewport animate.
+                </li>
+                <li>When an element is scrolled INTO view, it should be animated.</li>
+                <li>When an element is scrolled OUT of view, it should pause the animation.</li>
+                <li>Finally, if you are feeling adventurous, randomize the text color for each animated text element so
+                    that they all have a different random color.</li>
+                <li>Regardless of how you come to a solution, the important part is that you are prepared to EXPLAIN
+                    EVERY PART of your code in detail.</li>
+            </ol>
+            <p>Good Luck!</p>
+            <blockquote>HINT: Check out the links at the bottom of this page for some useful stuff.</blockquote>
+            <blockquote>
+                HINT: If you are confused try console.logging some things, or using breakpoints to walk through your
+                code.
+            </blockquote>
+            <blockquote class="blue">
+                NOTE: You can take this code as far as you want! Maybe it could be useful somewhere in one of your
+                websites. It may make sense to have delays for commas or other characters. Feel free to experiment and
+                make it your own.
+            </blockquote>
+        </article>
+
+        <hr>
+
+        <article>
+            <h2>ADDITIONAL RESOURCES</h2>
+            <p>Each lesson will explain and provide research resources for a general concept or skill. It is highly
+                recommended that you take the time to review lessons, research subjects, and practice on your own
+                between lessons.</p>
+            <p>At the end of each lesson will be a challenge, completing these assignments is paramount to your
+                retention of the taught material. The struggle is where the learning really occurs, embrace it.</p>
+
+            <h4>LINKS:</h4>
+            <a href="https://devdocs.io/dom/window/requestanimationframe">REQUEST ANIMATION FRAME</a>
+            <a href="https://devdocs.io/javascript/global_objects/string/split">STRING SPLIT</a>
+            <a href="https://devdocs.io/javascript/global_objects/array/shift">ARRAY SHIFT</a>
+            <a href="https://devdocs.io/dom/htmlelement/style">MODIFY INLINE STYLE</a>
+            <a href="https://devdocs.io/dom/element/getboundingclientrect">GET ELEMENT RECTANGLE</a>
+            <a href="https://devdocs.io/dom/window/scrolly">TRACKING WINDOW SCROLLING</a>
+        </article>
+
+        <hr>
+
+        <a href="../../../index.html">
+            <h2>RETURN TO INDEX</h2>
+        </a>
+
+    </main>
+    <script src="../../../js/set_timeout.js"></script>
+    <script src="../../../js/text_animation.js"></script>
+    <script src="../../../js/post_processing.js"></script>
+    <script src="../../../js/highlight_loop.js"></script>
+    <script src="../../../js/dynamic_navbar.js"></script>
+    <script src="./text_animation_breakdown.js"></script>
+</body>
+
+</html>

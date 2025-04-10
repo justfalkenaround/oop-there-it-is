@@ -1,0 +1,314 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+/* ^^ CSS RESET ^^ */
+
+html {
+    font-family: sans-serif;
+    line-height: 1.15;
+}
+
+article, aside, footer, header, main, nav, section, a {
+    display: block
+}
+
+body {
+    font-family: -apple-system,BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", Ubuntu,Cantarell, "Helvetica Neue", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #ececef;
+    text-align: left;
+    background-color: #1f1e24;
+    padding: 3rem;
+    overflow-x: hidden;
+}
+
+/* ^^ SOME STYLES INSPIRED FROM GIT-LAB MARKDOWN ^^ */
+
+pre, blockquote, header, h1, h2, h3, h4, h5, h6, ul, ol, img {
+    margin-bottom: 1rem;
+}
+
+ul, ol {
+    margin-left: 1rem;
+    list-style: ;
+}
+
+pre {
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.2rem;
+    padding: 1rem;
+    text-wrap-mode: wrap;
+    text-wrap: wrap;
+    word-wrap: break-word;
+}
+
+blockquote {
+    border-left: 5px solid rgba(255, 255, 255, 0.1);
+    padding: 1rem;
+}
+
+a {
+    text-decoration: none;
+    color: lightgreen;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:visited {
+    color: lightgreen;
+}
+
+video {
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+button {
+    padding: 0.7rem 2rem;
+    cursor: pointer;
+    background-color: transparent;
+    color: lightgreen;
+    border: 1px solid lightgreen;
+    border-radius: 0.2rem;
+}
+
+button:hover {
+    background-color: rgba(0, 255, 0, 0.2);
+}
+
+button:active {
+    background-color: rgba(0, 255, 0, 0.4);
+}
+
+input {
+    caret-color: lightgreen;
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+    background-color: black;
+    color: lightgreen;
+}
+
+hr {
+    margin: 2rem 0;
+}
+
+p {
+    margin-bottom: 2rem;
+}
+
+input[type=range] {
+    cursor: pointer;
+}
+
+.tab {
+    margin-left: 2rem;
+}
+
+.red {
+    color: red;
+}
+
+.mag {
+    color: magenta;
+}
+
+.yellow {
+    color: yellow;
+}
+
+.blue {
+    color: lightblue;
+}
+
+.green {
+    color: lightgreen;
+}
+
+.red-border,
+.mag-border,
+.yellow-border,
+.blue-border,
+.green-border,
+.gray-border {
+    border-radius: 5px;
+}
+
+.red-border {
+    border: 2px solid red;
+}
+
+.mag-border {
+    border: 2px solid magenta;
+}
+
+.yellow-border {
+    border: 2px solid yellow;
+}
+
+.blue-border {
+    border: 2px solid lightblue;
+}
+
+.green-border {
+    border: 2px solid lightgreen;
+}
+
+.gray-border {
+    border: 3px solid rgba(255, 255, 255, 0.1);
+}
+
+.floatleft {
+    float: left;
+}
+
+.floatright {
+    float: right;
+}
+
+.inverted {
+    filter: invert(100%);
+}
+
+.apart, .center {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.apart {
+    justify-content: space-between;
+}
+
+.fit {
+    width: 100%;
+}
+
+.animated-text {
+    background-color: black;
+    color: lightgreen;
+    word-wrap: break-word;
+    font-size: 1.2rem;
+    height: 20rem;
+    overflow: hidden;
+    padding: 1rem;
+    margin-bottom: 2rem;
+}
+
+.animated-text-custom {
+    height: 10rem;
+}
+
+#randomizer_tool,
+.randomizer_group_section {
+    padding: 1rem;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+#randomizer_destination {
+    list-style: none;
+}
+
+#randomizer_destination li {
+    padding: 0.2rem 0;
+}
+
+.sprite_sheet,
+.sprite_sheet_special,
+.sprite_sheet_breakdown,
+.sprite_sheet_breakdown_special {
+    overflow: hidden;
+}
+
+.sprite_sheet img,
+.sprite_sheet_breakdown_special img,
+.sprite_sheet_breakdown img {
+    position: relative;
+    left: 0;
+    top: 0;
+}
+
+.slide_window,
+.slide_window_special {
+    border: 2px solid magenta;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
+.slide {
+    display: inline-block;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 15px;
+    z-index: 999;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar:hover {
+    width: 30px;
+}
+
+.sidebar a, .sidebar, .sidebar span {
+    transition: 0.5s;
+}
+
+.sidebar a:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    cursor: pointer;
+}
+
+.sidebar .activated {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.sidebar span {
+    background-color: rgba(0, 0, 0, 0.7);
+    width: 0px;
+    height: 100%;
+    overflow: clip;
+    display: inline-flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    margin: auto;
+    z-index: -999;
+    text-transform: uppercase;
+    color: magenta;
+    position: relative;
+}
+
+.sidebar a:hover span {
+    width: 350px;
+}
+
+.border_cube {
+    border: 2px solid magenta;
+    display: inline-block;
+    width: 105px;
+    height: 105px;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.padded {
+    padding: 1rem;
+}

@@ -1,0 +1,31 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: rgb(50, 50, 50);
+    padding: 2rem;
+    min-height: 100vh;
+    min-width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    overflow: clip;
+}
+
+hr {
+    margin: 2rem 0;
+}
+
+.sprite_sheet {
+    overflow: hidden;
+}
+
+.sprite_sheet img {
+    position: relative;
+    left: 0;
+    top: 0;
+}

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>O.O.P THERE IT IS</title>
+    <link rel="icon" href="../../../img/favicon.png">
+    <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+
+<body>
+    <main>
+
+        <header>
+            <a href="../../../index.html">
+                <h2>RETURN TO INDEX</h2>
+            </a>
+            <h1>LESSON 1: INTRODUCTION</h1>
+            <p class="mag">
+                In this lesson we will learn that learning takes time and dedication. If you want to be a truly bad-ass
+                programmer, then you should start with the basics and make sure you have learned them well before moving
+                on. Then when you feel you figured it out, start testing the boundaries of your knowledge through other
+                people and by implementing concepts into projects, and finally learning new concepts that you feel are
+                too difficult to understand. If you do not challenge yourself, you may become stagnant! If you do not
+                code after studying, the learning might not stick.
+            </p>
+            <blockquote>
+                "If you know both yourself and your enemy, you can win a hundred battles without jeopardy."<br>~ Sun
+                Tzu: The Art Of War
+            </blockquote>
+        </header>
+
+        <hr>
+
+        <nav>
+            <h2>PREVIEW</h2>
+            <ul class="tab">
+                <a href="#do_not_cheat">
+                    <li>DO NOT CHEAT</li>
+                </a>
+                <a href="#download_associated_files">
+                    <li>DOWNLOAD ASSOCIATED FILES</li>
+                </a>
+                <a href="#lesson_format">
+                    <li>LESSON FORMAT</li>
+                </a>
+                <a href="#challenge_format">
+                    <li>CHALLENGE FORMAT</li>
+                </a>
+                <a href="#group_format">
+                    <li>GROUP FORMAT</li>
+                </a>
+                <a href="#project_directory_structure_template">
+                    <li>PROJECT DIRECTORY STRUCTURE TEMPLATE</li>
+                </a>
+                <a href="#strict_mode">
+                    <li>STRICT MODE</li>
+                </a>
+                <a href="#async_await">
+                    <li>ASYNC AWAIT</li>
+                </a>
+                <a href="#class-syntax">
+                    <li>CLASS SYNTAX</li>
+                </a>
+                <a href="#what_you_will_be_able_to_create_after_completing_this_course">
+                    <li>WHAT YOU WILL BE ABLE TO CREATE AFTER THIS COMPLETING COURSE</li>
+                </a>
+                <a href="#randomizer">
+                    <li>RANDOMIZER</li>
+                </a>
+                <a href="#challenge">
+                    <li>CHALLENGE</li>
+                </a>
+            </ul>
+        </nav>
+
+        <hr>
+
+        <article>
+            <section>
+                <img class="floatleft" src="./img/bulldog.png" alt="bull dog graphic" style="height:16rem;">
+                <h3 class="red" id="do_not_cheat">DO NOT CHEAT</h3>
+                <p>
+                    It should go without saying that any of the code examples and assets should not be copied directly
+                    for the purpose of academic submissions. That being said you are more than welcome to use the
+                    knowledge, assets, and small sections of code for your own projects as long as you leave an
+                    attribution. Don't take credit for something you didn't create. Odds are that the truth will come
+                    out and it will only lead to suffering for you and the people around you. I have no doubt that if
+                    you apply yourself, you will be able to create your own original content that you can take pride in.
+                </p>
+                <blockquote class="blue">
+                    NOTE: Finished code examples will be provided with each lesson. Though it may be tempting to peek at
+                    the code before completing the lesson challenge, don't do it. Nobody is going to stop you from doing
+                    it, but it will diminish the satisfaction and learning you will get if you complete the challenge as
+                    intended.
+                </blockquote>
+            </section>
+
+            <hr>
+
+            <section>
+                <h3 class="mag" id="download_associated_files">DOWNLOAD ASSOCIATED FILES</h3>
+                <p>
+                    You should download the associated code files for this course. These will likely be found in the
+                    same repository where you access this course. Else ask your teacher or facilitator.
+                </p>
+            </section>
+
+            <hr>
+
+            <section>
+                <img class="floatright inverted" src="./img/phonetic.png" alt="phonetic alphabet credit wikipedia"
+                    style="width:16rem;">
+                <h3 class="mag" id="lesson_format">LESSON FORMAT</h3>
+                <p>
+                    The following lessons, this one included, will follow the same format, as follows.
+                </p>
+                <blockquote>
+                    - INTRODUCTORY STATEMENT WITH QUOTE
+                    <br>
+                    - LESSON NAVIGATION INDEX
+                    <br>
+                    - SERIES OF ARTICLES WITH GRAPHICS
+                    <br>
+                    - ...
+                    <br>
+                    - ...
+                    <br>
+                    - ...
+                    <br>
+                    - ...
+                    <br>
+                    - CODING CHALLENGE
+                    <br>
+                    - ADDITIONAL RESOURCES AND LINKS
+
+                </blockquote>
+            </section>
+
+            <hr>
+
+            <section>
+                <h3 class="mag" id="challenge_format">CHALLENGE FORMAT</h3>
+                <p>
+                    The following lessons, this one included, will end with a challenge. This challenge is intended to
+                    be completed using research tools and the lesson articles itself. However, if you find yourself
+                    truly unable to complete the challenge, the solution code will also be provided with each lesson. I
+                    also recommend that you try to implement the learned concepts into your own project(s) if you have
+                    time. This will help reinforce the learning and add value to your own projects.
+                </p>
+                <p>
+                    If you are completing challenges as a group, make sure that you save your challenge solution, and
+                    the record the members of your sub-group for that lesson.
+                </p>
+                <p>
+                    Some challenges may have "starting files", in these lessons you will be need to go into the lesson
+                    files associated with this course and lesson and find the one marked "challenge_starting_files". You
+                    can code on top of this partially completed project. You may also build upon files from previous
+                    lessons instead if you wish.
+                </p>
+            </section>
+
+            <hr>
+
+            <section>
+                <h3 class="mag" id="group_format">GROUP FORMAT</h3>
+                <p>
+                    1. If you are going through this course on your own, good for you. You should get comfortable
+                    teaching yourself in this field, but if you can, try and bounce some of your learning and ideas
+                    against some other people. Verbalizing your thoughts will not only often reveal holes in your logic
+                    but also helps cultivate communication skills. Plus it will be expected of you if you are going to
+                    work on a development team in the future.
+                </p>
+                <p>
+                    2. If you are going through this course on your own, because you already completed this course in a
+                    group setting, rock on, try and focus on the things that you had trouble understanding the last
+                    time.
+                </p>
+                <p>
+                    3. If you are going through this course as a group, then you are in luck. The format for group
+                    lessons is as follows.
+                </p>
+                <blockquote>
+                    - SUB-GROUP PRESENTS THEIR CODING SOLUTION FROM PREVIOUS LESSON
+                    <br>
+                    - TEACHER BRIEFLY EXPLAINS AND OR READS EACH ARTICLE
+                    <br>
+                    - OPTIONAL DEMONSTRATION
+                    <br>
+                    - QUESTIONS AND ANSWERS
+                    <br>
+                    - GROUP SPLITS INTO SUB-GROUPS TO COMPLETE CODING CHALLENGE
+
+                </blockquote>
+                <p>If there is no teacher, don't worry. Follow the following format.</p>
+                <blockquote>
+                    - SUB-GROUP PRESENTS THEIR CODING SOLUTION FROM PREVIOUS LESSON
+                    <br>
+                    - DIFFERENT STUDENT IS TO READ ARTICLES ALOUD EACH LESSON
+                    <br>
+                    - STUDENTS MAY EXPRESS THEIR IDEAS AND CONFUSIONS ALOUD
+                    <br>
+                    - OTHER STUDENTS SHOULD ASSIST WITH THEIR UNDERSTANDING
+                    <br>
+                    - GROUP SPLITS INTO SUB-GROUPS TO COMPLETE CODING CHALLENGE
+
+                </blockquote>
+                <p>
+                    It is best if sub-groups are small, three students on one computer. Also it is expected that
+                    students read through the articles in each lesson, they will likely contain more information than a
+                    lecture will provide.
+                </p>
+                <p>
+                    The group randomizer in the challenge section of this lesson can be used for selecting sub-groups,
+                    or the groups can select themselves. If however the groups select themselves, it is recommended that
+                    periodically groups be randomly selected for some lesson challenges. Then students can return to
+                    their normal sub-group for the next one. Communication and working with people you may not normally
+                    associate with is an EXTREMELY valuable skill, don't forget it.
+                </p>
+            </section>
+
+            <hr>
+
+            <section>
+                <h3 class="mag" id="project_directory_structure_template">PROJECT DIRECTORY STRUCTURE TEMPLATE</h3>
+                <p>
+                    For the purpose of the lessons and challenges in this course, everything created should be
+                    executable in a local web browser environment. Application entry point should always be an
+                    index.html
+                    file at the root directory for your project.
+                </p>
+                <p>
+                    A common directory structure will be as follows.
+                </p>
+                <pre>
+- PROJECT_NAME
+  index.html
+  - js
+      - script.js
+      - another_script.js
+      - ...
+      - ...
+  - html
+      - another_page.html
+      - yet_another_page.html
+      - ...
+      - ...
+  - css
+      - styles.css
+      - ...
+      - ...
+  - assets
+      - images
+          - image_1.png
+          - image_2.png
+          - ...
+          - ...
+      - audio
+          - sound_1.ogg
+          - sound_2.ogg
+          - ...
+          - ...
+          </pre>
+
+                <p>
+                    When starting new projects from scratch feel free to make a copy of the directory named "TEMPLATE"
+                    in the associated files with this course as your starting point.
+                </p>
+            </section>
+
+            <hr>
+
+            <section>
+                <h3 class="mag" id="strict_mode">STRICT MODE</h3>
+                <p>
+                    Every JAVASCRIPT file in this course will and should have strict mode enabled. As you will see at
+                    the very first line of every file exactly.
+                </p>
+                <pre>'use strict';</pre>
+                <p>
+                    Strict mode will throw some errors when JAVASCRIPT would normally not. This is good, it will help
+                    prevent insidious little bugs that come from minor syntax errors that might have slipped through the
+                    cracks otherwise. However it is not a panacea, you must still me mindful to avoid and catch general
+                    syntax and semantic errors.
+                </p>
+            </section>
+
+            <hr>
+
+            <section>
+                <h3 class="mag" id="async_await">ASYNC AWAIT</h3>
+                <p>
+                    All of the code associated with this course will adopt the newer async await syntax instead of using
+                    the old "Promise.then().catch()" syntax. Coding challenges should be completed using this syntax for
+                    async control.
+                </p>
+                <p>BEFORE ASYNC AWAIT</p>
+                <pre>
+const before_async = () => {
+  
+  new Promise((resolve, reject) => {
+    window.setTimeout(() => resolve(), 3000);
+  })
+  .then(() => console.log('I WAITED 3 SECONDS'))
+  .catch(err => console.error('SOMETHING WENT WRONG', err));
+    
+};
+          </pre>
+                <p>WITH ASYNC AWAIT</p>
+                <pre>
+const with_async = async () => {
+  
+  try {
+    await new Promise((resolve, reject) => {
+      window.setTimeout(() => resolve(), 3000);
+    });
+    console.log('I WAITED 3 SECONDS');
+  }
+  catch(err) {
+    console.error('SOMETHING WENT WRONG', err);
+  }
+
+};
+          </pre>
+                <p>
+                    This syntax may be new to you but it can make complicated asynchronous code much easier to read
+                    without changing any functionality. Please read the section in dev-docs related to JAVASCRIPT async
+                    await if you are not familiar.
+                </p>
+                <a href="https://devdocs.io/javascript/statements/async_function" target="_blank">ASYNC AWAIT
+                    DOCS</a>
+            </section>
+
+            <hr>
+
+            <section>
+                <h3 class="mag" id="class-syntax">CLASS SYNTAX</h3>
+                <p>
+                    All of the code associated with this course will adopt the newer JAVASCRIPT class syntax for the
+                    purpose of object oriented programming. We will be using them liberally throughout the course. You
+                    will learn about classes as the lessons proceed, however, it is advised that you read up on the
+                    basics of the syntax.
+                </p>
+                <a href="https://devdocs.io/javascript/classes" target="_blank">CLASS DOCS</a>
+                <br>
+                <p>
+                    You may come across (much) older code that does not utilize the class
+                    syntax for it's object oriented approach but rather the old underlying object methods or syntax.
+                    This
+                    code will still run and is in fact the the same exact functionality that classes use, just harder to
+                    learn.
+                </p>
+                <p>
+                    For simplicity, this course will not be teaching this old syntax, however if you wish to gain a
+                    deeper understanding of JAVASCRIPT and how it works "under the hood", you might consider becoming
+                    familiar with it after completing this course.
+                </p>
+                <p>BEFORE CLASS</p>
+                <pre>
+function Vector(x, y) {
+    this.x = x;
+    this.y = y;
+}
+
+Vector.prototype.distance = function(v) {
+    return Math.sqrt(Math.pow(this.x - v.x, 2) + Math.pow(this.y - v.y, 2));
+}
+                </pre>
+                <p>WITH CLASS</p>
+                <pre>
+class Vector {
+    constructor (x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    distance(v) {
+        return Math.sqrt(Math.pow(this.x - v.x, 2) + Math.pow(this.y - v.y, 2));
+    }
+}
+                </pre>
+                <p>
+                    I am confident that if you take the time to adopt these syntax features and techniques that you
+                    won't go back.
+                </p>
+            </section>
+
+            <hr>
+
+            <section>
+                <h3 class="mag" id="what_you_will_be_able_to_create_after_completing_this_course">
+                    WHAT YOU WILL BE ABLE TO CREATE AFTER THIS COMPLETING COURSE
+                </h3>
+                <p>
+                    If you take the time to study the taught concepts and follow this curriculum to the end you will be
+                    able to create amazing works of art and logic. Here are a just few examples of what you might be
+                    creating.
+                </p>
+                <label for="text_animation">Text animation: Hacky Text.</label>
+                <aside class="animated-text">
+                    Malicious software:<br><br>
+
+                    A computer user can be tricked or forced into downloading software onto a computer that is of
+                    malicious intent. Such software comes in many forms, such as viruses, Trojan horses, spyware, and
+                    worms.<br><br>
+
+                    Malware, short for malicious software, is any software used to disrupt computer operation, gather
+                    sensitive information, or gain access to private computer systems. Malware is defined by its
+                    malicious intent, acting against the requirements of the computer user, and does not include
+                    software that causes unintentional harm due to some deficiency. The term badware is sometimes used,
+                    and applied to both true (malicious) malware and unintentionally harmful software.
+                </aside>
+                <label for="mortars">A canvas animation: Mortars.</label>
+                <video id="mortars" controls alt="a canvas animation of fireworks" type="video/mov"
+                    src="../../../video/mortars_animation.mov"></video>
+                <label for="hearts">A canvas animation: Hearts.</label>
+                <video id="hearts" controls alt="a canvas animation of hearts" type="video/mov"
+                    src="../../../video/hearts_animation.mov"></video>
+                <h4>COMPLETE 2D WEB GAMES WITH AUDIO</h4>
+                <p>Please forgive the lack of audio for the following videos due to the screen recording software.</p>
+                <label for="stars">A canvas animation: Stars.</label>
+                <video id="stars" controls alt="a canvas animation of stars" type="video/mov"
+                    src="../../../video/stars_animation.mov"></video>
+                <label for="pong">A canvas game: Pong.</label>
+                <video id="pong" controls alt="a game of pong" type="video/mov"
+                    src="../../../video/pong_game.mov"></video>
+                <label for="asteroids">A canvas game: Asteroids.</label>
+                <video id="asteroids" controls alt="a game of Asteroids" type="video/mov"
+                    src="../../../video/asteroids_game.mov"></video>
+                <label for="galaga">A canvas game: Galaga.</label>
+                <video id="galaga" controls alt="a game of galaga" type="video/mov"
+                    src="../../../video/galaga_game.mov"></video>
+                <label for="keno">A canvas game: Keno.</label>
+                <video id="keno" controls alt="a game of keno" type="video/mov"
+                    src="../../../video/keno_game.mov"></video>
+                <p class="yellow">
+                    The limit of your ability to create anything in code is equal to the limit of your imagination!
+                </p>
+            </section>
+
+            <hr>
+
+            <section>
+                <h3 class="mag" id="randomizer">RANDOMIZER</h3>
+                <p>
+                    Please feel free to use the following randomizer tool to randomly group names together in groups of
+                    a defined size.
+                </p>
+                <p>
+                    This tool will fill groups as much as it can up to the group size, this means there may be a smaller
+                    group at the end. It is up to you whether you choose to have these members split up and join other
+                    groups or just stay as a smaller group. Just don't leave anyone by themselves if at all possible.
+                </p>
+                <aside id="randomizer_tool">
+                    <label for="group_size">PLEASE ENTER DESIRED GROUP SIZE</label>
+                    <input id="group_size" type="number" value="3">
+                    <hr>
+                    <section class="apart">
+                        <section>
+                            <label for="new_name">ADD A STUDENT NAME</label>
+                            <input id="new_name" type="text">
+                            <button id="randomizer_enter">ENTER NAME</button>
+                        </section>
+                        <button id="randomizer_execute">EXECUTE RANDOMIZER</button>
+                    </section>
+                    <hr>
+                    <ul id="randomizer_destination"></ul>
+                </aside>
+            </section>
+            <hr>
+
+            <section>
+                <h3 class="mag" id="challenge">CHALLENGE</h3>
+                <h4>FOR GROUPS:</h4>
+                <p>
+                    Your exercise for this introductory lesson will be different than the ones that will come after.
+                </p>
+                <p>
+                    As one group everyone should take a piece of paper and write down two things on it(in private).
+                </p>
+                <p>
+                    1. What you are most afraid of about learning to become a coder.
+                    <br>
+                    2. What you are most excited about becoming a coder.
+                </p>
+                <p>
+                    Now please put them all in a hat or something and shake them up. Have everyone draw a piece of
+                    paper, if you draw your own just put it back in the hat and draw a different one.
+                </p>
+                <p>
+                    Now everyone can read their paper and see how it compares your own fears and excitements. Don't
+                    share these or divulge the identities if you know.
+                </p>
+                <p>
+                    It is likely that your fears are similar to others fears and you should not feel that you are alone
+                    in this journey, we are all on this rock together. Use the very valuable asset that is your peers.
+                </p>
+                <h4>FOR INDIVIDUALS:</h4>
+                <p>
+                    On a piece of paper write down two things.
+                </p>
+                <p>
+                    1. What you are most afraid of about learning to become a coder.
+                    <br>
+                    2. What you are most excited about becoming a coder.
+                </p>
+                <p>
+                    Save this piece of paper, put it somewhere safe. When you are feeling like you are not able to
+                    complete a challenging coding task in the future look back on this note and remind yourself how far
+                    you have come since then.
+                </p>
+            </section>
+        </article>
+        <hr>
+        <article>
+            <h2>ADDITIONAL RESOURCES</h2>
+            <p>Each lesson will explain and provide research resources for a general concept or skill. It is highly
+                recommended that you take the time to review lessons, research subjects, and practice on your own
+                between lessons.</p>
+            <p>At the end of each lesson will be a challenge, completing these assignments is paramount to your
+                retention of the taught material. The struggle is where the learning really occurs, embrace it.</p>
+
+            <h4>LINKS:</h4>
+            <a href="https://devdocs.io/" target="_blank">DEV-DOCS</a>
+            <a href="https://devdocs.io/javascript/statements/async_function" target="_blank">ASYNC AWAIT
+                DOCS</a>
+            <a href="https://devdocs.io/javascript/classes" target="_blank">CLASS DOCS</a>
+        </article>
+        <hr>
+        <a href="../../../index.html">
+            <h2>RETURN TO INDEX</h2>
+        </a>
+    </main>
+    <script src="../../../js/set_timeout.js"></script>
+    <script src="../../../js/dynamic_navbar.js"></script>
+    <script src="../../../js/text_animation.js"></script>
+    <script src="../../../js/post_processing.js"></script>
+    <script src="./randomizer.js"></script>
+</body>
+
+</html>

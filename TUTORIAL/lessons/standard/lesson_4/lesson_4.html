@@ -1,0 +1,2244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>O.O.P THERE IT IS</title>
+    <link rel="icon" href="../../../img/favicon.png">
+    <link rel="stylesheet" href="../../../css/styles.css">
+    <link rel="stylesheet" href="./warp_speed/warp_speed.css">
+</head>
+
+<body>
+    <main>
+
+        <header>
+            <a href="../../../index.html">
+                <h2>RETURN TO INDEX</h2>
+            </a>
+            <h1>LESSON 4: O.O.P AND ANIMATION</h1>
+            <p class="mag">
+                Object oriented programming(O.O.P) is a whole different world of programming. Understanding it's
+                concepts, even if you rarely use them directly, will skyrocket your coding abilities. The purpose of
+                this lesson will be to begin introducing O.O.P in JAVASCRIPT with a more complex animation
+                implementation.
+            </p>
+
+            <blockquote>
+                "I intend to live forever. So far, so good."<br>~ Steven Wright
+            </blockquote>
+        </header>
+
+        <hr>
+
+        <nav>
+            <h2>PREVIEW</h2>
+            <ul class="tab">
+                <a href="#example">
+                    <li>EXAMPLE</li>
+                </a>
+                <a href="#code">
+                    <li>CODE</li>
+                </a>
+                <a href="#why">
+                    <li>WHY</li>
+                </a>
+                <a href="#dom_limitations">
+                    <li>DOM LIMITATIONS</li>
+                </a>
+                <a href="#immediately_invoked_function_expressions">
+                    <li>IMMEDIATELY INVOKED FUNCTION EXPRESSIONS</li>
+                </a>
+                <a href="#namespacing">
+                    <li>NAMESPACING</li>
+                </a>
+                <a href="#class_privacy_practices">
+                    <li>CLASS PRIVACY PRACTICES</li>
+                </a>
+                <a href="#getters_and_setters">
+                    <li>GETTERS AND SETTERS</li>
+                </a>
+                <a href="#error_handling">
+                    <li>ERROR HANDLING</li>
+                </a>
+                <a href="#how_it_works">
+                    <li>HOW IT WORKS</li>
+                </a>
+                <a href="#setup">
+                    <li>SETUP</li>
+                </a>
+                <a href="#constructor">
+                    <li>CONSTRUCTOR</li>
+                </a>
+                <a href="#initialize">
+                    <li>INITIALIZE</li>
+                </a>
+                <a href="#update">
+                    <li>UPDATE</li>
+                </a>
+                <a href="#render">
+                    <li>RENDER</li>
+                </a>
+                <a href="#repeat">
+                    <li>REPEAT</li>
+                </a>
+                <a href="#reset">
+                    <li>RESET</li>
+                </a>
+                <a href="#visual_breakdown">
+                    <li>VISUAL BREAKDOWN</li>
+                </a>
+                <a href="#challenge">
+                    <li>CHALLENGE</li>
+                </a>
+            </ul>
+        </nav>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="example">EXAMPLE</h3>
+            <a class="inline-block" href="./warp_speed/warp_speed.html"><button>TAKE ME TO THE EXAMPLE</button></a>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="code">CODE</h3>
+            <p>HTML</p>
+            <pre class="html">
+<article class="warp_target"></article>
+            </pre>
+            <p>CSS</p>
+            <pre>
+*, *::before, *::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.warp_target {
+    background-color: black;
+    height: 100vh;
+    width: 100vw;
+    pointer-events: none;
+    z-index: -999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+.star {
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    z-index: -998;
+}
+            </pre>
+            <p>JAVASCRIPT</p>
+            <pre>
+'use strict';
+
+const warp = (() => {
+    
+    const give_data = target => {
+        const
+          width = target && target.clientWidth || window.innerWidth,
+          height = target && target.clientHeight || window.innerHeight;
+        return { width, height, center : { x : width / 2, y : height / 2 } };
+    };
+    
+    class Star {
+        constructor(options = {}) {
+            this._options = options;
+        }
+    
+        initialize() {
+            this.parent = this._options.parent || null;
+            this.target = this._options.target;
+            if (!this.target || !(this.target instanceof HTMLElement)) {
+                throw new Error(`${this.constructor.name}: NO TARGET ELEMENT`);
+            }
+            this.position = {
+                x : (Math.floor(Math.random() * this.window_data.width)),
+                y : (Math.floor(Math.random() * this.window_data.height))
+            };
+            this.velocity = { x : 0, y : 0 };
+            this.height = (Math.floor(Math.random() * 3) + 1);
+            this.dom_node = document.createElement('gold');
+            this.dom_node.classList.add('star');
+            this.dom_node.style.height = this.dom_node.style.width = `${this.height}px`;
+            this.target.append(this.dom_node);
+        }
+    
+        update() {
+            this.velocity =
+            {
+                x : (this.position.x - this.window_data.center.x) / (this.parent && this.parent.speed || 100),
+                y : (this.position.y - this.window_data.center.y) / (this.parent && this.parent.speed || 100)
+            };
+            this.position.x += this.velocity.x;
+            this.position.y += this.velocity.y;
+            if (
+              this.position.x < 0
+              ||
+              this.position.x > this.window_data.width
+              ||
+              this.position.y < 0
+              ||
+              this.position.y > this.window_data.height
+              )
+               {
+                this.reset();
+            }
+        }
+    
+        render() {
+            this.dom_node.style.left = `${this.position.x}px`;
+            this.dom_node.style.top = `${this.position.y}px`;
+        }
+        
+        reset() {
+            this.position =
+            {
+                x : (Math.floor(Math.random() * (this.window_data.width / 2)) + (this.window_data.width / 4)),
+                y : (Math.floor(Math.random() * (this.window_data.height / 2)) + (this.window_data.height / 4)),
+            };
+            this.height = (Math.floor(Math.random() * 3) + 1);
+            this.dom_node.style.height = this.dom_node.style.width = `${this.height}px`;
+        }
+        
+        get window_data() {
+            return this.parent && this.parent.window_data || give_data(this.target);
+        }
+    }
+    
+    class Space {
+        constructor(options = {}) {
+            this._options = options;
+            this._initialize();
+        }
+    
+        _initialize() {
+            this.parent = this._options.parent || null;
+            this.target = this._options.target;
+            if (!this.target || !(this.target instanceof HTMLElement)) {
+                throw new Error(`${this.constructor.name}: NO TARGET ELEMENT`);
+            }
+            this.window_data = give_data(this.target);
+            this.speed = this._options.speed || 100;
+            this.quantity = this._options.quantity || 800;
+            this.stars = new Array(this.quantity)
+                .fill(null)
+                .map(v => new Star({ target: this.target, parent: this }));
+            this.stars.forEach(v => v.initialize());
+            this._repeat();
+        }
+    
+        _update() {
+            this.speed -= 0.06;
+            this.window_data = give_data(this.target);
+            this.stars.forEach(v => v.update());
+            if (this.speed < -5) {
+                this.reset();
+            }
+        }
+    
+        _render() {
+            this.stars.forEach(v => v.render());
+        }
+    
+        _repeat() {
+            this._update();
+            this._render();
+            window.requestAnimationFrame(() => this._repeat());
+        }
+        
+        reset() {
+            this.speed = this._options.speed || 100;
+            this.stars.forEach(v => v.reset());
+        }
+    }
+    
+    return {
+        Space,
+        Star
+    };
+})();
+
+window.addEventListener('DOMContentLoaded', () => {
+    Array.from(document.querySelectorAll('.warp_target')).forEach(target => {
+        new warp.Space({
+            speed: target.dataset.speed,
+            quantity: target.dataset.quantity,
+            target
+        });
+    });
+});
+            </pre>
+            <blockquote class="red">Don't use the following non-modular code, use the class version above. This is only
+                here to show the contrast in coding style.</blockquote>
+            <pre style="border-color:red;">
+let speed = 100;
+const quantity = 800;
+const stars = [];
+
+const initialize = () => {
+    const body = document.querySelector('body');
+    for (let i = 0, j = quantity; i < j; i++) {
+        const star = document.createElement('div');
+        stars.push(star);
+        star.classList.add('star');
+        star.style.height = star.style.width = `${(Math.floor(Math.random() * 3) + 1)}px`;
+        star.style.top = `${(Math.floor(Math.random() * window.innerHeight))}px`;
+        star.style.left = `${(Math.floor(Math.random() * window.innerWidth))}px`;
+        body.append(star);
+    }
+    animate();
+};
+
+const animate = () => {
+    speed -= 0.06;
+    for (let i = 0, j = stars.length; i < j; i++) {
+        const vec = { x: Number(stars[i].style.left.replace('px', '')), y: Number(stars[i].style.top.replace('px', '')) };
+        const velocity = calcVelocity(vec);
+        stars[i].style.left = `${Number(stars[i].style.left.replace('px', '')) + velocity.x}px`;
+        stars[i].style.top = `${Number(stars[i].style.top.replace('px', '')) + velocity.y}px`;
+        if (vec.x < 0 || vec.x > window.innerWidth || vec.y < 0 || vec.y > window.innerHeight) {
+            stars[i].style.left = `${(window.innerWidth / 2 - 300) + (Math.floor(Math.random() * 600))}px`;
+            stars[i].style.top = `${(window.innerHeight / 2 - 300) + (Math.floor(Math.random() * 600))}px`;
+        }
+    }
+    if (speed > -5) {
+        window.requestAnimationFrame(animate);
+          stars[i].style.left = `${(window.innerWidth / 2 - 300) + (Math.floor(Math.random() * 600))}px`;
+          stars[i].style.top = `${(window.innerHeight / 2 - 300) + (Math.floor(Math.random() * 600))}px`;
+    }
+};
+
+const calcVelocity = (vec) => {
+    const center = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+    return { x: (vec.x - center.x) / speed, y: (vec.y - center.y) / speed };
+};
+
+window.addEventListener('DOMContentLoaded', initialize);
+            </pre>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="why">WHY</h3>
+            <p>
+                At first glance you might say: "There is way more code in the class version code provided compared to
+                the non-class version. Yet they both function seemingly the same. Why waste the time and energy writing
+                classes?".
+            </p>
+            <p>
+                Well depending on who you ask that question, you are likely to get very different answers. They might
+                agree that classes are the devil and you should never mess with the stuff, functional programmers. They
+                also might punch you in the jaw for insulting their craft, object oriented programmers. Then they might
+                just suggest that you select whatever tool best works for you and your team, master it, and stick with
+                it, sensible programmers.
+            </p>
+            <p>
+                For now, you will practice some object oriented programming in JAVASCRIPT. You are however recommended
+                to look into other programming paradigms and tutorials for them. You make your own choice, but know that
+                a development team will likely expect you to use the same tools they use, so being flexible is valuable.
+            </p>
+            <p>
+                Some of the benefits of O.O.P are as follows:
+            </p>
+            <ul class="tab green">
+                <li>Situational Performance Gains</li>
+                <li>Mirrors Physical Reality</li>
+                <li>Modularization</li>
+                <li>Code Clarity</li>
+                <li>Scalability</li>
+                <li>Inheritance</li>
+                <li>Code Control</li>
+            </ul>
+            <p>
+                Some of the costs of O.O.P are as follows:
+            </p>
+            <ul class="tab red">
+                <li>Situational Performance Losses</li>
+                <li>Steeper Learning Curve</li>
+                <li>Requires Programmer Discipline</li>
+                <li>Verbosity</li>
+            </ul>
+            <p>
+                For the purpose of these small applications, using classes might be considered overkill. This may be
+                true, but likely is not true. The reason is that with classes you can better break down the portions and
+                flow of the code. That and the fact that scaling an application to include more features and
+                compatibility will be significantly easier with classes.
+            </p>
+            <p>
+                Since this course is attempting to teach you how to create robust, usable, scalable, and performant
+                applications and API's, you will be building a strong O.O.P code foundation even with smaller
+                applications.
+            </p>
+            <p>
+                Try and stick to the rules of the paradigm. Approach these concepts with an open mind and see where it
+                takes you.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="dom_limitations">DOM LIMITATIONS</h3>
+            <p>
+                So far on this course you have only seen animations where the rendering output was to the DOM. In the
+                form of styled HTML elements.
+            </p>
+            <p>
+                This will be the last lesson that uses the DOM.
+            </p>
+            <p>
+                There are a variety of reason for this including:
+            </p>
+            <ul class="tab">
+                <li>Very Slow DOM Calls</li>
+                <li>Need For More Fine Grained Graphics Controls</li>
+                <li>Search Engine Optimization(SEO)</li>
+            </ul>
+            <p>
+                This animation pushes the limit of most browser window tabs and device capabilities, with only 800
+                stars.
+            </p>
+            <p>
+                The reason is that every call to the DOM's API and to alter the object values takes a very long time,
+                for a computer that is.
+            </p>
+            <p>
+                To see this, increase the number of stars in the class input to say 3000. You will almost certainly see
+                the page jank.
+            </p>
+            <p>
+                There are many places where DOM animations are great, however to take them further you might look in to
+                CSS keyframes or SVG.
+            </p>
+            <p>
+                The next lesson will address these issues and open new doors as you migrate to HTML5 canvas.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="immediately_invoked_function_expressions">IMMEDIATELY INVOKED FUNCTION EXPRESSIONS</h3>
+            <p>
+                This application features a unique syntax feature called an immediately invoked function expression, or
+                IIFE for short; pronounced iffy.
+            </p>
+            <p>
+                The syntax is simple:
+            </p>
+            <pre>
+(() => {
+    // FUNCTION BODY
+})()
+            </pre>
+            <p>
+                It is just an anonymous function that is being called immediately. The benefit of these is to prevent
+                the leakage of global variables. Here is an example of what you might call a "solid" IIFE:
+            </p>
+            <pre>
+(() => {
+    const secret = 'DON\'T TELL';
+})()
+
+<span class="red">console.log(secret);</span>
+// OUTPUTS UNDEFINED ERROR
+            </pre>
+            <p>
+                This does not mean they trap all data, just that you can control what data escapes from the scope.
+            </p>
+            <pre>
+<span class="yellow">const message = </span>(() => {
+    const truth = 'I am not okay.';
+    const lie = 'I am okay.';
+    <span class="yellow">return lie;</span>
+})()
+
+<span class="green">console.log(message);</span>
+// OUTPUTS I am okay.
+
+<span class="red">console.log(truth);</span>
+// OUTPUTS UNDEFINED ERROR
+            </pre>
+            <p>
+                As you can see, this neat tool can be used to protect the global scope from secret or unwanted variables
+                and data.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="namespacing">NAMESPACING</h3>
+            <p>
+                A Namespace is a JAVASCRIPT scope or object. For instance, the global scope is a namespace. It contained
+                all global variables and declarations, including the browsers native ones.
+            </p>
+            <p class="yellow">
+                Namespacing is a practice where instead of flooding the global or other scopes with variables and
+                declarations, you create a dedicated namespace, or namespaces for them.
+            </p>
+            <p>
+                This will prevent potential naming conflicts with other code you may not have written, or even your own
+                code.
+            </p>
+            <p>
+                This also provides a means to hide the internals of an API from the average user.
+            </p>
+            <p>
+                It is common to see JAVASCRIPT coding libraries that provide their entire API wrapped in a single
+                object.
+            </p>
+            <pre>
+const API = {
+    property: 'I am a property',
+    method : () => {
+        console.log('I am a method.');
+    };
+}
+            </pre>
+            <p>
+                Since you are in the process of creating an API already, you are going to follow this same practice.
+            </p>
+            <p>
+                You will use an IIFE expression to control the classes that are provided to the user as the API.
+            </p>
+            <pre>
+const API = (() => {
+    class Tool {}
+    
+    class Shed {
+        constructor() {
+            this.contents = new Array(60).fill(null).map(v => new Tool())
+        }
+    }
+    
+    return {
+        Shed
+    }
+})()
+
+<span class="green">console.log(new API.Shed());</span>
+// OUTPUTS A FULL TOOLSHED
+
+<span class="red">console.log(API.Tool);</span>
+// OUTPUTS UNDEFINED
+            </pre>
+            <p>
+                As you can see the intended Shed class was exposed via the API object. However the internal Tool class
+                was not.
+            </p>
+            <p>
+                The global scope is kept clean, there can be no conflicts, and the user is not confused by a bunch of
+                classes they don't use. Real nice.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="class_privacy_practices">CLASS PRIVACY PRACTICES</h3>
+            <p>
+                Object oriented programming is a vast field of practice. Many popular languages are BASED on O.O.P:
+            </p>
+            <ul class="tab">
+                <li>Java</li>
+                <li>C</li>
+                <li>C++</li>
+            </ul>
+            <p>
+                These native languages were build for O.O.P. They include features that JAVASCRIPT lacks.
+            </p>
+            <p>
+                That is not to say that JAVASCRIPT is not a powerful O.O.P language, to the contrary.
+            </p>
+            <p>
+                JAVASCRIPT is built on classes and O.O.P, but it does not naturally implement some common features you
+                might expect from another language. Privacy is one.
+            </p>
+            <p>
+                There are some newer syntax features of JAVASCRIPT that provide more privacy controls for classes and
+                instances. However this tutorial with mostly implement privacy with the old school underscore prefix.
+            </p>
+            <pre>
+class Example {
+    <span class="yellow">_private()</span> {
+        console.log('I am a private method.');
+    }
+    
+    public() {
+        console.log('I am a public method');
+    }
+}
+            </pre>
+            <p>
+                If you wish to signify that a property of a class is intended to be only accessed by that instance of
+                the class; simply prefix the property name with an underscore.
+            </p>
+            <p>
+                This does not enforce this rule, it is just a common coding practice that lets people know, this is a
+                private member.
+            </p>
+            <p>
+                This tutorial is going to introduce a lot of the important O.O.P principles, but is not a comprehensive
+                guide at all. Nor will the code strictly adhere to modern or common practices. Studying another language
+                or even a book on O.O.P will provide significantly more information related to the practice.
+            </p>
+            <blockquote class="blue">
+                NOTE: TYPESCRIPT is essentially just an extension of JAVASCRIPT. If you want to get hardcore with type
+                controls and O.O.P, this might be your ticket.
+            </blockquote>
+            <p>
+                The intention is to get you in the O.O.P state of mind, you will have to take the next step.
+            </p>
+            <p class="yellow">
+                For now, as a rule, prefix things that ONLY that class instance will use, with an underscore.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="getters_and_setters">GETTERS AND SETTERS</h3>
+            <p>
+                To control how class instance properties are read and written, you can use getters and setters.
+            </p>
+            <p>
+                Getters:
+            </p>
+            <pre>
+class Teacher {
+    constructor() {
+        this._questions_asked = 0;
+    }
+    
+    <span class="yellow">get answer() {
+        ++this._questions_asked;
+        return `You have asked me this ${this._questions_asked - 1} times already. Come back later please.`;
+    }</span>
+}
+const instructor = new Teacher();
+
+console.log(instructor.answer);
+// OUTPUTS You have asked me this 0 times already. Come back later please.
+
+console.log(instructor.answer);
+// OUTPUTS You have asked me this 1 times already. Come back later please.
+
+console.log(instructor.answer);
+// OUTPUTS You have asked me this 2 times already. Come back later please.
+            </pre>
+            <p>
+                This will execute a function every time the ".answer" property is accessed. In the function it will
+                increment a hidden property and use that property to return a dynamic string value.
+            </p>
+            <p>
+                There are also setter counterparts to getters, they work similarly. Whenever you attempt to reassign a
+                property with a setter, it will execute the function. This gives you the ability to control data access
+                and control, and or perform pre-post-processing.
+            </p>
+            <p>
+                Setters:
+            </p>
+            <pre>
+class Teacher {
+    constructor() {
+        this._questions_asked = 0;
+        this._learned_stuff = [];
+    }
+    
+    get answer() {
+        ++this._questions_asked;
+        return `You have asked me this ${this._questions_asked - 1} times already. Come back later please.`;
+    }
+    
+    <span class="yellow">set answer(v) {
+        this._learned_stuff.push(v);
+    }</span>
+}
+const instructor = new Teacher();
+
+console.log(instructor.answer);
+// OUTPUTS You have asked me this 0 times already. Come back later please.
+
+instructor.answer = 'Have some empathy please.';
+
+console.log(instructor.answer);
+// OUTPUTS You have asked me this 1 times already. Come back later please.
+
+console.log(instructor);
+            </pre>
+            <p>
+                There is significant power to these features. You will see some very interesting ways to use these in
+                future lessons.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="error_handling">ERROR HANDLING</h3>
+            <p>
+                Error handling should always be in the back of your mind, or maybe the front.
+            </p>
+            <p>
+                Up until this point, the error handling code has been very minimal. This is to provide clarity and focus
+                towards the concepts being taught. That being said in order to make a robust application, you are going
+                to have to handle potential errors that come up.
+            </p>
+            <p>
+                There are a couple different types of errors to look out for:
+            </p>
+            <h3>DEVELOPMENT ERRORS</h3>
+            <h4>Syntactic</h4>
+            <p class="tab">
+                This is the best type of error usually, because it is often quick and easy to diagnose and correct.
+                Syntactic errors are caused by a typo or invalid syntax. This could be an attempt to access an undefined
+                variable or property. The errors are usually detected by your code editor and reported to the console by
+                default.
+            </p>
+            <h4>Semantic</h4>
+            <p class="tab">
+                This is the worst type of error, this means that you do not get a reported error from your code editor
+                or the console, yet your application is not doing what it is supposed to. This is a pain because odds
+                are you wrote the code that is causing the error. You will have to practice debugging your code to
+                prevent and more quickly diagnose and repair these errors in the future.
+            </p>
+            <h3 class="yellow">PRODUCTION ERRORS</h3>
+            <blockquote class="blue">
+                NOTE: These are the errors that you will need to code for in your applications. They can be anticipated.
+            </blockquote>
+            <h4>Network</h4>
+            <p class="tab">
+                This is the most common type of web application error. Whenever you are sending or recieving data or
+                assets over a network connection, you can expect delays and failures. A robust application handles these
+                errors seamlessly by attempting to reconnect and hiding the problem from the end user as long as
+                possible. In the end it is best to notify the end user in an elegant way that there has been a problem
+                related to the network.
+            </p>
+            <h4>End User</h4>
+            <p class="tab">
+                This is when the end user of your application or API uses it in an incorrect and or unexpected way. This
+                could be them inputting invalid values into your API. Maybe uploading MASSIVE assets that overload your
+                hardware. Someone playing your video game and jumping off the edge of the map. Or perhaps a hacker who
+                is intentionally attempting to find weaknesses in your application. The solution is to ALWAYS check
+                ANYTHING that is input by the user, or CAN be affected by the user. Make sure the input is valid, if it
+                is not valid, try to adapt so the application still functions, and or notify the user. Prevent malicious
+                users from misusing your application by filtering input data.
+            </p>
+            <h4>Hardware and Environment</h4>
+            <p class="tab">
+                This type of error occurs when the device or software environment that the end user is running you
+                application is incapable of handling the execution of the code. This may be a user who has disabled
+                JAVASCRIPT, you still want to display something to the user, if just an error message. This could be an
+                old device or phone that doesn't have the CPU or memory requirements to run your application or game. If
+                you can, respond to slow frame rates or errors by limiting processing so that the application can still
+                be used by low end devices. If this is not possible, notify the user as to the problem
+            </p>
+            <p>
+                All in all there are a TON of different techniques for handling errors. In this course you will mostly
+                see a limited set of tools.
+            </p>
+            <h4>Try / Catch Blocks</h4>
+            <pre>
+try {
+    // TRY THIS FIRST
+}
+catch(err) {
+    // IF AN ERROR IS THROWN, HANDLE IT HERE
+}
+            </pre>
+            <p>
+                These will allow you to take control of and or hide synchronous errors that are thrown within the block.
+            </p>
+            <p>
+                They also can catch asynchronous errors thrown within an ASYNC function.
+            </p>
+            <pre>
+const funky = async () => {
+    try {
+        // TRY THIS FIRST
+    }
+    catch(err) {
+        // IF AN ERROR IS THROWN, HANDLE IT HERE
+    }
+}
+            </pre>
+            <h4>Conditional Checks</h4>
+            <pre>
+if (user_input === 'bad_or_missing') {
+    return;
+}
+            </pre>
+            <p>
+                This is simple enough. Before you perform any action on user input, check it for validity, and return
+                from the function before proceeding. Or perhaps do something different within the conditional.
+            </p>
+            <h4>Throwing Error and Console Reports</h4>
+            <pre>
+if (user_input === 'bad_or_missing') {
+    throw <span class="yellow">new Error(`${this.constructor.name}: YOU DONE WRONG`);</span>
+}
+            </pre>
+            <p>
+                Here when an error is detected, and cannot be handled, it is thrown up the call stack, likely ending up
+                reported to the console. In an application, you might report the error to the user via the user
+                interface as well or only.
+            </p>
+            <pre>
+if (user_input === 'not_quite_right_but_recoverable') {
+    console.<span class="yellow">warn</span>(`${this.constructor.name}: YOU COULD DO BETTER`);
+}
+            </pre>
+            <p>
+                The console warnings might let the user know that the application will still work, but they should act
+                differently next time to improve things.
+            </p>
+            <h4>Default Values</h4>
+            <pre>
+class HotDog {
+    constructor(length <span class="yellow">=</span> 'footlong') {
+        this.length = length;
+    }
+}
+            </pre>
+            <p>
+                Essentially the same as:
+            </p>
+            <pre>
+class HotDog {
+    constructor(length) {
+        this.length = length <span class="yellow">||</span> 'footlong';
+    }
+}
+            </pre>
+            <p>
+                This will mean that classes and functions will act upon valid backup values if none are input as
+                parameters. Further checks can be made to confirm the type and quality of the input parameters as well.
+            </p>
+            <pre>
+class HotDog {
+    constructor(length = 'footlong') {
+        this.length = <span class="yellow">length instanceof String && length</span> || 'footlong';
+    }
+}
+            </pre>
+            <p>
+                You can go crazy with checks. It is fine to get the application up and running(minimum viable product or
+                M.V.P) and then go back and start filling out type checks and error/edge cases.
+            </p>
+            <pre>
+class HotDog {
+    constructor(length) {
+        const potential_dog_lengths = ['regular', 'footlong', 'mini', <span class="red">'innapropriate'</span>];
+        this.length = potential_dog_lengths.includes(length) && length || 'regular';
+    }
+}
+            </pre>
+            <blockquote class="blue">
+                NOTE: TYPESCRIPT is a great option if you want edit time error recognition as well as much more powerful
+                type controls.
+            </blockquote>
+            <br>
+            <p>
+                As previously mentioned, the purpose of this course is to teach the fundementals, not to provide
+                complete and robust application codebases. The code examples provided could be extended and improved
+                significantly. You are encouraged to do so if you feel up to the challenge and you want to improve your
+                skills.
+            </p>
+            <p class="green">
+                That being said it will be a good idea to always keep edge cases and errors in your mind when you are
+                building out your applications. It will save you pain later.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="how_it_works">HOW IT WORKS</h3>
+            <p>
+                Now on to how the cool warp speed animation works.
+            </p>
+            <p>
+                You may want to skip to the bottom of the page and take a look at the <a href="#visual_breakdown"
+                    class="inline-block">visual breakdown</a> example of the animation.
+            </p>
+            <p>
+                Essentially each star is just an HTML element with:
+            </p>
+            <ul class="tab">
+                <li>Randomly generated height and width of 1, 2, or 3 pixels.</li>
+                <li>White background color.</li>
+                <li>Relative coordinate placement.</li>
+            </ul>
+            <p>
+                Each time the animation updates:
+            </p>
+            <ul class="tab">
+                <li>A velocity(change in position over time) vector is calculated based on each star position relative
+                    to the element center. The further away from the center, the greater the magnitude. Directly
+                    outward.</li>
+                <li>Conditionals check to make sure the star is within the bounds of the element.</li>
+                <li>If the star is out of bounds, it is given a new position within a sub-rectangle of the element.
+                    Close to the center.</li>
+                <li>The total speed of the animation increases slightly. The speed is a multiplier of the calculated
+                    velocity vector magnitude.</li>
+                <li>Each stars velocity is added to it's position.</li>
+            </ul>
+            <p>
+                Each time the animation renders:
+            </p>
+            <ul class="tab">
+                <li>Each stars CSS style top and left is updated in the DOM to reflect the stars position vector.</li>
+                <li>The star "moves" outward visually.</li>
+                <li>The stars closer to the edge of the element appear to move faster. Simulating perspective.</li>
+            </ul>
+            <p>
+                All of these things happen so fast that, to the viewer, it looks like you are flying through space at an
+                ever increasing rate. Eventually you approach warp speed and the universe collapses like an old
+                television set. Then it all starts over again.
+            </p>
+            <p>
+                Now on to the code.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="setup">SETUP</h3>
+            <p>
+                In order to prepare our app for JAVASCRIPT control, you will need to set up some HTML and CSS.
+            </p>
+            <p>HTML</p>
+            <pre class="html">
+<article class="warp_target"></article>
+            </pre>
+            <p>
+                Pretty self explanatory. You create an element with a class of warp_target as the destination for the
+                animation.
+            </p>
+            <blockquote class="blue">
+                This animation is meant to occupy the entire browser viewport. Because of this, it is best that it is
+                used in isolation, or as the background of another animation or game. Not on a typical webpage probably.
+            </blockquote>
+            <p>CSS</p>
+            <pre>
+*, *::before, *::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.warp_target {
+    background-color: black;
+    height: 100vh;
+    width: 100vw;
+    pointer-events: none;
+    z-index: -999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+
+.star {
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    z-index: -998;
+}
+            </pre>
+            <p>
+                With the CSS you have a simple CSS RESET. This will balance some cross browser compatibility issues and
+                zero out some user-agent styles.
+            </p>
+            <pre>
+*, *::before, *::after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+            </pre>
+            <p>
+                Then you have the styles for the destination element. Black background, fill the viewport, fixed and
+                zero position, no overflow, and positioned behind all other elements.
+            </p>
+            <pre>
+.warp_target {
+    background-color: black;
+    height: 100vh;
+    width: 100vw;
+    pointer-events: none;
+    z-index: -999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+            </pre>
+            <p>
+                Finally, you have the styles for the star elements. White background, round, absolute position, and
+                placed just on top of the wrapper element.
+            </p>
+            <pre>
+.star {
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    z-index: -998;
+}
+            </pre>
+            <p>
+                Not too much, now on to the JAVASCRIPT classes that will manage the animation.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="constructor">CONSTRUCTOR</h3>
+            <p>
+                Now you can get into building classes. Often time you will create a class for every distinct object
+                type.
+            </p>
+            <p>
+                As time goes on, you will build out a more complex system of classes. For now you can stick to just a
+                couple.
+            </p>
+            <p>
+                Since this application utilises two main object types, space and star, they will be abstracted into two
+                classes.
+            </p>
+            <p>
+                The space instances will create, contain, and manage all of the star instances.
+            </p>
+            <p>
+                First you can cover namespacing:.
+            </p>
+            <pre>
+const warp = (() => {
+    
+    class Star { }
+    
+    class Space { }
+    
+    return {
+        Space,
+        Star
+    };
+})();
+            </pre>
+            <p>
+                Here you use an IIFE statement and an exported object to place the entire application in the "warp"
+                namespace.
+            </p>
+            <p>
+                The two classes are also declared within the namespace and exported in the object.
+            </p>
+            <p>
+                This IIFE block is a nice safe space to conduct any preparation without polluting the global namespace.
+            </p>
+            <pre>
+const warp = (() => {
+
+    <span class="yellow">const give_data = target => {
+        const
+          width = target && target.clientWidth || window.innerWidth,
+          height = target && target.clientHeight || window.innerHeight;
+        return { width, height, center : { x : width / 2, y : height / 2 } };
+    };</span>
+    
+    class Star { }
+    
+    class Space { }
+    
+    return {
+        Space,
+        Star
+    };
+})();
+            </pre>
+            <p>
+                Here you can see that since you will be accessing element or window dimensions for this application that
+                the data collection can be abstracted into a function within the namespace. This function will only be
+                used within the application and will not be exported in the object.
+            </p>
+            <p>
+                The function itself just returns the width, height, and center coordinate of the element that is passed
+                in or the window.
+            </p>
+            <p>
+                Now the classes, you can start to scaffold them out, starting with the constructors.
+            </p>
+            <p>
+                The star class it is simple enough. You just accept an options object as a parameter and store it as a
+                hidden(underscore prefixed) property of the class instance.
+            </p>
+            <pre>
+const warp = (() => {
+    // GIVE_DATA HIDDEN
+    class Star {
+        <span class="yellow">constructor(options = {}) {
+            this._options = options;
+        }</span>
+    }
+    
+    class Space { }
+    // EXPORT OBJECT HIDDEN
+})();
+            </pre>
+            <blockquote class="blue">
+                NOTE: Options objects are a very common practice for API's. They allow the user to input a single object
+                with the option parameters declared within the object, in any order. Instead of having to pass all
+                options as parameters to the constructor in the correct order. Users often mess this up, so an options
+                object helps with usability.
+            </blockquote>
+            <p>
+                The space class is similar. The only difference is that the last line of the constructor is making a
+                call to the class instances hidden initialize method that has yet to be declared.
+            </p>
+            <pre>
+const warp = (() => {
+    // GIVE_DATA HIDDEN
+    class Star {
+        constructor(options = {}) {
+            this._options = options;
+        }
+    }
+    
+    class Space {
+        <span class="yellow">constructor(options = {}) {
+            this._options = options;
+            this._initialize();
+        }</span>
+    }
+    // EXPORT OBJECT HIDDEN
+})();
+            </pre>
+            <p>
+                This will allow the user to simply instantiate the "warp.Space" class and all of the other dominos will
+                fall into place automatically.
+            </p>
+            <p>
+                On that note, you might as well loop over the target elements and instantiate the classes for each one,
+                passing in options objects.
+            </p>
+            <pre>
+const warp = (() => {
+    // GIVE_DATA HIDDEN
+    class Star {
+        constructor(options = {}) {
+            this._options = options;
+        }
+    }
+    
+    class Space {
+        constructor(options = {}) {
+            this._options = options;
+            this._initialize();
+        }
+    }
+    // EXPORT OBJECT HIDDEN
+})();
+
+<span class="yellow">window.addEventListener('DOMContentLoaded', () => {
+    Array.from(document.querySelectorAll('.warp_target')).forEach(target => {
+        new warp.Space({
+            speed: target.dataset.speed,
+            quantity: target.dataset.quantity,
+            target
+        });
+    });
+});</span>
+            </pre>
+            <p>
+                Here a new "warp.Space" is created for every element with the warp_target class. You also pass in the
+                needed options acquired from the element's dataset, if they exist, as well as the target element itself.
+            </p>
+            <p>
+                Now you can fill out the animation phase methods for both classes.
+            </p>
+            <pre>
+const warp = (() => {
+    // GIVE_DATA HIDDEN
+    class Star {
+        constructor(options = {}) {
+            this._options = options;
+        }
+    
+        <span class="yellow">initialize() { }
+    
+        update() { }
+    
+        render() { }
+        
+        reset() { }</span>
+    }
+    
+    class Space {
+        constructor(options = {}) {
+            this._options = options;
+            this._initialize();
+        }
+    
+        <span class="yellow">_initialize() { }
+    
+        _update() { }
+    
+        _render() { }
+    
+        _repeat() { }
+        
+        reset() { }</span>
+    }
+    // EXPORT OBJECT HIDDEN
+})();
+// INSTANTIATION LOOP HIDDEN
+            </pre>
+            <p>
+                Notice how all of the method names for the space class are hidden, except for the reset method. The
+                reason is that these methods are only intended to be used by the class itself, not other classes or
+                users. Reset is the exception because it would be appropriate for a user to call the reset method from
+                the outside if they wanted.
+            </p>
+            <p>
+                Now you will be define a getter that will transfer the data reading to the data of the parent instance.
+            </p>
+            <pre>
+const warp = (() => {
+    // GIVE_DATA HIDDEN
+    class Star {
+        constructor(options = {}) {
+            this._options = options;
+        }
+        // PHASES HIDDEN
+        <span class="yellow">get window_data() {
+            return this.parent && this.parent.window_data || give_data(this.target);
+        }</span>
+    }
+    
+    class Space {
+        constructor(options = {}) {
+            this._options = options;
+            this._initialize();
+        }
+        // PHASES HIDDEN
+    }
+    // EXPORT OBJECT HIDDEN
+})();
+// INSTANTIATION LOOP HIDDEN
+            </pre>
+            <p>
+                This will force this function to be called every time "this.window_data" is read by a star class
+                instance. The function essentially will attempt to read the window_data of the parent instance(space)
+                before defaulting to the much slower give_data function. This will minimize the DOM reads and improve
+                performance.
+            </p>
+            <p>
+                I know this may seem a bit confusing and may be information overload. Don't panic, you will be exposed
+                to these concepts more and given an opportunity to adopt them. Also trust that there is a meaning to the
+                madness. When you build out an application, it is best to try any imagineer it before actually coding
+                it. This imagineered version almost always is changed to a real working version.
+            </p>
+            <p>
+                You will find a good working flow and order as you build your own classes and applications. You might
+                follow a different order or workflow, that is fine. The methods, getters, and properties that are being
+                accessed and declared.
+            </p>
+            <p>
+                Let's knock the initialization for the two classes out of the way next.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="initialize">INITIALIZE</h3>
+            <p>
+                There are two classes to handle the initialization for, you can start with the parent class this time,
+                space.
+            </p>
+            <pre>
+class Space {
+    // CONSTRUCTOR HIDDEN
+    
+    <span class="yellow">_initialize() { }</span>
+    
+    // OTHER PHASES HIDDEN
+}
+            </pre>
+            <p>
+                The first step for initialization will be to extract any potential values from the options object that
+                was collected or created in the constructor.
+            </p>
+            <pre>
+_initialize() {
+    <span class="yellow">this.parent = this._options.parent || null;</span>
+}
+            </pre>
+            <p>
+                Null values are better than undefined's, they signify that the value was intentionally assigned instead
+                of being due to en error of some type.
+            </p>
+            <p>
+                Next you collect the target element from the options object. In this case there doesn't seem to be a
+                suitable default value, so another technique must be implemented.
+            </p>
+            <pre>
+_initialize() {
+    this.parent = this._options.parent || null;
+    <span class="yellow">this.target = this._options.target;
+    if (!this.target || !(this.target instanceof HTMLElement)) {
+        throw new Error(`${this.constructor.name}: NO TARGET ELEMENT`);
+    }</span>
+}
+            </pre>
+            <p>
+                A conditional error check confirms the presence of a DOM node in the options object set to target. If it
+                doesn't exist, you return an error message and cease execution. The class will not work.
+            </p>
+            <blockquote class="blue">
+                NOTE: The instanceof keyword can be used to check if one value is an instance of a class. Also note the
+                use of the ".constructor.name" in the template string. This prints the creator of the error to the
+                console with the message. This is simple form of tagged error logging, it could be extended, and it will
+                help with debugging later.
+            </blockquote>
+            <pre>
+_initialize() {
+    this.parent = this._options.parent || null;
+    this.target = this._options.target;
+    if (!this.target || !(this.target instanceof HTMLElement)) {
+        throw new Error(`${this.constructor.name}: NO TARGET ELEMENT`);
+    }
+    <span class="yellow">this.window_data = give_data(this.target);
+    this.speed = this._options.speed || 100;
+    this.quantity = this._options.quantity || 800;</span>
+}
+            </pre>
+            <p>
+                The rest of the needed parameters are acquired. From the give_data function: the element dimensions data
+                object. From the options object: starting speed, star quantity.
+            </p>
+            <p>
+                Now all of the stars need to be created.
+            </p>
+            <pre>
+_initialize() {
+    this.parent = this._options.parent || null;
+    this.target = this._options.target;
+    if (!this.target || !(this.target instanceof HTMLElement)) {
+        throw new Error(`${this.constructor.name}: NO TARGET ELEMENT`);
+    }
+    this.window_data = give_data(this.target);
+    this.speed = this._options.speed || 100;
+    this.quantity = this._options.quantity || 800;
+    <span class="yellow">this.stars = new Array(this.quantity)
+        .fill(null)
+        .map(v => new Star({ target: this.target, parent: this }));</span>
+}
+            </pre>
+            <p>
+                The "this.stars" property is being assigned the output of a chain of operations.
+            </p>
+            <p>
+                It might be better to break this down a bit.
+            </p>
+            <pre>
+this.stars = <span class="yellow">new Array(this.quantity)</span>
+    .fill(null)
+    .map(v => new Star({ target: this.target, parent: this }));
+            </pre>
+            <p>
+                The "new Array(this.quantity)" creates an array of the length of the "this.quantity" property, the
+                desired number of stars.
+            </p>
+            <pre>
+this.stars = new Array(this.quantity)
+    <span class="yellow">.fill(null)</span>
+    .map(v => new Star({ target: this.target, parent: this }));
+            </pre>
+            <p>
+                The ".fill(null)" statement is chained onto the newly constructed array. The array is technically full
+                of empty values, so this will fill it with null values. Still nothing, but not empty. Full of nothing.
+                It can now be looped over with the next statement.
+            </p>
+            <pre>
+this.stars = new Array(this.quantity)
+    .fill(null)
+    <span class="yellow">.map(v => new Star({ target: this.target, parent: this }));</span>
+            </pre>
+            <p>
+                The map operation will produce and return a new array full of newly instantiated Star's. Each star is
+                passed in an options object with the target element and "this" representing the instance of space that
+                created the star. Space is the parent of all of the stars.
+            </p>
+            <p>
+                Now back to the method at hand.
+            </p>
+            <pre>
+_initialize() {
+    this.parent = this._options.parent || null;
+    this.target = this._options.target;
+    if (!this.target || !(this.target instanceof HTMLElement)) {
+        throw new Error(`${this.constructor.name}: NO TARGET ELEMENT`);
+    }
+    this.window_data = give_data(this.target);
+    this.speed = this._options.speed || 100;
+    this.quantity = this._options.quantity || 800;
+    this.stars = new Array(this.quantity)
+        .fill(null)
+        .map(v => new Star({ target: this.target, parent: this }));
+    <span class="yellow">this.stars.forEach(v => v.initialize());
+    this._repeat();</span>
+}
+            </pre>
+            <p>
+                Each star needs to be initialized, the constructor of the star does not call it's own initialize method.
+                So you loop over all of the stars and call their initialize methods.
+            </p>
+            <p>
+                Then as this is the end of initialization for the class instance, you call the instance repeat function
+                to kick off the animation loop process.
+            </p>
+            <p>
+                Now on to the Star class's initialize method.
+            </p>
+            <pre>
+class Star {
+    // CONSTRUCTOR HIDDEN
+    
+    initialize() { }
+    
+    // OTHER PHASES HIDDEN
+}
+            </pre>
+            <p>
+                The first few lines are the same as with the Space class.
+            </p>
+            <pre>
+initialize() {
+    <span class="yellow">this.parent = this._options.parent || null;
+    this.target = this._options.target;
+    if (!this.target || !(this.target instanceof HTMLElement)) {
+        throw new Error(`${this.constructor.name}: NO TARGET ELEMENT`);
+    }</span>
+}
+            </pre>
+            <p>
+                The next bit is where things stray. Don't be intimidated by the math stuff, it is not as hard as you
+                might think it is. That being said, get comfortable working with vectors, they are everywhere in coding
+                and especially games and animation.
+            </p>
+            <p>
+                This one is simple. Just an X and Y value in an object, representing the position of the star in
+                coordinates(left and top offset). You can call this a two-dimensional vector since it only has two value
+                options, two dimensions. This course will stick with just 2d vectors, so if you can get your mind around
+                this, you can tackle them all.
+            </p>
+            <pre>
+initialize() {
+    this.parent = this._options.parent || null;
+    this.target = this._options.target;
+    if (!this.target || !(this.target instanceof HTMLElement)) {
+        throw new Error(`${this.constructor.name}: NO TARGET ELEMENT`);
+    }
+    <span class="yellow">this.position = {
+        x : (Math.floor(Math.random() * this.window_data.width)),
+        y : (Math.floor(Math.random() * this.window_data.height))
+    };</span>
+}
+            </pre>
+            <p>
+                Breaking down the first math operation, the one for x:
+            </p>
+            <p>
+                1. The parenthesis wrap the entire operation, they are technically redundant here, but they don't hurt.
+            </p>
+            <pre>
+<span class="yellow">(</span>Math.floor(Math.random() * this.window_data.width)<span class="yellow">)</span>
+            </pre>
+            <p>
+                2. Math.floor rounds down to the nearest integer value, this prevents the styles being applied to the
+                DOM from having a long trailing decimal value.
+            </p>
+            <pre>
+(<span class="yellow">Math.floor(</span>Math.random() * this.window_data.width<span class="yellow">)</span>)
+            </pre>
+            <p>
+                3. Math.random produces a random value between 0 and 1.
+            </p>
+            <pre>
+(Math.floor(<span class="yellow">Math.random()</span> * this.window_data.width))
+            </pre>
+            <p>
+                4. The random value is multiplied by the width of the element.
+            </p>
+            <pre>
+(Math.floor(Math.random() <span class="yellow">* this.window_data.width</span>))
+            </pre>
+            <p>
+                The output is guaranteed to be within the elements bounds, and be essentially random.
+            </p>
+            <p>
+                So after all the property "this.position" will be an object with random x and y coordinates within the
+                element. Not too bad, you will take a deeper look at vector operations in coming lessons.
+            </p>
+            <p>
+                Returning to the initialize method, you also declare a vector for velocity. This vector is different
+                from the position vector as it represents the CHANGE in the position vector over time(every frame).
+            </p>
+            <pre>
+initialize() {
+    this.parent = this._options.parent || null;
+    this.target = this._options.target;
+    if (!this.target || !(this.target instanceof HTMLElement)) {
+        throw new Error(`${this.constructor.name}: NO TARGET ELEMENT`);
+    }
+    this.position = {
+        x : (Math.floor(Math.random() * this.window_data.width)),
+        y : (Math.floor(Math.random() * this.window_data.height))
+    };
+    <span class="yellow">this.velocity = { x : 0, y : 0 };</span>
+}
+            </pre>
+            <p>
+                This vector is declared with zero values, this means no change in position, for the time being. The
+                velocity will be altered later.
+            </p>
+            <blockquote class="blue">
+                NOTE: When applying a velocity to a position, you simply add their component values together and the new
+                vector is the new position.
+            </blockquote>
+            <pre>
+initialize() {
+    this.parent = this._options.parent || null;
+    this.target = this._options.target;
+    if (!this.target || !(this.target instanceof HTMLElement)) {
+        throw new Error(`${this.constructor.name}: NO TARGET ELEMENT`);
+    }
+    this.position = {
+        x : (Math.floor(Math.random() * this.window_data.width)),
+        y : (Math.floor(Math.random() * this.window_data.height))
+    };
+    this.velocity = { x : 0, y : 0 };
+    <span class="yellow">this.height = (Math.floor(Math.random() * 3) + 1);</span>
+}
+            </pre>
+            <p>
+                This last one is simpler. You are just giving the star a height value of either 1, 2, or 3. This will
+                provide the perspective illusion of some stars being closer or brighter than others
+            </p>
+            <p>
+                Another math breakdown:
+            </p>
+            <p>
+                1. The parenthesis wrap the operation.
+            </p>
+            <pre>
+<span class="yellow">(</span>Math.floor(Math.random() * 3) + 1<span class="yellow">)</span>
+            </pre>
+            <p>
+                2. Math.floor wraps and rounds down the output of the first operation.
+            </p>
+            <pre>
+(<span class="yellow">Math.floor(</span>Math.random() * 3<span class="yellow">)</span> + 1)
+            </pre>
+            <p>
+                3. The contents of Math.floor: A random number between 0 and 1 is multiplied by three. This, when
+                rounded down by Math.floor will always randomly produce either 0, 1, or 2.
+            </p>
+            <pre>
+(Math.floor(<span class="yellow">Math.random() * 3</span>) + 1)
+            </pre>
+            <p>
+                4. Since you want values 1, 2 or 3, not 0, 1, or 2, you just add one at the end.
+            </p>
+            <pre>
+(Math.floor(Math.random() * 3) <span class="yellow">+ 1</span>)
+            </pre>
+            <blockquote class="blue">
+                This simple random number generator syntax can be used in SO many places in your code, just modify the
+                multiplier to reflect the range of possible numbers.
+            </blockquote>
+            <p>
+                To finish off the initialize method of a star, you will need to create and attach an actual DOM element
+                to represent the star.
+            </p>
+            <pre>
+initialize() {
+    this.parent = this._options.parent || null;
+    this.target = this._options.target;
+    if (!this.target || !(this.target instanceof HTMLElement)) {
+        throw new Error(`${this.constructor.name}: NO TARGET ELEMENT`);
+    }
+    this.position = {
+        x : (Math.floor(Math.random() * this.window_data.width)),
+        y : (Math.floor(Math.random() * this.window_data.height))
+    };
+    this.velocity = { x : 0, y : 0 };
+    this.height = (Math.floor(Math.random() * 3) + 1);
+    <span class="yellow">this.dom_node = document.createElement('gold');
+    this.dom_node.classList.add('star');
+    this.dom_node.style.height = this.dom_node.style.width = `${this.height}px`;
+    this.target.append(this.dom_node);</span>
+}
+            </pre>
+            <p>
+                The first added line creates the actual DOM element, in JAVASCRIPT only.
+            </p>
+            <pre>
+<span class="yellow">this.dom_node = document.createElement('gold');</span>
+this.dom_node.classList.add('star');
+this.dom_node.style.height = this.dom_node.style.width = `${this.height}px`;
+this.target.append(this.dom_node);
+            </pre>
+            <blockquote class="blue">
+                NOTE: Gold elements don't actually exist in the HTML5 specification, it is only here because the author
+                of this tutorial is a smart-ass.
+            </blockquote>
+            <p>
+                The second line adds a class of star to the element.
+            </p>
+            <pre>
+this.dom_node = document.createElement('gold');
+<span class="yellow">this.dom_node.classList.add('star');</span>
+this.dom_node.style.height = this.dom_node.style.width = `${this.height}px`;
+this.target.append(this.dom_node);
+            </pre>
+            <p>
+                The third line uses assignment operator chaining to assign both the element's width and height CSS
+                values to the calculated height from earlier, with the "px" at the end for CSS.
+            </p>
+            <pre>
+this.dom_node = document.createElement('gold');
+this.dom_node.classList.add('star');
+<span class="yellow">this.dom_node.style.height = this.dom_node.style.width = `${this.height}px`;</span>
+this.target.append(this.dom_node);
+            </pre>
+            <p>
+                The last line simply appends the element to the DOM, within the target element of the star.
+            </p>
+            <pre>
+this.dom_node = document.createElement('gold');
+this.dom_node.classList.add('star');
+this.dom_node.style.height = this.dom_node.style.width = `${this.height}px`;
+<span class="yellow">this.target.append(this.dom_node);</span>
+            </pre>
+            <p>
+                Sweet! That finishes off the initialization phases of the two classes. Now on to the update phases.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="update">UPDATE</h3>
+            <p>
+                Like with the initialization phase, you can start by filling out the update method for the parent Space
+                class.
+            </p>
+            <pre>
+class Space {
+    // CONSTRUCTOR HIDDEN
+    // INITIALIZATION PHASE HIDDEN
+    
+    _update() { }
+    
+    // OTHER PHASES HIDDEN
+}
+            </pre>
+            <p>
+                The code for this phase will be pretty simple for the Space class, since the job of space is really just
+                to hold the stars. First you increase the speed of space as time goes on.
+            </p>
+            <pre>
+_update() {
+    <span class="yellow">this.speed -= 0.06;</span>
+}
+            </pre>
+            <p>
+                You actually decrease the speed property a bit instead of add to it. This is because of how the speed
+                property is used in the velocity calculation you will see in the star class. As the value for the speed
+                propery decreases, the actual speed increases.
+            </p>
+            <p>
+                Next you will have to read the element dimensions again using the helper function declared earlier. This
+                read needs to be performed every time space updates because the dimensions of the element may have
+                changed, so the values must be updated.
+            </p>
+            <pre>
+_update() {
+    this.speed -= 0.06;
+    <span class="yellow">this.window_data = give_data(this.target);</span>
+}
+            </pre>
+            <p>
+                Now it is the job of space to update all of the stars it contains. This can be achieved by looping over
+                the stars and calling each stars update method.
+            </p>
+            <pre>
+_update() {
+    this.speed -= 0.06;
+    this.window_data = give_data(this.target);
+    <span class="yellow">this.stars.forEach(v => v.update());</span>
+}
+            </pre>
+            <p>
+                Finally you will want to perform a check to see whether it is time for the whole animation to reset.
+                This time will be when the speed of space is less that negative 5, this is well beyond 0, the point when
+                space and all of the stars collapse.
+            </p>
+            <pre>
+_update() {
+    this.speed -= 0.06;
+    this.window_data = give_data(this.target);
+    this.stars.forEach(v => v.update());
+    <span class="yellow">if (this.speed < -5) {
+        this.reset();
+    }</span>
+}
+            </pre>
+            <p>
+                If the condition evaluates true then the reset method is called.
+            </p>
+            <p>
+                Now on to the Star class and it's update method.
+            </p>
+            <pre>
+class Star {
+    // CONSTRUCTOR HIDDEN
+    // INITIALIZATION PHASE HIDDEN
+    
+    update() { }
+    
+    // OTHER PHASES HIDDEN
+    // GETTER HIDDEN
+}
+            </pre>
+            <p>
+                Right off the bat, the hardest part of the update method is taken care of, the velocity calculation.
+            </p>
+            <pre>
+update() {
+    <span class="yellow">this.velocity =
+    {
+        x : (this.position.x - this.window_data.center.x) / (this.parent && this.parent.speed || 100),
+        y : (this.position.y - this.window_data.center.y) / (this.parent && this.parent.speed || 100)
+    };</span>
+}
+            </pre>
+            <p>
+                In this application, the velocity for each star is recalculated every time the frame animates. The
+                reason is that the velocity of a star is outward from the center of the element of a magnitude depending
+                on the speed of space and the distance from the center. The further out the star is, the greater the
+                magnitude of change. This changes with every frame, and therefore must be recalculated every frame.
+            </p>
+            <p>
+                Time for a math breakdown of the velocity x value calculation, the y is very similar.
+            </p>
+            <p>
+                1. The parenthesis wrap the first half of the operation, calculating the distance from position to
+                center.
+            </p>
+            <pre>
+<span class="yellow">(</span>this.position.x - this.window_data.center.x<span class="yellow">)</span> / (this.parent && this.parent.speed || 100)
+            </pre>
+            <p>
+                2. This first value is acquired by subtracting the position value from the center value, x or y. This is
+                like drawing a line from the center to the position and beyond. This is the path the star will travel.
+            </p>
+            <pre>
+(<span class="yellow">this.position.x - this.window_data.center.x</span>) / (this.parent && this.parent.speed || 100)
+            </pre>
+            <p>
+                3. The first value, the distance, is then divided by the output of the second operation, the speed of
+                space. This division is what applies the total speed to each star.
+            </p>
+            <pre>
+(this.position.x - this.window_data.center.x) <span class="yellow">/</span> (this.parent && this.parent.speed || 100)
+            </pre>
+            <p>
+                4. The parenthesis wrap the second operation.
+            </p>
+            <pre>
+(this.position.x - this.window_data.center.x) / <span class="yellow">(</span>this.parent && this.parent.speed || 100<span class="yellow">)</span>
+            </pre>
+            <p>
+                5. Assuming there is a parent to the star, use the parent's speed property as the divider, else default
+                to 100, constant speed.
+            </p>
+            <pre>
+(this.position.x - this.window_data.center.x) / (<span class="yellow">this.parent && this.parent.speed || 100</span>)
+            </pre>
+            <p>
+                The final output will be the direction and magnitude of change that the stars position should make.
+            </p>
+            <p>
+                It is amazing what just a couple lines of simple math can produce.
+            </p>
+            <p>
+                Now back to the update method.
+            </p>
+            <pre>
+update() {
+    this.velocity =
+    {
+        x : (this.position.x - this.window_data.center.x) / (this.parent && this.parent.speed || 100),
+        y : (this.position.y - this.window_data.center.y) / (this.parent && this.parent.speed || 100)
+    };
+    <span class="yellow">this.position.x += this.velocity.x;
+    this.position.y += this.velocity.y;</span>
+}
+            </pre>
+            <p>
+                Here you just apply the newly calculated velocity to the position. This is done by adding x to x and y
+                to y, the stars position has been updated by the velocity.
+            </p>
+            <p>
+                Now the only thing left is to check that the star is still within the bounds of the element. If it is
+                not, the reset method will be called and the position will be reset randomly within the bounds much like
+                during initialization.
+            </p>
+            <pre>
+update() {
+    this.velocity =
+    {
+        x : (this.position.x - this.window_data.center.x) / (this.parent && this.parent.speed || 100),
+        y : (this.position.y - this.window_data.center.y) / (this.parent && this.parent.speed || 100)
+    };
+    this.position.x += this.velocity.x;
+    this.position.y += this.velocity.y;
+    <span class="yellow">if (
+      this.position.x < 0
+      ||
+      this.position.x > this.window_data.width
+      ||
+      this.position.y < 0
+      ||
+      this.position.y > this.window_data.height
+      )
+       {
+        this.reset();
+    }</span>
+}
+            </pre>
+            <p>
+                You can break down the conditional.
+            </p>
+            <p>
+                1. If the horizontal coordinate is less than zero, it is out of bounds.
+            </p>
+            <pre>
+this.position.x < 0
+            </pre>
+            <p>
+                2. If the horizontal coordinate is greater than the width of the element, it is out of bounds.
+            </p>
+            <pre>
+this.position.x > this.window_data.width
+            </pre>
+            <p>
+                3. If the vertical coordinate is less than zero, it is out of bounds.
+            </p>
+            <pre>
+this.position.y < 0
+            </pre>
+            <p>
+                4. If the vertical coordinate is greater than the width of the element, it is out of bounds.
+            </p>
+            <pre>
+this.position.y > this.window_data.height
+            </pre>
+            <p>
+                So if any of these conditions are met, the reset method is called and the position updated.
+            </p>
+            <blockquote class="blue">
+                NOTE: Technically the reset method is still part of the update animation phase. It is just modularized
+                into it's own method for code clarity and in case it needs to be activated by the user.
+            </blockquote>
+            <p>
+                That's it for the update phases, on to render.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="render">RENDER</h3>
+            <p>
+                As this is a DOM animation, the render phase code will be pretty minimal. As you move to other rendering
+                tools, these methods will become more complex.
+            </p>
+            <p>
+                Like before, you can start with the parent class of space and it's render method.
+            </p>
+            <pre>
+class Space {
+    // CONSTRUCTOR HIDDEN
+    // OTHER PHASES HIDDEN
+    
+    _render() { }
+}
+            </pre>
+            <p>
+                Space has only one rendering job to do, loop over all of the stars and call the render method of each.
+            </p>
+            <pre>
+_render() {
+    <span class="yellow">this.stars.forEach(v => v.render());</span>
+}
+            </pre>
+            <p>
+                That's it for the space class, now the star class.
+            </p>
+            <pre>
+class Star {
+    // CONSTRUCTOR HIDDEN
+    // OTHER PHASES HIDDEN
+    
+    render() { }
+}
+            </pre>
+            <p>
+                This one will be equally simple. All the star needs to do is update the CSS top and left styles of it's
+                element to reflect it's position.
+            </p>
+            <pre>
+render() {
+    <span class="yellow">this.dom_node.style.left = `${this.position.x}px`;
+    this.dom_node.style.top = `${this.position.y}px`;</span>
+}
+            </pre>
+            <p>
+                Just like in previous lessons, with the "px" at the end for CSS.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="repeat">REPEAT</h3>
+            <p>
+                As the Space class manages the stars, this will be the only place where the repeat phase method occurs.
+            </p>
+            <p>
+                Even in massive applications, there will likely still only be one repeat loop method running. This one
+                method will fire off a chain reaction of updates and renders for the whole app.
+            </p>
+            <p>
+                The implementation is the same as taught in previous lessons.
+            </p>
+            <pre>
+class Space {
+    // CONSTRUCTOR HIDDEN
+
+    _update() { }
+    
+    _render() { }
+    
+    <span class="yellow">_repeat() {
+        this._update();
+        this._render();
+        window.requestAnimationFrame(() => this._repeat());
+    }</span>
+    
+    reset() { }
+}
+            </pre>
+            <p>
+                Easy enough, now finally to reset.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="reset">RESET</h3>
+            <p>
+                The reset phase is really just an extension of the update phase, just seperated.
+            </p>
+            <p>
+                Following the same pattern, you can build the method for the parent space class first.
+            </p>
+            <pre>
+class Space {
+    // CONSTRUCTOR HIDDEN
+    // OTHER PHASES HIDDEN
+    
+    reset() { }
+}
+            </pre>
+            <p>
+                The reset for space itself will just be to set it's speed back to the starting value. Then to loop over
+                all of the stars and call each stars reset method.
+            </p>
+            <pre>
+reset() {
+    <span class="yellow">this.speed = this._options.speed || 100;
+    this.stars.forEach(v => v.reset());</span>
+}
+            </pre>
+            <p>
+                Easy as PI, math jokes. Now for the star class.
+            </p>
+            <pre>
+class Star {
+    // CONSTRUCTOR HIDDEN
+    // OTHER PHASES HIDDEN
+    
+    reset() { }
+}
+            </pre>
+            <p>
+                First each star will want to reset it's position within the bounds of the element. The only difference
+                here is that you want to keep the stars closer to the center of the element. This will help simulate the
+                feeling of flying through space, more stars appear closer to the vanishing point.
+            </p>
+            <pre>
+reset() {
+    <span class="yellow">this.position =
+    {
+        x : (Math.floor(Math.random() * (this.window_data.width / 2)) + (this.window_data.width / 4)),
+        y : (Math.floor(Math.random() * (this.window_data.height / 2)) + (this.window_data.height / 4)),
+    };</span>
+}
+            </pre>
+            <p>
+                This math operation will produce a position vector that is within a sub-rectangle of the element in the
+                center.
+            </p>
+            <p>
+                Time for another math breakdown, for the x value, fun.
+            </p>
+            <p>
+                1. Parentheses wrap the whole operation.
+            </p>
+            <pre>
+<span class="yellow">(</span>Math.floor(Math.random() * (this.window_data.width / 2)) + (this.window_data.width / 4)<span class="yellow">)</span>
+            </pre>
+            <p>
+                2. The left hand operation occurs within a Math.floor that will round down the output to an integer.
+            </p>
+            <pre>
+(<span class="yellow">Math.floor(</span>Math.random() * (this.window_data.width / 2)<span class="yellow">)</span> + (this.window_data.width / 4))
+            </pre>
+            <p>
+                3. The contents of the left hand floor operation is a random number between 0 and 1 multiplied by one
+                half the width of the element. This will place the x position somewhere in the left half of the element.
+                The total sub-rectangle of possible position vectors will be the upper left quadrant of the element at
+                this point.
+            </p>
+            <pre>
+(Math.floor(<span class="yellow">Math.random() * (this.window_data.width / 2)</span>) + (this.window_data.width / 4))
+            </pre>
+            <p>
+                4. The output of the left hand operation is added to the output of the right hand operation.
+            </p>
+            <pre>
+(Math.floor(Math.random() * (this.window_data.width / 2)) <span class="yellow">+</span> (this.window_data.width / 4))
+            </pre>
+            <p>
+                5. The right hand operation output is simply one fourth of the width of the element. This will
+                effectively slide the total position vector sub-rectangle of possible positions into the center.
+            </p>
+            <pre>
+(Math.floor(Math.random() * (this.window_data.width / 2)) + <span class="yellow">(this.window_data.width / 4)</span>)
+            </pre>
+            <blockquote class="green">
+                HINT: You can see the sub-rectangle of possible vectors for just a second when the animation resets. It
+                may help to see it to understand what is going on.
+            </blockquote>
+            <p>
+                Now back to the reset method of the star class.
+            </p>
+            <p>
+                You will also need to reset the height of the star to a random value like during initialization. You
+                will then want to update the CSS related to this.
+            </p>
+            <pre>
+reset() {
+    this.position =
+    {
+        x : (Math.floor(Math.random() * (this.window_data.width / 2)) + (this.window_data.width / 4)),
+        y : (Math.floor(Math.random() * (this.window_data.height / 2)) + (this.window_data.height / 4)),
+    };
+    <span class="yellow">this.height = (Math.floor(Math.random() * 3) + 1);
+    this.dom_node.style.height = this.dom_node.style.width = `${this.height}px`;</span>
+}
+            </pre>
+            <p>
+                Technically this last line could be considered a rendering operation, maybe it has a better place in the
+                render method. However since the setting and rendering of the height and width of the stars happens so
+                much less frequently than the rest of the rendering actions, it might be better left here in the reset
+                method.
+            </p>
+            <p class="green">
+                Hooray! You made it. Check out the visual breakdown example below of the code and don't forget to
+                complete the lesson challenge.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="visual_breakdown">VISUAL BREAKDOWN</h3>
+            <section class="gray-border padded">
+                <h4>SPEED CONTROL</h4>
+                <section class="center gray-border padded" style="max-width:400px;">
+                    <input value="2" min="1" max="11" step="0.1" type="range" list="range_span">
+                    <datalist id="range_span">
+                        <option value="1" label="0%">
+                        <option value="2">
+                        <option value="3">
+                        <option value="4">
+                        <option value="5" label="50%">
+                        <option value="6">
+                        <option value="7">
+                        <option value="8">
+                        <option value="9">
+                        <option value="10">
+                        <option value="11" label="100%">
+                    </datalist>
+                </section>
+            </section>
+            <br>
+            <article style="width: 400px;height:200px;position:relative;" class="warp_target"></article>
+            <br>
+            <pre class="visual_breakdown_pre" style="font-size:0.5rem;">
+class Star {
+    // CONSTRUCTOR HIDDEN
+    // INITIALIZATION PHASE HIDDEN
+    update() {
+        <span data-state="star_update_velocity">this.velocity =
+        {
+            x : (this.position.x - this.window_data.center.x) / (this.parent && this.parent.speed || 100),
+            y : (this.position.y - this.window_data.center.y) / (this.parent && this.parent.speed || 100)
+        };</span>
+        <span data-state="star_update_position_x">this.position.x += this.velocity.x;</span>
+        <span data-state="star_update_position_y">this.position.y += this.velocity.y;</span>
+        <span data-state="star_update_check_collisions">if (
+          this.position.x < 0
+          ||
+          this.position.x > this.window_data.width
+          ||
+          this.position.y < 0
+          ||
+          this.position.y > this.window_data.height
+          )
+           {</span>
+            <span data-state="star_update_reset">this.reset();</span>
+        }
+    }
+    render() {
+        <span data-state="star_render_x">this.dom_node.style.left = `${this.position.x}px`;</span>
+        <span data-state="star_render_y">this.dom_node.style.top = `${this.position.y}px`;</span>
+    }
+    reset() {
+        <span data-state="star_reset">this.position =
+        {
+            x : (Math.floor(Math.random() * (this.window_data.width / 2)) + (this.window_data.width / 4)),
+            y : (Math.floor(Math.random() * (this.window_data.height / 2)) + (this.window_data.height / 4)),
+        };
+        this.height = (Math.floor(Math.random() * 3) + 1);
+        this.dom_node.style.height = this.dom_node.style.width = `${this.height}px`;</span>
+    }
+    // GETTER HIDDEN
+}
+
+class Space {
+    // CONSTRUCTOR HIDDEN
+    // INITIALIZATION PHASE HIDDEN
+    _update() {
+        <span data-state="space_update_speed">this.speed -= 0.06;</span>
+        <span data-state="space_update_window_data">this.window_data = give_data(this.target);</span>
+        <span data-state="space_update_loop">this.stars.forEach(v => v.update());</span>
+        <span data-state="space_update_check_speed">if (this.speed < -5) {</span>
+            <span data-state="space_update_reset">this.reset();</span>
+        }
+    }
+    _render() {
+        <span data-state="space_render_loop">this.stars.forEach(v => v.render());</span>
+    }
+    _repeat() {
+        <span data-state="space_repeat_update">this._update();</span>
+        <span data-state="space_repeat_render">this._render();</span>
+        window.requestAnimationFrame(() => this._repeat());
+    }
+    reset() {
+        <span data-state="space_reset_speed">this.speed = this._options.speed || 100;</span>
+        <span data-state="space_reset_loop">this.stars.forEach(v => v.reset());</span>
+    }
+}
+            </pre>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="challenge">CHALLENGE</h3>
+            <p>Your challenge will be to re-write the challenge solution code from the previous lesson as a class.</p>
+            <p class="red">REMEMBER: DO NOT LOOK AT THE SOLUTION CODE BEFORE TRYING THE CHALLENGE YOURSELF!</p>
+            <p>Instructions:</p>
+            <ol class="tab">
+                <li>Go to the ASSOCIATED_FILES related to this lesson and open l4_challenge in your code editor.</li>
+                <li>Open the index.html file in your browser.</li>
+                <li>You do not need to edit the HTML.</li>
+                <li>Open the script.js file in your code editor.</li>
+                <li>Your goal will be to convert this solution code from the previous lesson into a class.</li>
+                <li>The animation should still work the same way afterward using your class.</li>
+                <li>Finally, if you are feeling adventurous, try and implement some edge case and error handling.</li>
+                <li>Regardless of how you come to a solution, the important part is that you are prepared to EXPLAIN
+                    EVERY PART of your code in detail.</li>
+            </ol>
+            <p>Good Luck!</p>
+            <blockquote>HINT: Check out the links at the bottom of this page for some useful stuff.</blockquote>
+        </article>
+
+        <hr>
+
+        <article>
+            <h2>ADDITIONAL RESOURCES</h2>
+            <p>Each lesson will explain and provide research resources for a general concept or skill. It is highly
+                recommended that you take the time to review lessons, research subjects, and practice on your own
+                between lessons.</p>
+            <p>At the end of each lesson will be a challenge, completing these assignments is paramount to your
+                retention of the taught material. The struggle is where the learning really occurs, embrace it.</p>
+
+            <h4>LINKS:</h4>
+            <a href="https://devdocs.io/javascript/classes">CLASSES</a>
+            <a
+                href="https://devdocs.io/javascript/operators/function#using_an_immediately_invoked_function_expression_iife">IMMEDIATELY
+                INVOKED FUNCTION EXPRESSION (IIFE)</a>
+            <a href="https://devdocs.io/javascript/functions/get">GETTERS</a>
+            <a href="https://devdocs.io/javascript/functions/set">SETTERS</a>
+            <a href="https://devdocs.io/javascript/global_objects/array/array">ARRAY CONSTRUCTOR</a>
+            <a href="https://devdocs.io/javascript/global_objects/array/fill">ARRAY FILL</a>
+            <a href="https://devdocs.io/javascript/global_objects/array/map">ARRAY MAP</a>
+        </article>
+
+        <hr>
+
+        <a href="../../../index.html">
+            <h2>RETURN TO INDEX</h2>
+        </a>
+
+    </main>
+    <script src="../../../js/set_timeout.js"></script>
+    <script src="../../../js/post_processing.js"></script>
+    <script src="../../../js/dynamic_navbar.js"></script>
+    <script src="./warp_speed_breakdown.js"></script>
+</body>
+
+</html>

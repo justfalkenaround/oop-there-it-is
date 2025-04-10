@@ -1,0 +1,1799 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>O.O.P THERE IT IS</title>
+    <link rel="icon" href="../../../img/favicon.png">
+    <link rel="stylesheet" href="../../../css/styles.css">
+</head>
+
+<body>
+    <main>
+
+        <header>
+            <a href="../../../index.html">
+                <h2>RETURN TO INDEX</h2>
+            </a>
+            <h1>LESSON 3: SPRITESHEETS</h1>
+            <p class="mag">
+                In this lesson you will learn about another common type of animation, spritesheets.
+            </p>
+
+            <blockquote>
+                "I can resist anything except temptation."<br>~ Oscar Wilde
+            </blockquote>
+        </header>
+
+        <hr>
+
+        <nav>
+            <h2>PREVIEW</h2>
+            <ul class="tab">
+                <a href="#example">
+                    <li>EXAMPLE</li>
+                </a>
+                <a href="#code">
+                    <li>CODE</li>
+                </a>
+                <a href="#what_is_a_spritesheet">
+                    <li>WHAT IS A SPRITESHEET</li>
+                </a>
+                <a href="#spritesheet_creation_and_rules">
+                    <li>SPRITESHEET CREATION AND RULES</li>
+                </a>
+                <a href="#data_attributes">
+                    <li>DATA ATTRIBUTES</li>
+                </a>
+                <a href="#comma_notation">
+                    <li>COMMA NOTATION</li>
+                </a>
+                <a href="#conditional_values">
+                    <li>CONDITIONAL VALUES</li>
+                </a>
+                <a href="#modularization">
+                    <li>MODULARIZATION</li>
+                </a>
+                <a href="#how_it_works">
+                    <li>HOW IT WORKS</li>
+                </a>
+                <a href="#setup">
+                    <li>SETUP</li>
+                </a>
+                <a href="#initialize">
+                    <li>INITIALIZE</li>
+                </a>
+                <a href="#update">
+                    <li>UPDATE</li>
+                </a>
+                <a href="#render">
+                    <li>RENDER</li>
+                </a>
+                <a href="#repeat">
+                    <li>REPEAT</li>
+                </a>
+                <a href="#visual_breakdown">
+                    <li>VISUAL BREAKDOWN</li>
+                </a>
+                <a href="#challenge">
+                    <li>CHALLENGE</li>
+                </a>
+            </ul>
+        </nav>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="example">EXAMPLE</h3>
+            <p>
+                The following is an example of a simple spritesheet style animation.
+            </p>
+            <aside class="sprite_sheet" data-divisions_x="5" data-divisions_y="1" data-src="./img/money_wagger.png"
+                data-alt="animated money face" data-scan_mode="bounce" data-scale="1.5" data-throttle="5"></aside>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="code">CODE</h3>
+            <p class="red">
+                WARNING: This animation is dependent on this image asset and will not work without it.
+            </p>
+            <img class="fit" alt="money wagger sprite sheet" src="./img/money_wagger.png">
+            <p>
+                The following snippets of code will produce the effect.
+            </p>
+            <p>HTML</p>
+            <pre>
+<span><</span>aside
+    class="sprite_sheet"
+    data-divisions_x="5"
+    data-divisions_y="1"
+    data-src="./img/money_wagger.png"
+    data-alt="animated money face"
+    data-scan_mode="bounce"
+    data-scale="1.5"
+    data-throttle="5"
+><span><</span>/aside>
+            </pre>
+            <p>CSS</p>
+            <pre>
+.sprite_sheet {
+    overflow: hidden;
+}
+
+.sprite_sheet img {
+    position: relative;
+    left: 0;
+    top: 0;
+}
+            </pre>
+            <p>JAVASCRIPT</p>
+            <pre>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const element_list = Array.from(document.querySelectorAll('.sprite_sheet'));
+        
+        const initialize = async element => {
+            
+            let
+            throttle_counter = 0,
+            throttle = element.dataset.throttle || 10,
+            direction = 'forward',
+            frame_position = { x : 1, y : 1 };
+            
+            const
+            scale = element.dataset.scale || 1,
+            divisions_x = element.dataset.divisions_x || 1,
+            divisions_y = element.dataset.divisions_y || 1,
+            scan_mode = element.dataset.scan_mode || 'loop',
+            image = new Image();
+            
+            image.alt = element.dataset.alt || 'animated sprite';
+            await new Promise((resolve, reject) => {
+                image.addEventListener('load', resolve);
+                image.src = element.dataset.src || '';
+            });
+            element.append(image);
+            image.width *= scale;
+            
+            const
+            local_width = image.width / divisions_x,
+            local_height = image.height / divisions_y;
+            
+            element.style.width = `${local_width}px`;
+            element.style.height = `${local_height}px`;
+
+            const
+            update = () => {
+                if (direction === 'forward') {
+                    if (frame_position.x < divisions_x) {
+                        ++frame_position.x;
+                    }
+                    else if (frame_position.y < divisions_y) {
+                        ++frame_position.y;
+                        frame_position.x = 1;
+                    }
+                    else {
+                        if (scan_mode === 'loop') {
+                            frame_position = { x : 1, y : 1 };
+                        }
+                        else {
+                            direction = 'backward';
+                            update();
+                        }
+                    }
+                }
+                else {
+                    if (frame_position.x > 1) {
+                        --frame_position.x;
+                    }
+                    else if (frame_position.y > 1) {
+                        --frame_position.y;
+                        frame_position.x = divisions_x;
+                    }
+                    else {
+                        direction = 'forward';
+                        update();
+                    }
+                }
+            },
+            
+            render = () => {
+                image.style.left = `-${(frame_position.x - 1) * local_width}px`;
+                image.style.top = `-${(frame_position.y - 1) * local_height}px`;
+            },
+            
+            repeat = () => {
+                ++throttle_counter;
+                if (throttle_counter % throttle === 0) {
+                    update();
+                    render();
+                }
+                window.requestAnimationFrame(repeat);
+            };
+            
+            if ((divisions_y === 1 && divisions_x === 1) || (divisions_x % 1 || divisions_y % 1) || (divisions_x < 0 || divisions_y < 0)) {
+                return;
+            }
+            repeat();
+        };
+        
+        element_list.forEach(initialize);
+    }
+    catch(err) { }
+});
+            </pre>
+            <p class="yellow">
+                So there's a bit more going on here than the last lesson; don't worry, you will have the chance to break
+                it all down.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="what_is_a_spritesheet">WHAT IS A SPRITESHEET</h3>
+            <p>
+                Spritesheets are an important and common means of creating simple looping animations. They can also be a
+                means of encoding many images on to one larger image for use in a game or app.
+            </p>
+            <p>
+                A spritesheet could be a strip of time-series images like a film reel, that is meant to be played.
+            </p>
+            <p>
+                A spritesheet could just be a bunch of smaller images placed on one larger image.
+            </p>
+            <p class="yellow">
+                Why use a spritesheet? You ask.
+            </p>
+            <p>
+                Spritesheets can improve clarity and performance in your applications. Not to mention they are a quick
+                and easy way of creating quality looping animations.
+            </p>
+            <p>
+                Even Dev-Docs uses a spritesheet for it's logos.
+            </p>
+            <article class="sprite_sheet_breakdown_wrapper">
+                <aside class="slide">
+                    <section class="slide_window"></section>
+                    <img src="./img/docs.png" alt="dev docs logo sprite">
+                </aside>
+                <aside class="sprite_sheet_breakdown" data-divisions_x="15" data-divisions_y="15"
+                    data-src="./img/docs.png" data-alt="dev docs logo sprite" data-scan_mode="loop" data-scale="5"
+                    data-throttle="50"></aside>
+            </article>
+            <br>
+            <p>
+                Spritesheets can be made in an application such as Adobe Illustrator or Affinity Design. They can be
+                made quickly, similar to how old cartoons were made.
+            </p>
+            <p>
+                Another example, the various states of a game character can be encoded into a spritesheet.
+            </p>
+            <aside class="sprite_sheet" data-divisions_x="2" data-divisions_y="1" data-src="./img/bomb_example.png"
+                data-alt="animated game character" data-scan_mode="loop" data-scale="1.5" data-throttle="5"></aside>
+            <br>
+            <p>
+                The next section will cover the creation of spritesheets.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="spritesheet_creation_and_rules">SPRITESHEET CREATION AND RULES</h3>
+            <p>
+                Here you will learn the way of the spritesheet.
+            </p>
+            <p>
+                This will not be an Adobe Illustrator or Affinity Design tutorial, rather the focus will be on the
+                general principles.
+            </p>
+            <h4>CELL SIZE AND SHAPE</h4>
+            <p class="tab">
+                Much like a table, spritesheets have columns, rows, and cells. The general size and aspect ratio(width
+                to height) of a cell do not matter, just that every cell has the same size and shape.
+            </p>
+            <h4>KEEP THEM SMALL</h4>
+            <p class="tab">
+                If you keep the actual resolution and size of the total image generally as small as you can get away
+                with, it will improve your load and render speed.
+            </p>
+            <h4>EQUIDISTANCE</h4>
+            <p class="tab">
+                In order to prevent "skew", a term meaning shaking or broken animations due to objects lacking equal
+                spacing and uniformity. TO THE PIXEL, every(non-moving) object should be in the exact same position
+                within it's cell relative to every other cell. In the animation at the beginning of this tutorial, only
+                the tounge moves, because the rest of the contents of each cell stay in the same exact relative
+                position.
+            </p>
+            <h4>SMALLER CHANGES OVER TIME</h4>
+            <p class="tab">
+                For animations, make small changes over time ONLY to the segments of the image that you wish to animate.
+                The smaller the changes, the finer the animation quality. Technically the entire contents of a cell can
+                change with each frame, this works as long as everything only moves a little bit each frame.
+            </p>
+            <h4>MULTIPLE SMALLER ANIMATIONS</h4>
+            <p class="tab">
+                Generally, if you are making a game, it is better to make a spritesheet for say a component or a
+                character rather than the entire screen. Modularize and be selective of what you decide should become a
+                spritesheet animation instead of a traditional code controlled animation.
+            </p>
+            <p>
+                Take a look at some of the examples in this page as inspiration for your own sprites.
+            </p>
+            <p>
+                Now you will move on to the code related to animating a spritesheet.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="data_attributes">DATA ATTRIBUTES</h3>
+            <p>
+                This application is going to use data attributes.
+            </p>
+            <p>
+                Data attributes are useful for storing real data in an HTML element or DOM node.
+            </p>
+            <p>
+                This means they are a great tool for creating dynamic HTML components that can act logically based on
+                data inputs. In this case, it allows the user to set the rules of the animation in the HTML.
+            </p>
+            <p class="red">
+                WARNING: Data attributes can be abused, it is slower to access the DOM than it is to access JAVASCRIPT
+                memory. If at all possible, store, read, and write to your own JAVASCRIPT variables as opposed to the
+                DOM data attributes. Especially for repeated actions.
+            </p>
+            <p>
+                Here is an example of a HTML element with a data attribute.
+            </p>
+            <pre class="html">
+<section data-secret="BOO">
+    LOOK IN THE CONSOLE TO SEE MY SECRET
+</section>
+            </pre>
+            <p>
+                And some corresponding JAVASCRIPT to use the data attribute.
+            </p>
+            <pre>
+const element = document.querySelector('section[data-secret]');
+console.log(`%c${element<span class="yellow">.dataset.secret</span>}`, 'color:red;');
+            </pre>
+            <blockquote>
+                The "%c" in the console.log, coupled with the "color:red;", is what applied styling to the text.
+
+                See the link at the bottom.
+            </blockquote>
+            <p>
+                Data attributes can be named pretty much anything you like as long as it starts with "data-".
+            </p>
+            <p>
+                The value within the element can then be accessed by the ".dataset.ATTRIBUTE_NAME" property of the
+                element.
+            </p>
+            <p>
+                Check out the link at the bottom of the page to learn more.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="comma_notation">COMMA NOTATION</h3>
+            <p>
+                You may see some code that uses a unique syntax related to "const", "let", and commas. Like so.
+            </p>
+            <pre>
+const
+  variable_1 = 1,
+  variable_2 = 2,
+  func_variable = () => console.log('something');
+            </pre>
+            <p>
+                This could have been written like this as well.
+            </p>
+            <pre>
+const variable_1 = 1;
+const variable_2 = 2;
+const func_variable = () => console.log('something');
+            </pre>
+            <p>
+                Functionally it is the same, only one is separated by commas and avoids a ton of redundant const
+                declarations.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="conditional_values">CONDITIONAL VALUES</h3>
+            <p>This application will use logical operators for conditional values and flow.</p>
+            <p>
+                Sometimes you want your code to me more flexible and dynamic. One way to implement this is through the
+                use of conditional values.
+            </p>
+            <p>
+                If the variable is undefined, give it a backup value.
+            </p>
+            <pre>
+let variable = undefined;
+
+if (!variable) {
+    variable = 'I am a backup value.';
+}
+
+console.log(variable);
+// OUTPUTS: I am a backup value.
+            </pre>
+            <p>
+                If the variable is already defined, do nothing.
+            </p>
+            <pre>
+let variable = 'I am an original value.';
+
+if (!variable) {
+    variable = 'I am a backup value.';
+}
+
+console.log(variable);
+// OUTPUTS: I am an original value.
+            </pre>
+            <p>
+                There are a TON of ways to write this same code to produce similar outcomes, in the code of this lesson,
+                you use the double pipe(||) logical OR operator.
+            </p>
+            <p>These produce the same effects, with much less code.</p>
+            <p>Undefined</p>
+            <pre>
+let variable = undefined;
+
+variable = variable <span class="yellow">||</span> 'I am a backup value.';
+
+console.log(variable);
+// OUTPUTS: I am a backup value.
+            </pre>
+            <p>Defined</p>
+            <pre>
+let variable = 'I am an original value.';
+
+variable = variable <span class="yellow">||</span> 'I am a backup value.';
+
+console.log(variable);
+// OUTPUTS: I am an original value.
+            </pre>
+            <p>
+                You can even chain together multiple backup values.
+            </p>
+            <pre>
+const check_me_first = then_me = finally_me = undefined;
+
+const variable = check_me_first || then_me || finally_me || 'Otherwise I become the value.';
+console.log(variable);
+// OUTPUTS: Otherwise I become the value.
+            </pre>
+            <p>There are a lot of different options, some act differently with truthy/falsy values and edge cases.</p>
+            <p>
+                For instance try this.
+            </p>
+            <pre>
+console.log(<span class="red">undefined</span> || <span class="red">null</span> || <span class="red">0</span> || <span class="red">''</span> || <span class="green">[]</span> || <span class="green">{}</span>);
+// OUTPUTS: []
+            </pre>
+            <p>
+                Now this, using the nullish coalescing operator.
+            </p>
+            <pre>
+console.log(<span class="red">undefined</span> ?? <span class="red">null</span> ?? <span class="green">0</span> ?? <span class="green">''</span> ?? <span class="green">[]</span> ?? <span class="green">{}</span>);
+// OUTPUTS: 0
+            </pre>
+            <p>
+                Using operators and conditional flow can greatly increase the descriptive and flexible nature of your
+                code.
+            </p>
+            <p>Now on to a very important programming practice, modularization.</p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="modularization">MODULARIZATION</h3>
+            <p>
+                Modularization is the practice of separating parts of your code into smaller pieces that work together
+                and can be re-used.
+            </p>
+            <p>
+                As your codebase gets larger, and your applications more complex, it will become very difficult for you,
+                and especially others, to navigate the code. That is if your don't fight the problem from the beginning.
+                There are many programming paradigms that combat the issue, and most of them involve modularization of
+                some sort.
+            </p>
+            <p>
+                Here you begin to practice some more modular, reusable code.
+            </p>
+            <p>
+                You will notice that the animation phases covered in lesson 2 are implemented more literally in this
+                example.
+            </p>
+            <ol class="tab">
+                <li>INITIALIZE</li>
+                <li>UPDATE</li>
+                <li>RENDER</li>
+                <li>REPEAT</li>
+            </ol>
+            <p>
+                Check out this condensed code from above.
+            </p>
+            <pre>
+const <span class="yellow">initialize</span> = async element => {
+    
+    // INITIALIZATION PHASE
+    
+    const
+    <span class="yellow">update</span> = () => {
+        // UPDATE PHASE
+    },
+    
+    <span class="yellow">render</span> = () => {
+        // RENDER PHASE
+    },
+    
+    <span class="yellow">repeat</span> = () => {
+        // REPEAT PHASE
+    };
+    
+    if ((divisions_y === 1 && divisions_x === 1) || (divisions_x % 1 || divisions_y % 1) || (divisions_x < 0 || divisions_y < 0)) {
+        return;
+    }
+    repeat();
+};
+            </pre>
+            <p>
+                Here, each phase is in fact now a function, named as it's corresponding phase.
+            </p>
+            <p>
+                Also note that the initialization phase function actually wraps all of the other phase functions within
+                it's scope. This allows the initialization phase function to be called an infinite number of times on
+                and infinite number of animated elements.
+            </p>
+            <p>
+                Since the scopes of each call to initialize are separate, each of the functions essentially live a life
+                of their own.
+            </p>
+            <p>
+                In future lessons you will take this to a whole new level with the use of object oriented programming.
+                The goal is the same, create independent "objects" that live a life of their own, and manage themselves
+                while having the ability to interact with other objects through predefined pathways.
+            </p>
+            <p>
+                This will also force you to think of things in a totally different way, one closer to physical reality.
+            </p>
+            <p>
+                Ultimately your code should be easier to write, debug, modify, and scale while having a greater
+                performance.
+            </p>
+            <p>
+                A new developer should be able open up your codebase and change one discrete portion without having to
+                track down changes in other parts. If one part breaks, you only have to look to that one part to find
+                the issue(usually).
+            </p>
+            <p>
+                The code above implements some minor modularization with the use of scope and closure, you will explore
+                more elegant means in future lessons.
+            </p>
+            <blockquote class="blue">
+                NOTE: The use of semantic naming conventions can greatly increase the common sense readability of your
+                code. If your function's job is to render, name it "render", not "rdr". A couple more characters is not
+                going to affect the functionality of your code in any significant way, but it will make your code less
+                frustrating to read and debug. If you're interested in optimizing your codebase for production
+                performance, you might use an obfuscator-minifier tool. There are many good options available online.
+            </blockquote>
+            <p>
+                Now on to how the animation actually works, conceptually.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="how_it_works">HOW IT WORKS</h3>
+            <p>
+                The general functionality of any animated spritesheet is similar.
+            </p>
+            <p>
+                You have a table of cells, with each consecutive cell, from left to right, top to bottom, usually,
+                having changed a small amount. When each cell is displayed independently in the same location quickly
+                and sequentially, it appears as if the picture comes to life. Just like a film reel at the movies.
+            </p>
+            <p>
+                One key difference is generally you design your animations to loop or repeat indefinitely some how,
+                seamlessly. Unlike a movie film reel.
+            </p>
+            <p>
+                There are two ways in which a sprite can loop, bounce and loop.
+            </p>
+            <p>
+                Looping causes the frame to jump back to the beginning where it started when it runs out of spritesheet.
+            </p>
+            <p>
+                Bouncing causes the frame to scan back and fourth like a cylon's eyes over and over again when it
+                reaches
+                the "edge" of the spritesheet.
+            </p>
+            <p>
+                Examine the difference in these two visualizations.
+            </p>
+            <hr>
+            <h4>BOUNCING</h4>
+            <article class="sprite_sheet_breakdown_wrapper">
+                <aside class="slide">
+                    <section class="slide_window"></section>
+                    <img class="fit" alt="money wagger sprite sheet" src="./img/money_wagger.png">
+                </aside>
+                <aside class="sprite_sheet_breakdown" data-divisions_x="5" data-divisions_y="1"
+                    data-src="./img/money_wagger.png" data-alt="animated money face" data-scan_mode="bounce"
+                    data-scale="1" data-throttle="20"></aside>
+            </article>
+            <hr>
+            <h4>LOOPING</h4>
+            <article class="sprite_sheet_breakdown_wrapper">
+                <aside class="slide">
+                    <section class="slide_window"></section>
+                    <img class="fit" alt="money wagger sprite sheet" src="./img/money_wagger.png">
+                </aside>
+                <aside class="sprite_sheet_breakdown" data-divisions_x="5" data-divisions_y="1"
+                    data-src="./img/money_wagger.png" data-alt="animated money face" data-scan_mode="loop"
+                    data-scale="1" data-throttle="20"></aside>
+            </article>
+            <p>
+                Notice that the first animation, the one labeled "BOUNCING", animates smoothly. Whereas the second
+                animation, the one labeled "LOOPING", skips and does not flow properly.
+            </p>
+            <p>
+                There are cases where a looping animation may be the right choice, so in your code, you will implement
+                some dual functionality.
+            </p>
+            <p>
+                The magenta square that scans across the image is called the frame, here for the purpose of
+                visualization only.
+            </p>
+            <p>
+                What your code needs to do, is track the location of the frame, move the frame, and display ONLY the
+                portion of the image that is in the frame to the DOM, in this case.
+            </p>
+            <p>
+                It will also be useful to be able to control the speed, scanning mode, and scale of the animation.
+            </p>
+            <p>
+                Lets take a look at the HTML and CSS setup in the next section to implement some of these features.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="setup">SETUP</h3>
+            <p>
+                Before getting to the JAVASCRIPT, you should take a look at the minimal HTML and CSS code used to
+                implement the animation.
+            </p>
+            <p>
+                Since this animation is being displayed to the DOM, you are going to need to hide the parts of the image
+                that are NOT in the frame.
+            </p>
+            <p>
+                This can easily be achieved with some tricky CSS styling and some HTML.
+            </p>
+            <ol>
+                <li>First you need a wrapper element, class name of "sprite_sheet".</li>
+                <li>Then you need to make that element have a hidden overflow, via CSS.</li>
+                <li>The image will go inside the wrapper.</li>
+                <li>Your JAVASCRIPT code will need to ensure that the wrapper is the frame size and shape.</li>
+                <li>Then you just move the position of the image, within the wrapper.</li>
+                <li>The parts that "hang" past the edge of the wrapper will be invisible, like you want.</li>
+                <li>You also need to pass in, via data attributes, any information the animation will need to execute.
+                </li>
+            </ol>
+            <p>
+                Take a look at the code.
+            </p>
+            <p>HTML</p>
+            <pre>
+<span><</span>aside
+    class="sprite_sheet"
+    data-divisions_x="5"
+    data-divisions_y="1"
+    data-src="./img/money_wagger.png"
+    data-alt="animated money face"
+    data-scan_mode="bounce"
+    data-scale="1.5"
+    data-throttle="5"
+><span><</span>/aside>
+            </pre>
+            <p>
+                The aside element is the wrapper. It has the desired class and all of the data attributes the app will
+                need.
+            </p>
+            <p>
+                The element is empty because you will handle the creation of the image with JAVASCRIPT, later on.
+            </p>
+            <p>CSS</p>
+            <pre>
+.sprite_sheet {
+    overflow: hidden;
+}
+
+.sprite_sheet img {
+    position: relative;
+    left: 0;
+    top: 0;
+}
+            </pre>
+            <p>
+                The .sprite_sheet rule targets the wrapper and hides any overflow.
+            </p>
+            <p>
+                The .sprite_sheet img rule targets the image within and sets it as position relative with some starting
+                values. This way JAVASCRIPT has two x and y handles for the position of the image RELATIVE to the
+                position of the wrapper.
+            </p>
+            <p>
+                This code should be enough to prepare the application for JAVASCRIPT control, ideally, the JAVASCRIPT
+                code will allow multiple HTML wrapper elements to be placed on the page with different data attributes
+                to change their behavior.
+            </p>
+            <p>
+                The next sections will cover the JAVASCRIPT code for this animation.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="initialize">INITIALIZE</h3>
+            <p>
+                Let's start with the initialization phase.
+            </p>
+            <p>
+                Following a common workflow, you can tackle one piece at a time.
+            </p>
+            <p>
+                First lets cover the wrapper function.
+            </p>
+            <pre>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', async () => {
+
+});
+            </pre>
+            <p>
+                This enables strict mode and waits for the DOM to load before executing anything. The function
+                declaration also includes the async keyword to enable the functionality.
+            </p>
+            <p>
+                Here you can wrap your code in a try catch block to handle any errors, even async ones.
+            </p>
+            <pre>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', async () => {
+    <span class="yellow">try {
+    
+    }
+    catch(err) { }</span>
+});
+            </pre>
+            <p>
+                For the sake of this animation, you do nothing but catch and dispose of any errors that occur. In a more
+                sophisticated app, you might do something with a potential error.
+            </p>
+            <p>
+                Now within that block you can collect all of the potential elements that need to be animated.
+            </p>
+            <pre>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        <span class="yellow">const element_list = Array.from(document.querySelectorAll('.sprite_sheet'));</span>
+    }
+    catch(err) { }
+});
+            </pre>
+            <p>
+                Now you have an element_list variable with all of the elements that need animation, any with the class
+                of ".sprite_sheet", the wrapper elements.
+            </p>
+            <p>
+                The initialization phase needs to occur seperatly for each of the elements.
+            </p>
+            <pre>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const element_list = Array.from(document.querySelectorAll('.sprite_sheet'));
+        
+        <span class="yellow">const initialize = async element => {
+        
+        };
+        
+        element_list.forEach(initialize);</span>
+    }
+    catch(err) { }
+});
+            </pre>
+            <p>
+                Now you declared an initialize function and call that function on every element in the list, passing in
+                the element in question.
+            </p>
+            <p>
+                Since you know the phases that will need to occur, you can modularize now and declare the functions that
+                will be needed later.
+            </p>
+            <pre>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const element_list = Array.from(document.querySelectorAll('.sprite_sheet'));
+        
+        const initialize = async element => {
+        
+            <span class="yellow">// INITIALIZATION PHASE
+            
+            const
+            update = () => {
+                // UPDATE PHASE
+            },
+            
+            render = () => {
+                // RENDER PHASE
+            },
+            
+            repeat = () => {
+                // REPEAT PHASE
+            };
+            
+            if ((divisions_y === 1 && divisions_x === 1) || (divisions_x % 1 || divisions_y % 1) || (divisions_x < 0 || divisions_y < 0)) {
+                return;
+            }
+            repeat();</span>
+        };
+            
+        element_list.forEach(initialize);
+    }
+    catch(err) { }
+});
+            </pre>
+            <p>
+                You also kick off the process by initially calling repeat as the last line of the function. That is if
+                there is not a one by one spritesheet, which is an image, in that case you do not animate at all.
+            </p>
+            <p>
+                Don't worry about the contents of these functions right now, since they have been modularized, you can
+                focus on just the initialization steps right now.
+            </p>
+            <p>
+                The next step is to actually perform the initialization on each element, within the function.
+            </p>
+            <pre>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const element_list = Array.from(document.querySelectorAll('.sprite_sheet'));
+        
+        const initialize = async element => {
+        
+            <span class="yellow">let
+            throttle_counter = 0,
+            throttle = element.dataset.throttle || 10,
+            direction = 'forward',
+            frame_position = { x : 1, y : 1 };</span>
+            
+            const
+            update = () => {
+                // UPDATE PHASE
+            },
+            
+            render = () => {
+                // RENDER PHASE
+            },
+            
+            repeat = () => {
+                // REPEAT PHASE
+            };
+            
+            if ((divisions_y === 1 && divisions_x === 1) || (divisions_x % 1 || divisions_y % 1) || (divisions_x < 0 || divisions_y < 0)) {
+                return;
+            }
+            repeat();
+        };
+            
+        element_list.forEach(initialize);
+    }
+    catch(err) { }
+});
+            </pre>
+            <p>
+                Some variables are declared with let to store the changing data the animation will need. Comma notation
+                is also utilized to reduce the number of let keywords used.
+            </p>
+            <pre>
+throttle_counter = 0,
+            </pre>
+            <p>
+                This function will implement the throttling introduced in lesson 2. This throttle_counter variable will
+                count the animation frames that have occurred in the life of the animation.
+            </p>
+            <pre>
+throttle = element.dataset.throttle || 10,
+            </pre>
+            <p>
+                The throttle variable will be the number that the throttle_counter will be modulused by. This value is
+                being read from the element's dataset property, where all of it's data-attributes live.
+            </p>
+            <p>
+                The default value for this, in case there is no data attribute for it, is 10. Nothing too special about
+                that number choice, it just keeps things from breaking down completely if you forget to input a value as
+                a data attribute.
+            </p>
+            <pre>
+direction = 'forward',
+            </pre>
+            <p>
+                Since you want to create a polymorphic function that can run in looping mode or bouncing mode, you will
+                need to track the "direction" of the scanning at any one point. This variable, direction, will hold a
+                string representing the direction. It starts out as forward.
+            </p>
+            <p>
+                The next one requires a bit more explanation.
+            </p>
+            <pre>
+frame_position = { x : 1, y : 1 };
+            </pre>
+            <p>
+                Here you declare a variable named frame_position. The name is descriptive of it's purpose, to store the
+                frame position at any point.
+            </p>
+            <p>
+                The position has two data points, column number and row number. Since these two values are closely
+                related, they are encoded in an object, with corresponding x and y properties for columns and rows
+            </p>
+            <p>
+                In this case, 1 represents the first index, however it is more common and generally makes it easier to
+                index the first item as 0. This will be how future indexing will occur, indexed at 0 like an array. For
+                the purpose of learning this application is going to use 1 indexing though.
+            </p>
+            <p>
+                The object starts out at 1 for both x and y. This essentially represents the top left cell of the
+                spritesheet.
+            </p>
+            <aside class="border_cube"><img alt="penguin sprite sheet" src="./img/penguin_sheet.png"></aside>
+            <p>
+                As the x value increases, the frame moves right, as the y value increases, the frame moves down.
+            </p>
+            <p>
+                This is a primer for vectors and how they will play a major part in your animation and game design.
+                Vectors can be traditional mathematical vectors, or simply data encoded in a vector like state. They
+                often appear something like this in object oriented programming.
+            </p>
+            <p>
+                Vectors can represent just about anything, be prepared to see more of them as you continue. Don't be
+                afraid, you don't need any special mathematical knowledge to use them.
+            </p>
+            <p>
+                Now back to reality, the next step in completing the initialization.
+            </p>
+            <pre>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const element_list = Array.from(document.querySelectorAll('.sprite_sheet'));
+        
+        const initialize = async element => {
+        
+            let
+            throttle_counter = 0,
+            throttle = element.dataset.throttle || 10,
+            direction = 'forward',
+            frame_position = { x : 1, y : 1 };
+            
+            <span class="yellow">const
+            scale = element.dataset.scale || 1,
+            divisions_x = element.dataset.divisions_x || 1,
+            divisions_y = element.dataset.divisions_y || 1,
+            scan_mode = element.dataset.scan_mode || 'loop',
+            image = new Image();</span>
+            
+            const
+            update = () => {
+                // UPDATE PHASE
+            },
+            
+            render = () => {
+                // RENDER PHASE
+            },
+            
+            repeat = () => {
+                // REPEAT PHASE
+            };
+            
+            if ((divisions_y === 1 && divisions_x === 1) || (divisions_x % 1 || divisions_y % 1) || (divisions_x < 0 || divisions_y < 0)) {
+                return;
+            }
+            repeat();
+        };
+            
+        element_list.forEach(initialize);
+    }
+    catch(err) { }
+});
+            </pre>
+            <p>
+                Here you declare some unchanging variables using const.
+            </p>
+            <pre>
+scale = element.dataset.scale || 1,
+            </pre>
+            <p>
+                First you collect the desired scaling factor from the dataset property, how much to increase or decrease
+                the size of the animation. This is a multiplier so anything more than 1 increases size, anything less
+                than 1 decreases size.
+            </p>
+            <p>
+                The default here is 1, no change.
+            </p>
+            <pre>
+divisions_x = element.dataset.divisions_x || 1,
+            </pre>
+            <p>
+                Now you collect the number of elements in the spritesheet horizontally, a variable named divisions_x.
+                This MUST be entered into the function manually, the computer has no(simple) way of determining how many
+                cells are in an image. These will come in handy later.
+            </p>
+            <p>
+                The default here is one horizontal cell.
+            </p>
+            <pre>
+divisions_y = element.dataset.divisions_y || 1,
+            </pre>
+            <p>
+                Same thing for vertical cells, divisions_y.
+            </p>
+            <p>
+                Now you grab the scan_mode, this represents how the animation will loop, as discussed earlier.
+            </p>
+            <pre>
+scan_mode = element.dataset.scan_mode || 'loop',
+            </pre>
+            <p>
+                The default mode is loop, instead of bounce.
+            </p>
+            <pre>
+image = new Image();
+            </pre>
+            <p>
+                Here you use the "Image" constructor to create a image node for the DOM. This is being done via
+                JAVASCRIPT instead of HTML because you can then better control how it loads.
+            </p>
+            <p>
+                This will be the image element that goes into the wrapper element for your animation.
+            </p>
+            <p>
+                Now another chunk of code.
+            </p>
+            <pre>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const element_list = Array.from(document.querySelectorAll('.sprite_sheet'));
+        
+        const initialize = async element => {
+        
+            let
+            throttle_counter = 0,
+            throttle = element.dataset.throttle || 10,
+            direction = 'forward',
+            frame_position = { x : 1, y : 1 };
+            
+            const
+            scale = element.dataset.scale || 1,
+            divisions_x = element.dataset.divisions_x || 1,
+            divisions_y = element.dataset.divisions_y || 1,
+            scan_mode = element.dataset.scan_mode || 'loop',
+            image = new Image();
+            
+            <span class="yellow">image.alt = element.dataset.alt || 'animated sprite';
+            await new Promise((resolve, reject) => {
+                image.addEventListener('load', resolve);
+                image.src = element.dataset.src || '';
+            });
+            element.append(image);
+            image.width *= scale;</span>
+            
+            const
+            update = () => {
+                // UPDATE PHASE
+            },
+            
+            render = () => {
+                // RENDER PHASE
+            },
+            
+            repeat = () => {
+                // REPEAT PHASE
+            };
+            
+            if ((divisions_y === 1 && divisions_x === 1) || (divisions_x % 1 || divisions_y % 1) || (divisions_x < 0 || divisions_y < 0)) {
+                return;
+            }
+            repeat();
+        };
+            
+        element_list.forEach(initialize);
+    }
+    catch(err) { }
+});
+            </pre>
+            <p>
+                Firstly you always need some alt text for an image element. This next line assigns the alt text as
+                defined by the data attribute or defaults to a generic value.
+            </p>
+            <pre>
+image.alt = element.dataset.alt || 'animated sprite';
+            </pre>
+            <p>
+                Now you need to load the image from the provided source, and not proceed until the loading is complete.
+            </p>
+            <pre>
+await new Promise((resolve, reject) => {
+    image.addEventListener('load', resolve);
+    image.src = element.dataset.src || '';
+});
+            </pre>
+            <p>
+                Here the await keyword is used to wait until the promise being declared after it has resolved before
+                moving on.
+            </p>
+            <p>
+                Within the promise the image elements "load" event is attached to the resolve function of the promise.
+                This way when the image loads, the promise will resolve, and the app will continue.
+            </p>
+            <pre>
+image.addEventListener('load', resolve);
+            </pre>
+            <p>
+                Then the image element is assigned a src attribute, this will cause the image to immediatly attempt the
+                fetch and load process.
+            </p>
+            <pre>
+image.src = element.dataset.src || '';
+            </pre>
+            <p>
+                This paradigm is great for performing any loading actions in the initialization phase and before the
+                assets are needed.
+            </p>
+            <p>
+                The image element is now attached to the DOM, inside the wrapper element.
+            </p>
+            <pre>
+element.append(image);
+            </pre>
+            <p>
+                Lastly the scaling factor from before is applied to the width of the image using the multiplication
+                assignment shorthand, "*=".
+            </p>
+            <pre>
+image.width *= scale;
+            </pre>
+            <p>
+                This is functionally the same as this, just shorter.
+            </p>
+            <pre>
+image.width = image.width * scale;
+            </pre>
+            <p>
+                There are similar assignment shorthands for all of the JAVASCRIPT arithmetic operators.
+            </p>
+            <p>
+                One more chunk of code to complete the initialization phase.
+            </p>
+            <pre>
+'use strict';
+
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const element_list = Array.from(document.querySelectorAll('.sprite_sheet'));
+        
+        const initialize = async element => {
+        
+            let
+            throttle_counter = 0,
+            throttle = element.dataset.throttle || 10,
+            direction = 'forward',
+            frame_position = { x : 1, y : 1 };
+            
+            const
+            scale = element.dataset.scale || 1,
+            divisions_x = element.dataset.divisions_x || 1,
+            divisions_y = element.dataset.divisions_y || 1,
+            scan_mode = element.dataset.scan_mode || 'loop',
+            image = new Image();
+            
+            image.alt = element.dataset.alt || 'animated sprite';
+            await new Promise((resolve, reject) => {
+                image.addEventListener('load', resolve);
+                image.src = element.dataset.src || '';
+            });
+            element.append(image);
+            image.width *= scale;
+            
+            <span class="yellow">const
+            local_width = image.width / divisions_x,
+            local_height = image.height / divisions_y;
+            
+            element.style.width = `${local_width}px`;
+            element.style.height = `${local_height}px`;</span>
+            
+            const
+            update = () => {
+                // UPDATE PHASE
+            },
+            
+            render = () => {
+                // RENDER PHASE
+            },
+            
+            repeat = () => {
+                // REPEAT PHASE
+            };
+            
+            if ((divisions_y === 1 && divisions_x === 1) || (divisions_x % 1 || divisions_y % 1) || (divisions_x < 0 || divisions_y < 0)) {
+                return;
+            }
+            repeat();
+        };
+            
+        element_list.forEach(initialize);
+    }
+    catch(err) { }
+});
+            </pre>
+            <p>
+                Here first a couple more consts are declared, local_width and local_height.
+            </p>
+            <pre>
+local_width = image.width / divisions_x,
+local_height = image.height / divisions_y;
+            </pre>
+            <p>
+                These both just represent an individual cell width and height. These variables probably could have been
+                named cell_width and cell_height if you wanted to.
+            </p>
+            <p>
+                They are just the number of cells, horizontally or vertically, stored in the variables from earlier,
+                divisions_x and divisions_y, divided by the width and height of the image, respectively.
+            </p>
+            <p>
+                It is important that this operation is performed AFTER loading the image properly, and scaling it. This
+                way the image has the proper width and height values for reading.
+            </p>
+            <p>
+                Next, the wrapper element is fitted to wrap perfectly the image so that only one frame is visible at a
+                time.
+            </p>
+            <pre>
+element.style.width = `${local_width}px`;
+element.style.height = `${local_height}px`;
+            </pre>
+            <blockquote class="blue">
+                NOTE: In case you haven't seen it before, this is called string interpolation. A way to dynamically
+                generate strings from a template. Backticks are used instead of quotes or double quotes. Variables that
+                are to be interpolated are wrapped in a "${ }".
+            </blockquote>
+            <p>
+                This is done with a little inline JAVASCRIPT CSS styling, the width and height of a cell.
+            </p>
+            <p>
+                The wrapper element should now properly fit the frame and the image within is loaded and attached. All
+                needed data and variables are collected and ready to go.
+            </p>
+            <p>
+                That should complete the initialization phase of this animation. Now on to the tricky bit, update.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="update">UPDATE</h3>
+            <p>
+                Now you are going to get into the conditional logic flow of the animation.
+            </p>
+            <p>
+                There are many different ways to define the logic for this type of animation. This is where the fun part
+                of programming comes into play. How does your mind wrap around a problem to find a solution?
+            </p>
+            <p>
+                Remember that the update function is going to be called EVERY time the frame is expected to move.
+            </p>
+            <p>
+                In this case there is only only one thing that needs to change in order to move the frame, the
+                frame_position object. As the x value increases, the frame moves right, as the y increases, the frame
+                moves down, and vice versa.
+            </p>
+            <p>
+                Keep in mind that you never want to exceed the bounds of the image, or the number of frames in any
+                direction. So when you reach the edge, the update function needs to decide where to go next. That could
+                mean going down a row and back to the first column, or it could mean turning back and looping in the
+                other direction, depending on the scanmode.
+            </p>
+            <p>
+                So to start out there is probably going to be a logical fork in the road, the direction of the scanning.
+            </p>
+            <pre>
+const
+update = () => {
+    <span class="yellow">if (direction === 'forward') {
+        
+    }
+    else {
+        
+    }</span>
+},
+            </pre>
+            <p>
+                This logical fork in the road is defined by a simple if else statment here for easy understanding of the
+                flow. If the direction is not forward it will be backward. Two distinct paths of logic.
+            </p>
+            <p>
+                Now it makes sense to define what happens when the direction is forward.
+            </p>
+            <pre>
+const
+update = () => {
+    if (direction === 'forward') {
+        <span class="yellow">if (/*CAN MOVE RIGHT*/) {
+            // MOVE RIGHT ONE FRAME
+        }
+        else if (/*CAN MOVE DOWN*/) {
+            // MOVE DOWN ONE FRAME
+            // MOVE FRAME BACK TO THE LEFT AS WELL
+        }
+        else {
+            // RESET TO BEGINNING OR CHANGE DIRECTION AND REPEAT
+        }</span>
+    }
+    else {
+        
+    }
+},
+            </pre>
+            <p>
+                Here you start by first writing some pseudo code to represent the things that could be happening in the
+                if statement. You see that there is an if, else if, else chain of conditionals.
+            </p>
+            <p>
+                If there is space to the right still, then you want to move the frame to the right one cell.
+            </p>
+            <p>
+                Otherwise if there is no space to the right, then you need to know if there is space to move down
+                instead. If there is space, you move down a frame, and you will need to move left as many frames as
+                possible as well, like reading from left to right. When you read a new line of text, you start at the
+                left and go down one line.
+            </p>
+            <p>
+                Finally if you there is no space right or down, then you have to make a choice, turn back and loop in
+                the opposite direction, or start back at the beginning. This will depend on the scanmode option of
+                course.
+            </p>
+            <p>
+                Thankfully during the initialization phase you were able to define everything this function is going to
+                need to read the state, or change the state.
+            </p>
+            <pre>
+const
+update = () => {
+    if (direction === 'forward') {
+        <span class="yellow">if (frame_position.x < divisions_x) {
+            ++frame_position.x;
+        }</span>
+        else if (/*CAN MOVE DOWN*/) {
+            // MOVE DOWN ONE FRAME
+            // MOVE FRAME BACK TO THE LEFT AS WELL
+        }
+        else {
+            // RESET TO BEGINNING OR CHANGE DIRECTION AND REPEAT
+        }
+    }
+    else {
+        
+    }
+},
+            </pre>
+            <p>
+                To answer the first question, you check to see if there is space to move right. This can be written as
+                if the x value of the frames position is still less than the number of x spaces, then there is still
+                space.
+            </p>
+            <p>
+                At which point you simply increment the x value of the frame_position object, this will move the frame
+                right one space.
+            </p>
+            <pre>
+const
+update = () => {
+    if (direction === 'forward') {
+        if (frame_position.x < divisions_x) {
+            ++frame_position.x;
+        }
+        <span class="yellow">else if (frame_position.y < divisions_y) {
+            ++frame_position.y;
+            frame_position.x = 1;
+        }</span>
+        else {
+            // RESET TO BEGINNING OR CHANGE DIRECTION AND REPEAT
+        }
+    }
+    else {
+        
+    }
+},
+            </pre>
+            <p>
+                To answer the next question, assuming there is no space to move right, now you check to see if you can
+                do down instead. This is written similarly to the previous statement only with y values instead.
+            </p>
+            <p>
+                If there is space to move down, then you simply increment the frame_position y value by one. Then you
+                must also set the x value back to one as well because, like reading from left to right, you must again
+                start at the left every time you go down.
+            </p>
+            <pre>
+const
+update = () => {
+    if (direction === 'forward') {
+        if (frame_position.x < divisions_x) {
+            ++frame_position.x;
+        }
+        else if (frame_position.y < divisions_y) {
+            ++frame_position.y;
+            frame_position.x = 1;
+        }
+        <span class="yellow">else {
+            if (scan_mode === 'loop') {
+                frame_position = { x : 1, y : 1 };
+            }
+            else {
+                direction = 'backward';
+                update();
+            }
+        }</span>
+    }
+    else {
+        
+    }
+},
+            </pre>
+            <p>
+                To address the last scenario, where you cannot go right and you cannot go left. You must decide where to
+                go next, back to the start, or back in the other direction. Depending on the snanmode variable.
+            </p>
+            <p>
+                So it is as simple as if scanmode is set as loop, the default, you just reassign the frame_position
+                object as a new object representing the starting position. X is 1 and Y is 1.
+            </p>
+            <p>
+                Otherwise you can assume the scanmode is meant to bounce, or change direction, when the end is reached.
+                This is done by reassigning the direction variable to backward, since you WERE going forward.
+            </p>
+            <p>
+                There is just one last thing to do now, you changed direction, but you still need to move a cell, now in
+                the opposite direction.
+            </p>
+            <p>
+                First instinct would suggest that you simply decrement the x value of the frame_position object. This
+                makes sense, and it would work with most animations. However since you don't know the shape or length of
+                the spritesheet, you go back through the conditional chain before making any moves.
+            </p>
+            <p>
+                Imagine if you had a spritesheet that was only one cell wide but ten cells tall. If you just decremented
+                the y position at this point you would be out of the bounds of the spritesheet. That would not be good.
+            </p>
+            <p>
+                So the solution is to recurse once, the update function calls itself just once to run back through the
+                conditional loop.
+            </p>
+            <p>
+                This is not exactly perfect, as you could potentially cause an infinite recursive loop, if you had a 1
+                by 1 spritesheet, a regular image. The initialization phase covers this as the animation loop does not
+                execute in the first place if there is a 1 by 1 spritesheet.
+            </p>
+            <p>
+                Keeping an eye out for bugs is nice, but don't try to over-optimize right away. Get the thing WORKING
+                first, then go back and make it better if you want, afterwards.
+            </p>
+            <p>
+                Now on to the backward part.
+            </p>
+            <pre>
+const
+update = () => {
+    if (direction === 'forward') {
+        if (frame_position.x < divisions_x) {
+            ++frame_position.x;
+        }
+        else if (frame_position.y < divisions_y) {
+            ++frame_position.y;
+            frame_position.x = 1;
+        }
+        else {
+            if (scan_mode === 'loop') {
+                frame_position = { x : 1, y : 1 };
+            }
+            else {
+                direction = 'backward';
+                update();
+            }
+        }
+    }
+    else {
+        <span class="yellow">if (frame_position.x > 1) {
+            --frame_position.x;
+        }
+        else if (frame_position.y > 1) {
+            --frame_position.y;
+            frame_position.x = divisions_x;
+        }
+        else {
+            direction = 'forward';
+            update();
+        }</span>
+    }
+},
+            </pre>
+            <p>
+                This is a mirror image of the code for the forward logic, except that instead of incrementing, you are
+                decrementing. When you decrement the y value, you also set the x value all the way right, the opposite
+                of before. Like reading backwards.
+            </p>
+            <p>
+                The conditional operators have switched direction, and you don't have to check for loop scanmode reset
+                because you could only ever be going backward if you are in bounce scanmode in the first place.
+            </p>
+            <p>
+                The closes off the logic, trapping the frame within a controlled, infinite loop.
+            </p>
+            <p>
+                Now onto the render phase.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="render">RENDER</h3>
+            <p>
+                Since almost all of the work for this application is already taken care of, this phase will by crazy
+                simple.
+            </p>
+            <pre>
+<span class="yellow">render = () => {
+    image.style.left = `-${(frame_position.x - 1) * local_width}px`;
+    image.style.top = `-${(frame_position.y - 1) * local_height}px`;
+},</span>
+            </pre>
+            <p>
+                The way that this animation is set up, the CSS offset of the relative positioned image needs to change
+                to reflect the frame_position variable.
+            </p>
+            <p>
+                This needs to be a number of pixels though, not just a number of cells over or down, as the
+                frame_position object provides.
+            </p>
+            <p>
+                The solution is simple. An inline CSS style declaration targeting the image. Interpolation simply
+                multiplies the decremented frame position by the cell width or height, then adds "px" to the end, and a
+                negative sign to the beginning.
+            </p>
+            <p>
+                Since the state changes were already taken care of by the update function, all this modular function has
+                to do is update CSS to reflect the state.
+            </p>
+            <p>
+                Modularization for the win!
+            </p>
+            <p>
+                On to the repeat phase.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="repeat">REPEAT</h3>
+            <p>
+                This code should look very familiar to you, from completing lesson 2.
+            </p>
+            <pre>
+<span class="yellow">repeat = () => {
+    ++throttle_counter;
+    if (throttle_counter % throttle === 0) {
+        update();
+        render();
+    }
+    window.requestAnimationFrame(repeat);
+};</span>
+            </pre>
+            <p>
+                The only real difference is that the user of the animation gets to set the throttle variable via a data
+                attribute. This way if they wish the animation to be slower or faster it can easily be changed by
+                someone who does not know how the JAVASCRIPT code works.
+            </p>
+            <p>
+                Otherwise the purpose of this beating heart is to keep calling update and then render over and over,
+                implementing the animation flow.
+            </p>
+            <p>
+                By modularizing the various phases of animation into separate descriptive functions, you make your code
+                much easier to control and understand. Everything becomes simpler than before, but you accomplish so
+                much more.
+            </p>
+        </article>
+
+        <hr>
+
+        <article>
+            <h3 class="mag" id="visual_breakdown">VISUAL BREAKDOWN</h3>
+            <pre class="sprite_sheet_breakdown_pre_special" style="font-size: 0.6rem;">
+// INITIALIZATION PHASE HIDDEN
+const
+<span data-state="update">update = () => {</span>
+    <span data-state="check_forward">if (direction === 'forward') {</span>
+        <span data-state="check_forward_x">if (frame_position.x < divisions_x) {</span>
+            <span data-state="increment_x">++frame_position.x;</span>
+        }
+        <span data-state="check_forward_y">else if (frame_position.y < divisions_y) {</span>
+            <span data-state="increment_y"></span>++frame_position.y;
+            <span data-state="reset_x"></span>frame_position.x = 1;
+        }
+        <span data-state="check_forward_else">else {</span>
+            <span data-state="check_scanmode">if (scan_mode === 'loop') {</span>
+                <span data-state="frame_reset">frame_position = { x : 1, y : 1 };</span>
+            }
+            <span data-state="check_scanmode_else">else {</span>
+                <span data-state="direction_backward">direction = 'backward';</span>
+                <span data-state="call_back_update_forward">update();</span>
+            }
+        }
+    }
+    <span data-state="check_back">else {</span>
+        <span data-state="check_back_x">if (frame_position.x > 1) {</span>
+            <span data-state="decrement_x">--frame_position.x;</span>
+        }
+        <span data-state="check_back_y">else if (frame_position.y > 1) {</span>
+            <span data-state="decrement_y">--frame_position.y;</span>
+            <span data-state="reset_x_max">frame_position.x = divisions_x;</span>
+        }
+        <span data-state="check_back_else">else {</span>
+            <span data-state="direction_forward">direction = 'forward';</span>
+            <span data-state="call_back_update_backward">update();</span>
+        }
+    }
+},
+<span data-state="render">render = () => {</span>
+    <span data-state="render_left">image.style.left = `-${(frame_position.x - 1) * local_width}px`;</span>
+    <span data-state="render_top">image.style.top = `-${(frame_position.y - 1) * local_height}px`;</span>
+},
+repeat = () => {
+    ++throttle_counter;
+    if (throttle_counter % throttle === 0) {
+        <span data-state="call_update">update();</span>
+        <span data-state="call_render">render();</span>
+    }
+    window.requestAnimationFrame(repeat);
+};
+            </pre>
+            <aside class="slide_special">
+                <section class="slide_window_special"></section>
+                <img class="fit" alt="money wagger sprite sheet" src="./img/money_wagger.png">
+            </aside>
+            <aside class="sprite_sheet_breakdown_special" data-divisions_x="5" data-divisions_y="1"
+                data-src="./img/money_wagger.png" data-alt="animated money face" data-scan_mode="bounce" data-scale="1"
+                data-throttle="20"></aside>
+            <hr>
+            <h3>Example Without Overflow Hidden</h3>
+            <aside style="overflow: visible; border: 2px solid magenta;" class="sprite_sheet" data-divisions_x="5"
+                data-divisions_y="1" data-src="./img/money_wagger.png" data-alt="animated money face"
+                data-scan_mode="bounce" data-scale="1" data-throttle="20"></aside>
+            <hr>
+            <h3>Example With Multiple Columns</h3>
+            <article class="sprite_sheet_breakdown_wrapper">
+                <aside class="slide">
+                    <section class="slide_window"></section>
+                    <img class="fit" alt="penguin sprite sheet" src="./img/penguin_sheet.png">
+                </aside>
+                <aside class="sprite_sheet_breakdown" data-divisions_x="4" data-divisions_y="2"
+                    data-src="./img/penguin_sheet.png" data-alt="animated penguins" data-scan_mode="loop" data-scale="3"
+                    data-throttle="50"></aside>
+            </article>
+            <hr>
+            <h3>Multiple Columns Example Without Overflow Hidden</h3>
+            <aside style="overflow: visible; border: 2px solid magenta; margin: 8rem 0" class="sprite_sheet"
+                data-divisions_x="4" data-divisions_y="2" data-src="./img/penguin_sheet.png"
+                data-alt="animated penguins" data-scan_mode="loop" data-scale="1" data-throttle="50"></aside>
+        </article>
+
+        <hr>
+
+
+        <article>
+            <h3 class="mag" id="challenge">CHALLENGE</h3>
+            <p>Your challenge will be to extend the code presented in this lesson.</p>
+            <p class="red">REMEMBER: DO NOT LOOK AT THE SOLUTION CODE BEFORE TRYING THE CHALLENGE YOURSELF!</p>
+            <p>Instructions:</p>
+            <ol class="tab">
+                <li>Go to the ASSOCIATED_FILES related to this lesson and open l3_challenge in your code editor.</li>
+                <li>Open the index.html file in your browser.</li>
+                <li>You do not need to edit the HTML.</li>
+                <li>Open the script.js file in your code editor.</li>
+                <li>Your job is to complete the function.</li>
+                <li>Your function should implement the previously taught animation.</li>
+                <li>If you need to copy the code to get started, you may. It is better if you think and type it out
+                    yourself though.</li>
+                <li>Your function should also cause the animation to get bigger and smaller over and over. Scale up,
+                    scale down.</li>
+                <li>Along with the scaling, your function should cause the animation to rotate.</li>
+                <li>Finally, if you are feeling adventurous, rotate the hue of the animation constantly.</li>
+                <li>Regardless of how you come to a solution, the important part is that you are prepared to EXPLAIN
+                    EVERY PART of your code in detail.</li>
+            </ol>
+            <p>Good Luck!</p>
+            <blockquote>HINT: Check out the links at the bottom of this page for some useful stuff.</blockquote>
+        </article>
+
+        <hr>
+
+        <article>
+            <h2>ADDITIONAL RESOURCES</h2>
+            <p>Each lesson will explain and provide research resources for a general concept or skill. It is highly
+                recommended that you take the time to review lessons, research subjects, and practice on your own
+                between lessons.</p>
+            <p>At the end of each lesson will be a challenge, completing these assignments is paramount to your
+                retention of the taught material. The struggle is where the learning really occurs, embrace it.</p>
+
+            <h4>LINKS:</h4>
+            <a href="https://devdocs.io/html/global_attributes/data-*">DATA ATTRIBUTES</a>
+            <a href="https://devdocs.io/dom/console#Styling_console_output">CONSOLE STYLING</a>
+            <a href="https://devdocs.io/javascript/operators/logical_or">LOGICAL OR OPERATOR</a>
+            <a href="https://devdocs.io/javascript/operators/nullish_coalescing">NULLISH COALESCING OPERATOR</a>
+            <a href="https://devdocs.io/css/transform">CSS TRANSFORM</a>
+            <a href="https://devdocs.io/css/filter">CSS FILTER</a>
+        </article>
+
+        <hr>
+
+        <a href="../../../index.html">
+            <h2>RETURN TO INDEX</h2>
+        </a>
+
+    </main>
+    <script src="../../../js/set_timeout.js"></script>
+    <script src="../../../js/post_processing.js"></script>
+    <script src="../../../js/dynamic_navbar.js"></script>
+    <script src="./sprite_sheet.js"></script>
+    <script src="./sprite_sheet_breakdown.js"></script>
+</body>
+
+</html>
