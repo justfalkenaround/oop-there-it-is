@@ -636,7 +636,7 @@ const keno = (() => {
             this.clear_picks();
             next_picks.forEach(v => (this.button_grid._children[v].selected = true));
         }
-        
+
         get populated_table() {
             let output = ``;
             for (let i = 0; i < this.selected_count; i++) {

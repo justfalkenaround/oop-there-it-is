@@ -699,7 +699,7 @@ const keno = (() => {
         starting_table_index(selected = 0) {
             return this.root.payouts[selected].findIndex(v => v !== 0);
         }
-        
+
         get populated_table() {
             let output = ``;
             for (let i = 0; i < this.selected_count; i++) {

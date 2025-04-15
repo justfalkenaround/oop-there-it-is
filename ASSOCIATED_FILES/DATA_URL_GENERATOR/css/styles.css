@@ -1,4 +1,6 @@
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
@@ -9,7 +11,8 @@ body {
     color: white;
 }
 
-div, p {
+div,
+p {
     display: flex;
     justify-content: center;
     align-content: center;

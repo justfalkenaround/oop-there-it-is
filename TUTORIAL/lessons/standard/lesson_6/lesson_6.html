@@ -96,7 +96,8 @@
 
         <article>
             <h3 class="mag" id="example">EXAMPLE</h3>
-            <a class="inline-block" href="./cell_division/cell_division.html"><button>TAKE ME TO THE EXAMPLE</button></a>
+            <a class="inline-block" href="./cell_division/cell_division.html"><button>TAKE ME TO THE
+                    EXAMPLE</button></a>
         </article>
 
         <hr>
@@ -188,7 +189,9 @@
                 A universe tree can be a way of modularizing the different portions of your universe.
             </p>
             <p>
-                Since the nodes(class instances) don't actually exist in memory as a tree, you have to artificially represent that tree somehow. This can be done by each node storing a reference to it's parent, if it has one.
+                Since the nodes(class instances) don't actually exist in memory as a tree, you have to artificially
+                represent that tree somehow. This can be done by each node storing a reference to it's parent, if it has
+                one.
             </p>
             <pre>
 console.log(ship.parent);
@@ -215,8 +218,7 @@ console.log(asteroids.parent);
             <p>
                 Almost all objects in JAVASCRIPT inherit from the Object prototype. They extend Object.
             </p>
-            <img style="min-width:40%;" alt="screenshot of object proto"
-                src="../../../img/screen_object.png">
+            <img style="min-width:40%;" alt="screenshot of object proto" src="../../../img/screen_object.png">
             <p>
                 If you go looking at all of the constructors that JAVASCRIPT provides you will start to see that they
                 have chains of inheritance. See next section on inspecting for instructions.
@@ -293,13 +295,16 @@ console.log(TEST);
             </p>
             <img alt="devdocs screenshot" src="../../../img/screen_cell_division.png">
             <p>
-                It can be incredibly informing to actually see the state and structure of things as they occur, rather than as you expect it to be.
+                It can be incredibly informing to actually see the state and structure of things as they occur, rather
+                than as you expect it to be.
             </p>
             <p>
-                There's a lot going on in that image but don't worry, as you build out your own classes you will recognize your own properties and methods.
+                There's a lot going on in that image but don't worry, as you build out your own classes you will
+                recognize your own properties and methods.
             </p>
             <p>
-                You can see that since the universe extends list that it has a _children array with all of the branches of the tree connected to this node.
+                You can see that since the universe extends list that it has a _children array with all of the branches
+                of the tree connected to this node.
             </p>
             <img alt="devdocs screenshot" src="../../../img/screen_children.png">
             <p>
@@ -316,7 +321,9 @@ console.log(TEST);
                 Now back to the root class.
             </p>
             <p>
-                If you look down at the very bottom of the list you will see the prototype dropdown. You can open this up to see not just the properties of this object, but of the prototype it inherits from. This goes for any object in devtools.
+                If you look down at the very bottom of the list you will see the prototype dropdown. You can open this
+                up to see not just the properties of this object, but of the prototype it inherits from. This goes for
+                any object in devtools.
             </p>
             <img alt="devdocs screenshot" src="../../../img/screen_universe.png">
             <p>
@@ -336,7 +343,9 @@ console.log(TEST);
             </p>
             <img alt="devdocs screenshot" src="../../../img/screen_object.png">
             <p>
-                This flow can be great for debugging and digging out pesky problems that you didn't even know existed. As your universes and data stuctures become more complex you should find ways to make yourself as familiar with them as possible.
+                This flow can be great for debugging and digging out pesky problems that you didn't even know existed.
+                As your universes and data stuctures become more complex you should find ways to make yourself as
+                familiar with them as possible.
             </p>
             <p>
                 You are encouraged to explore more developer tools, they can really help you out.
@@ -365,7 +374,8 @@ console.log(TEST);
                 compose new classes than to try and make one SUPER super class.
             </p>
             <blockquote class="yellow">
-                Unfortunately JAVASCRIPT does not natively support multiple inheritance, meaning a class can only inherit
+                Unfortunately JAVASCRIPT does not natively support multiple inheritance, meaning a class can only
+                inherit
                 from one other class at most. This can lead to cases where code must be repeated for incompatible
                 branches.
             </blockquote>
@@ -374,7 +384,8 @@ console.log(TEST);
                 modularization.
             </p>
             <p>
-                For instance, most all of the classes in the barebones.js tree use options objects as inputs with default values instead of
+                For instance, most all of the classes in the barebones.js tree use options objects as inputs with
+                default values instead of
                 regular arguments so that a user can input a wide range of things and still create a working
                 program(sometimes).
             </p>
@@ -401,7 +412,8 @@ console.log(TEST);
                 Two component(dimensional) vectors with a small set of methods.
             </p>
             <p class="yellow">
-                You will be using vectors(and already have), to represent mostly position, scale, direction, and velocity.
+                You will be using vectors(and already have), to represent mostly position, scale, direction, and
+                velocity.
             </p>
             <pre>
 const position = { x: 20, y: 50 };
@@ -1008,7 +1020,8 @@ class Rectangle extends Shape {
                 paper would be upside down but in the same spot.
             </p>
             <p>
-                This effect is achieved in canvas by translating(shifting or moving) the origin. The origin of the canvas is the finger it
+                This effect is achieved in canvas by translating(shifting or moving) the origin. The origin of the
+                canvas is the finger it
                 rotates about.
             </p>
             <p>
@@ -1040,7 +1053,8 @@ const rect = new Rectangle({
                 infrastructure.
             </p>
             <p>
-                Feel free to take a closer look at the CanvasManager and Sprite classes of barebones.js to get a deeper understanding of how origin is weaved into the data and the rendering pipeline.
+                Feel free to take a closer look at the CanvasManager and Sprite classes of barebones.js to get a deeper
+                understanding of how origin is weaved into the data and the rendering pipeline.
             </p>
             <p>
                 On that note, you should get familiar with some of the class implementations in barebones.js
@@ -1570,7 +1584,8 @@ class List extends Interface {
                 results. Other options are find and find_all which take callback functions.
             </p>
             <p>
-                Many of the barebones.js classes extend List and the structure of the tree relies heavily on their power.
+                Many of the barebones.js classes extend List and the structure of the tree relies heavily on their
+                power.
             </p>
             <p>
                 You will see more use of the lists at the lessons progress.
@@ -1687,7 +1702,8 @@ class Universe extends List {
                 the top dog of the universe, the beating heart, the engine.
             </p>
             <p>
-                There are more classes in barbones.js of course, for now these classes will be enough to build a proof of concept application.
+                There are more classes in barbones.js of course, for now these classes will be enough to build a proof
+                of concept application.
             </p>
         </article>
 
@@ -1696,10 +1712,12 @@ class Universe extends List {
         <article>
             <h3 class="mag" id="how_it_works">HOW IT WORKS</h3>
             <p>
-                If you open the link at the example section of this lesson you can take a look at the example and see how it works.
+                If you open the link at the example section of this lesson you can take a look at the example and see
+                how it works.
             </p>
             <p>
-                Essentially the appication spawns two instances of "Cell" that do not collide in the middle of the screen.
+                Essentially the appication spawns two instances of "Cell" that do not collide in the middle of the
+                screen.
             </p>
             <p>
                 They are initialized with a little velocity moving in one direction or the other.
@@ -1708,37 +1726,46 @@ class Universe extends List {
                 They are both of a random color.
             </p>
             <p>
-                Nothing much happens at first, but since they are instances of Cell, they inherit the functionality to divide into more cells. This happens.
+                Nothing much happens at first, but since they are instances of Cell, they inherit the functionality to
+                divide into more cells. This happens.
             </p>
             <p>
-                When a cell divides it splits into two smaller cells, who inherit the color of the parent cell, along with a portion of it's velocity. Then the parent self destructs.
+                When a cell divides it splits into two smaller cells, who inherit the color of the parent cell, along
+                with a portion of it's velocity. Then the parent self destructs.
             </p>
             <blockquote class="blue">
-                NOTE: Not that it really matters in this context but this is not really how cell division works in biology, real cells take in resources from the outside and shouldn't really change in size when they divide.
+                NOTE: Not that it really matters in this context but this is not really how cell division works in
+                biology, real cells take in resources from the outside and shouldn't really change in size when they
+                divide.
             </blockquote>
             <blockquote class="yellow">
-                IDEA: With some minor tweaks, this example code could be modified to instead represent a form of atomic fission. Or maybe even a fission fusion combination like a hydrogen bomb. Bang.
+                IDEA: With some minor tweaks, this example code could be modified to instead represent a form of atomic
+                fission. Or maybe even a fission fusion combination like a hydrogen bomb. Bang.
             </blockquote>
             <p>
-                Now that a cell has divided, and it's children have a bit more velocity, there becomes a chance that cells of opposite color will collide.
+                Now that a cell has divided, and it's children have a bit more velocity, there becomes a chance that
+                cells of opposite color will collide.
             </p>
             <p>
                 When two cells of opposite color collide, they both die, or are removed from the universe, same thing.
             </p>
             <p>
-                Since cells divide based on age with a bit of randomness, the more cells that exists, the more divisions that will occur per unit of time, exponentially.
+                Since cells divide based on age with a bit of randomness, the more cells that exists, the more divisions
+                that will occur per unit of time, exponentially.
             </p>
             <p>
                 It is interesting to see what color, if any, overtakes the other color. Kinda like a virus.
             </p>
             <p>
-                Eventually the population of cells causes the collision detection(Math.sqrt() specifically) to cause the framerate of the application to increase due to computation overload.
+                Eventually the population of cells causes the collision detection(Math.sqrt() specifically) to cause the
+                framerate of the application to increase due to computation overload.
             </p>
             <p>
                 At the point when the rolling average framerate gets too high, the application resets.
             </p>
             <p class="yellow">
-                As far as examples go, this one pretty well represents the life of class object instances and how they relate to physical reality.
+                As far as examples go, this one pretty well represents the life of class object instances and how they
+                relate to physical reality.
             </p>
         </article>
 
@@ -1747,7 +1774,8 @@ class Universe extends List {
         <article>
             <h3 class="mag" id="cell_division">CELL DIVISION</h3>
             <p>
-                The actual codebase for this application is pretty small considering the simulation being implemented to this extent. This is the benefit of using a library or set of reusable classes.
+                The actual codebase for this application is pretty small considering the simulation being implemented to
+                this extent. This is the benefit of using a library or set of reusable classes.
             </p>
             <pre>
 'use strict';
@@ -1779,13 +1807,17 @@ window.addEventListener('DOMContentLoaded', () => {
                 As you can see the classes for Cell and CellDivision have been hidden.
             </p>
             <p>
-                The rest of the boilerplate code for the application include enclosing the new classes in an IIFE, importing the needed classes from barebones.js, exporting the main universe class from the IIFE under the namespace cell_division, and instantiating the universe within the target element(s).
+                The rest of the boilerplate code for the application include enclosing the new classes in an IIFE,
+                importing the needed classes from barebones.js, exporting the main universe class from the IIFE under
+                the namespace cell_division, and instantiating the universe within the target element(s).
             </p>
             <p>
-                This boilerplate is a nice template to use when extending and utilising barebones.js, or any library or codebase for that matter.
+                This boilerplate is a nice template to use when extending and utilising barebones.js, or any library or
+                codebase for that matter.
             </p>
             <p>
-                Now you can look into the root universe class, CellDivision, which extends Universe. There should always be one of these acting as the universe root node. Anything else in the universe should stem from here.
+                Now you can look into the root universe class, CellDivision, which extends Universe. There should always
+                be one of these acting as the universe root node. Anything else in the universe should stem from here.
             </p>
             <pre>
 class CellDivision extends Universe {
@@ -1796,10 +1828,14 @@ class CellDivision extends Universe {
 }
             </pre>
             <p>
-                Firstly the universe, during initialization, should also call it's own reset method. This is becuase in this case reset and initialize are one and the same and therefore can exist on one location, reset.
+                Firstly the universe, during initialization, should also call it's own reset method. This is becuase in
+                this case reset and initialize are one and the same and therefore can exist on one location, reset.
             </p>
             <p class="red">
-                Don't forget to call the super method of any interface methods that are being extended. Since initialize is an interface method you must call super.initialize() within the extension. If you do not do this, it becomes an override, and the logic will not be inherited. This will probably break the application if you are extending animation phase methods.
+                Don't forget to call the super method of any interface methods that are being extended. Since initialize
+                is an interface method you must call super.initialize() within the extension. If you do not do this, it
+                becomes an override, and the logic will not be inherited. This will probably break the application if
+                you are extending animation phase methods.
             </p>
             <pre>
 class CellDivision extends Universe {
@@ -1821,7 +1857,8 @@ class CellDivision extends Universe {
                 The update extension method does two new things.
             </p>
             <p>
-                First, it checks if the average frame rate, a property of any Universe instance, is too high. If it is too high, the animation resets.
+                First, it checks if the average frame rate, a property of any Universe instance, is too high. If it is
+                too high, the animation resets.
             </p>
             <p>
                 Second, it calls the local collision detection method that doesn't exist yet.
@@ -1857,7 +1894,9 @@ class CellDivision extends Universe {
                 Within the reset extension method, which also acts as initialization, two main things are going on.
             </p>
             <p>
-                First, the aggregate array of the queue(objects that are about to go into the universe) and the children are looped over and thier delete flag is enabled. That is if they are a cell. In essence this deletes all cells in the universe.
+                First, the aggregate array of the queue(objects that are about to go into the universe) and the children
+                are looped over and thier delete flag is enabled. That is if they are a cell. In essence this deletes
+                all cells in the universe.
             </p>
             <p>
                 Afterwards two new instances of Cell are created and added to the universe.
@@ -1869,28 +1908,43 @@ class CellDivision extends Universe {
                 This represents thier STARTING position and velocity. You are seeding the universe at this point.
             </p>
             <p>
-                The position and velocities are pretty self explanatory. The position is left of the middle of the canvas for one cell, and right of the middle for the other. This way they don't collide immediatly.
+                The position and velocities are pretty self explanatory. The position is left of the middle of the
+                canvas for one cell, and right of the middle for the other. This way they don't collide immediatly.
             </p>
             <p>
                 The velocities are small with a hair of randomness.
             </p>
             <p>
-                By starting the universe this way there is a gaurantee that the cells will have a chance to divide and collide.
+                By starting the universe this way there is a gaurantee that the cells will have a chance to divide and
+                collide.
             </p>
             <p>
-                The last peice of the universe root is the collision detection. Semantically, it would make more sense for each cell to handle it's own collision detection. However, from a performance standpoint, collision detection is often the most expensive operation in an animation, game, or simulation. For this reason, it is best to limit the number of collision checks to the absolute minumum while still enforcing the rule.
+                The last peice of the universe root is the collision detection. Semantically, it would make more sense
+                for each cell to handle it's own collision detection. However, from a performance standpoint, collision
+                detection is often the most expensive operation in an animation, game, or simulation. For this reason,
+                it is best to limit the number of collision checks to the absolute minumum while still enforcing the
+                rule.
             </p>
             <p>
-                This collision method checks every cell against every other cell once, however, no two cells are checked against eachother twice. This is handled by the parent node, in this case, the root node.
+                This collision method checks every cell against every other cell once, however, no two cells are checked
+                against eachother twice. This is handled by the parent node, in this case, the root node.
             </p>
             <blockquote class="yellow">
-                IDEA: If you wanted to optimize even more, you could do a couple things. You could stagger the collision checks, only checking a portion of the cells each tick, then checking another portion the next tick. This way a collision might happen, but only be detected a tick late, but the speed would increase. Another would be to eliminate collisions using a rough distance caluculation instead of the pythagorean theorem(A**2 + B**2 === C**2) which uses Math.sqrt(), a notoriously expensive function.
+                IDEA: If you wanted to optimize even more, you could do a couple things. You could stagger the collision
+                checks, only checking a portion of the cells each tick, then checking another portion the next tick.
+                This way a collision might happen, but only be detected a tick late, but the speed would increase.
+                Another would be to eliminate collisions using a rough distance caluculation instead of the pythagorean
+                theorem(A**2 + B**2 === C**2) which uses Math.sqrt(), a notoriously expensive function.
             </blockquote>
             <p>
-                The goal is to check any possible condition where a calculation can be avoided FIRST. In this way you reduce the number of calculations down to a smaller number, while also avoiding duplicate checks or checks against the same objects. If the objects pass all initial tests and are candidates for collision, then a distance calculation is performed.
+                The goal is to check any possible condition where a calculation can be avoided FIRST. In this way you
+                reduce the number of calculations down to a smaller number, while also avoiding duplicate checks or
+                checks against the same objects. If the objects pass all initial tests and are candidates for collision,
+                then a distance calculation is performed.
             </p>
             <blockquote class="blue">
-                NOTE: Another little performance trick. If you are looping for a fixed number of times, declare the number once, instead of checking the length of an array every time, within the for loop declaration.
+                NOTE: Another little performance trick. If you are looping for a fixed number of times, declare the
+                number once, instead of checking the length of an array every time, within the for loop declaration.
                 <pre>
 for (let i = 0, j = cells.length; i < j; i++) { }
                 </pre>
@@ -1926,34 +1980,46 @@ class CellDivision extends Universe {
 }
             </pre>
             <p>
-                In the first line, the set of potential objects that could collide is defined by filtering out anything that is not an instance of Cell.
+                In the first line, the set of potential objects that could collide is defined by filtering out anything
+                that is not an instance of Cell.
             </p>
             <p>
                 This set is then looped over using a tradional for loop.
             </p>
             <p>
-                Within this loop the outer element is defined, the element with which collisions will be checked against.
+                Within this loop the outer element is defined, the element with which collisions will be checked
+                against.
             </p>
             <p>
                 If the element is flagged for deletion, skip the iteration. This is done with the continue key word.
             </p>
             <p>
-                Next a sub loop is defined to loop over the set, starting at one position past the outer object. This is how duplicate checks are eliminated, since every element before the current outer element within the set have already ensured that they do or don't collide, they can be ignored from here on out, effectivly reducing the set size with every iteration.
+                Next a sub loop is defined to loop over the set, starting at one position past the outer object. This is
+                how duplicate checks are eliminated, since every element before the current outer element within the set
+                have already ensured that they do or don't collide, they can be ignored from here on out, effectivly
+                reducing the set size with every iteration.
             </p>
             <p>
                 Within the sub loop the inner element is defined.
             </p>
             <p>
-                Finally the last avoidance check is to see if they are the same color, if they are, then do nothing. Otherwise, a distance caluculation is performed between the inner and outer elements.
+                Finally the last avoidance check is to see if they are the same color, if they are, then do nothing.
+                Otherwise, a distance caluculation is performed between the inner and outer elements.
             </p>
             <p>
-                If they do collide, break from the sub loop completly after flagging both elements for deletion. Because there is no reason to perform any further checks on the outer element, it is already dead.
+                If they do collide, break from the sub loop completly after flagging both elements for deletion. Because
+                there is no reason to perform any further checks on the outer element, it is already dead.
             </p>
             <p>
-                That concludes the CellDivision universe instance code. Keep in mind that collision detection can get complex quick, but try to reduce the set size as much as possible before performing expensive calculations.
+                That concludes the CellDivision universe instance code. Keep in mind that collision detection can get
+                complex quick, but try to reduce the set size as much as possible before performing expensive
+                calculations.
             </p>
             <p>
-                Finally since collision detection is so unique to each application, you as the coder will be responsible for defining the method yourself. barebones.js provides helpful methods for checking each collision, but the rest of the looping and filtering is up too you. Also, in this case, the inner and outer elements are just deleted, but you might want to do something else instead.
+                Finally since collision detection is so unique to each application, you as the coder will be responsible
+                for defining the method yourself. barebones.js provides helpful methods for checking each collision, but
+                the rest of the looping and filtering is up too you. Also, in this case, the inner and outer elements
+                are just deleted, but you might want to do something else instead.
             </p>
         </article>
 
@@ -1962,13 +2028,16 @@ class CellDivision extends Universe {
         <article>
             <h3 class="mag" id="cell">CELL</h3>
             <p>
-                Since this universe is primarily made up of Cells, the Cell class will comprise the rest of the logic for the application.
+                Since this universe is primarily made up of Cells, the Cell class will comprise the rest of the logic
+                for the application.
             </p>
             <pre>
 class Cell extends Interface { }
             </pre>
             <p>
-                Firstly, the constructor needs to be extended to activate the instance as a universe_object, something that is not enabled by default for instances of Interface. This will tell barebones.js that this object exists physically within the universe. This has to happen BEFORE the call super(options).
+                Firstly, the constructor needs to be extended to activate the instance as a universe_object, something
+                that is not enabled by default for instances of Interface. This will tell barebones.js that this object
+                exists physically within the universe. This has to happen BEFORE the call super(options).
             </p>
             <pre>
 class Cell extends Interface {
@@ -2006,16 +2075,20 @@ class Cell extends Interface {
                 The cell has an age, which always starts at 0.
             </p>
             <p>
-                The cell is also going to utilize a randomly generated number to determine it's natural lifespan. This is generated once and stored.
+                The cell is also going to utilize a randomly generated number to determine it's natural lifespan. This
+                is generated once and stored.
             </p>
             <p>
-                The cell also needs to have a color, this is being input as a options property, but as default the color is random.
+                The cell also needs to have a color, this is being input as a options property, but as default the color
+                is random.
             </p>
             <p>
-                The radius of the cell, since it is circular in shape, will be input by options or defaults to a tenth of the width of the canvas.
+                The radius of the cell, since it is circular in shape, will be input by options or defaults to a tenth
+                of the width of the canvas.
             </p>
             <p>
-                A circular path object is declared once and used many times, like in previous lessons to improve performance. This is especially useful for curves and arcs.
+                A circular path object is declared once and used many times, like in previous lessons to improve
+                performance. This is especially useful for curves and arcs.
             </p>
             <p>
                 Finally, to drive it in, don't forget to call the super class method.
@@ -2046,13 +2119,16 @@ class Cell extends Interface {
                 Within update, first, the cell gets older with every tick. Increment age.
             </p>
             <p>
-                Then local collision detection with the walls of the canvas is done. If the x bounds are reached, the x velocity reverses. Same for y. Reversing is done by just switching the sign of the number. Positive to negative, negative to positive.
+                Then local collision detection with the walls of the canvas is done. If the x bounds are reached, the x
+                velocity reverses. Same for y. Reversing is done by just switching the sign of the number. Positive to
+                negative, negative to positive.
             </p>
             <p>
                 The effect is that the cells will bounce off the walls of the canvas.
             </p>
             <p>
-                Next the age of the cell is checked against the random number generated earlier to determine if the cells life-cycle is over. If it is, then divide the cell.
+                Next the age of the cell is checked against the random number generated earlier to determine if the
+                cells life-cycle is over. If it is, then divide the cell.
             </p>
             <p>
                 Call the super method!
@@ -2109,7 +2185,8 @@ class Cell extends Interface {
 }
             </pre>
             <p>
-                One for the origin, as discussed earlier in the lesson. The middle of the circle that represents the cell.
+                One for the origin, as discussed earlier in the lesson. The middle of the circle that represents the
+                cell.
             </p>
             <p>
                 One for the circle object that represents the cell, for the parents collision detection purposes.
@@ -2159,10 +2236,13 @@ class Cell extends Interface {
                 The next is to spawn two more instances of Cell to the universe.
             </p>
             <p>
-                Note how the "request_add" method of the root is called, not "add". This is to add the cell to the universes queue rather than directly insert it into the universe in the middle of an update propogation, which might screw things up.
+                Note how the "request_add" method of the root is called, not "add". This is to add the cell to the
+                universes queue rather than directly insert it into the universe in the middle of an update propogation,
+                which might screw things up.
             </p>
             <p>
-                This effectivly schedules the cells to be added before the next update call of the root itself. Nice and safe.
+                This effectivly schedules the cells to be added before the next update call of the root itself. Nice and
+                safe.
             </p>
             <p>
                 Within the options of the new Cell instances:
@@ -2174,10 +2254,13 @@ class Cell extends Interface {
                 They recieve a velocity that seperate with a degree of randomness.
             </p>
             <p>
-                That is all there is to it. Once a cell divides, two more cells are born, and the cycle of life continues.
+                That is all there is to it. Once a cell divides, two more cells are born, and the cycle of life
+                continues.
             </p>
             <p>
-                Hopefully this proof of concept lets you dip your toes in the waters of application building using a library or toolkit. Keep in mind that the barebones.js library is small and was made to be understandable specifically for these lessons, you are encouraged to go exploring within it.
+                Hopefully this proof of concept lets you dip your toes in the waters of application building using a
+                library or toolkit. Keep in mind that the barebones.js library is small and was made to be
+                understandable specifically for these lessons, you are encouraged to go exploring within it.
             </p>
         </article>
 
@@ -2196,13 +2279,13 @@ class Cell extends Interface {
             <h3 class="mag" id="challenge">CHALLENGE</h3>
             <p>Who doesn't love a good game of pong? Your challenge will be to create a game of pong that you can play
                 against a computer or a person, your choice.</p>
-            <video controls alt="a canvas game of pong" type="video/mov"
-                src="../../../video/pong_game.mov"></video>
+            <video controls alt="a canvas game of pong" type="video/mov" src="../../../video/pong_game.mov"></video>
             <blockquote class="blue">
                 NOTE: The code paths have for these lessons and challenges have reached a point of complexity that one
                 persons code versus another will likely be vastly different. The point will be to get the job done
                 first, then go back and improve it. You are an artist and code is your paint. Don't worry about the
-                differences between finished code. But it could be useful to study another persons code for useful tricks.
+                differences between finished code. But it could be useful to study another persons code for useful
+                tricks.
             </blockquote>
             <p class="red">REMEMBER: DO NOT LOOK AT THE SOLUTION CODE BEFORE TRYING THE CHALLENGE YOURSELF!</p>
             <p>Instructions:</p>
@@ -2221,7 +2304,9 @@ class Cell extends Interface {
             </ol>
             <p>Good Luck!</p>
             <blockquote class="green">
-                HINT: You can use "this.keyboard.is_down('ArrowLeft')" to check if any keyboard key is down based on it's key property(string representing which key) within an Interface object instance that is initialized within the universe, in
+                HINT: You can use "this.keyboard.is_down('ArrowLeft')" to check if any keyboard key is down based on
+                it's key property(string representing which key) within an Interface object instance that is initialized
+                within the universe, in
                 it's update method. Like so:
                 <pre>
 class Example extends Interface {

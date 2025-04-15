@@ -20,7 +20,8 @@
             <h1>LESSON 8: KENO</h1>
             <p class="mag">
                 In this final lesson, you will build a highly sought after game of keno! In the process some more
-                barebones.js classes will be used and extended and a greater focus on the user interface details will help you
+                barebones.js classes will be used and extended and a greater focus on the user interface details will
+                help you
                 produce supreme products.
             </p>
 
@@ -139,14 +140,16 @@
         </article>
 
         <hr>
-        
+
         <article>
             <h3 class="mag" id="dev_tools_performance">DEV TOOLS PERFORMANCE</h3>
             <p>
-                There may be times when you want to analyze why, or if, your application is performing poorly under the hood. Luckily dev-tools provides a great set of tools, including the performance panel.
+                There may be times when you want to analyze why, or if, your application is performing poorly under the
+                hood. Luckily dev-tools provides a great set of tools, including the performance panel.
             </p>
             <blockquote class="yellow">
-                Dev-tools is a huge and complex toolkit, there are many ways to use it. This is only one small example. You are recommended to explore more ways.
+                Dev-tools is a huge and complex toolkit, there are many ways to use it. This is only one small example.
+                You are recommended to explore more ways.
             </blockquote>
             <p>
                 Using the performance panel is very simple.
@@ -158,10 +161,12 @@
                 Then open the performance panel. This may be hidden, find it in settings.
             </p>
             <p>
-                Once you are in the performance panel, select the record button on the top left. Be prepared to act quickly.
+                Once you are in the performance panel, select the record button on the top left. Be prepared to act
+                quickly.
             </p>
             <p>
-                Once recording has started, quickly start progressing through your game or application. If there is a specific thing that is giving you trouble, make sure to do that thing while recording.
+                Once recording has started, quickly start progressing through your game or application. If there is a
+                specific thing that is giving you trouble, make sure to do that thing while recording.
             </p>
             <p>
                 Once you are done recording, click the stop recording button.
@@ -174,58 +179,75 @@
             </p>
             <img style="max-width: 100%" alt="devtools screenshot" src="../../../img/bottom_up_one.png">
             <p>
-                You can learn on your own time how to decrypt it all. For now, you are going to want to look at the pie chart summary and the bottom up call stack.
+                You can learn on your own time how to decrypt it all. For now, you are going to want to look at the pie
+                chart summary and the bottom up call stack.
             </p>
             <p>
-                By clicking the summary sub tab, you can view what portions of your application took up the most time and resources. Color coded.
+                By clicking the summary sub tab, you can view what portions of your application took up the most time
+                and resources. Color coded.
             </p>
             <img style="max-width: 100%" alt="devtools screenshot" src="../../../img/summary.png">
             <p>
-                By clicking the bottom up sub tab, you can see specifically which function calls took the most time and resources.
+                By clicking the bottom up sub tab, you can see specifically which function calls took the most time and
+                resources.
             </p>
             <img style="max-width: 100%" alt="devtools screenshot" src="../../../img/bottom_up_two.png">
             <p>
-                This one is the most useful because it allows you to identify exactly what is causing slowdowns or is eating up resources. Then you know where to put your attention and optimize.
+                This one is the most useful because it allows you to identify exactly what is causing slowdowns or is
+                eating up resources. Then you know where to put your attention and optimize.
             </p>
             <p>
-                You can also dig into an expensive or long running function call using the dropdowns and analyze exactly what is going on during live execution.
+                You can also dig into an expensive or long running function call using the dropdowns and analyze exactly
+                what is going on during live execution.
             </p>
             <img style="max-width: 100%" alt="devtools screenshot" src="../../../img/bottom_up_three.png">
             <p class="red">
-                Just remember, these tools are great and all, but don't optimize prematurely. If it ain't broke, don't fix it.
+                Just remember, these tools are great and all, but don't optimize prematurely. If it ain't broke, don't
+                fix it.
             </p>
         </article>
 
         <hr>
-        
+
         <article>
             <h3 class="mag" id="web_workers">WEB WORKERS</h3>
             <p>
-                Web workers are a fantastic tool for a variety of use cases. Primarily, they are great for separating a thread of execution to utilize multiple CPU cores and prevent user interface blocking action.
+                Web workers are a fantastic tool for a variety of use cases. Primarily, they are great for separating a
+                thread of execution to utilize multiple CPU cores and prevent user interface blocking action.
             </p>
             <p class="red">
                 So what are web workers exactly?
             </p>
             <p>
-                Web workers are like little mini javascript programs that run on a separate thread from your main javascript thread.
+                Web workers are like little mini javascript programs that run on a separate thread from your main
+                javascript thread.
             </p>
             <p>
-                They have access to much but not all of the same properties of the window object. But they have no DOM access.
+                They have access to much but not all of the same properties of the window object. But they have no DOM
+                access.
             </p>
             <p>
-                They also do not share scope. That means that they cannot see anything else in your program unless you give it to it via a special means.
+                They also do not share scope. That means that they cannot see anything else in your program unless you
+                give it to it via a special means.
             </p>
             <p>
-                You can think of web workers as a factory in China. You can send them some supplies, then they can create something with those supplies. Then they can send those supplies back. They cannot however go to the same grocery store as you, because they are in China, very far away.
+                You can think of web workers as a factory in China. You can send them some supplies, then they can
+                create something with those supplies. Then they can send those supplies back. They cannot however go to
+                the same grocery store as you, because they are in China, very far away.
             </p>
             <p>
-                Threads pass data to eachother via messages, which are essentially strings of data. This limits what you can send back and fourth to some extent. If it can't be serialized, it can't be sent. Not without some pre processing first.
+                Threads pass data to eachother via messages, which are essentially strings of data. This limits what you
+                can send back and fourth to some extent. If it can't be serialized, it can't be sent. Not without some
+                pre processing first.
             </p>
             <p>
-                Workers can however import libraries and scripts. So if you were using barebones.js to create a game and were diverting some processing to a web worker, you might import barebones.js into your worker so it can use those classes.
+                Workers can however import libraries and scripts. So if you were using barebones.js to create a game and
+                were diverting some processing to a web worker, you might import barebones.js into your worker so it can
+                use those classes.
             </p>
             <p class="yellow">
-                You should know, since CORS will rear it's ugly head again for web workers loaded from origins considered unsecure. There is however a nice little workaround:
+                You should know, since CORS will rear it's ugly head again for web workers loaded from origins
+                considered unsecure. There is however a nice little workaround:
             </p>
             <pre>
 const worker_script_to_url = worker_function => {
@@ -240,7 +262,8 @@ const worker_script_to_url = worker_function => {
 }
             </pre>
             <p>
-                The function above will nicely convert a function into a CORS friendly URL that can be passed into a Worker constructor. It is included in the help object of barebones.js.
+                The function above will nicely convert a function into a CORS friendly URL that can be passed into a
+                Worker constructor. It is included in the help object of barebones.js.
             </p>
             <p>
                 Here is a basic example of a worker that repeats back a modified message.
@@ -275,13 +298,17 @@ sample_worker.postMessage('hello')
                 The worker has a self.onmessage event handler and reponds with self.postMessage.
             </p>
             <p>
-                The main thread attaches a onmessage handler to the reference to the worker, what it should do on the main thread side of things.
+                The main thread attaches a onmessage handler to the reference to the worker, what it should do on the
+                main thread side of things.
             </p>
             <p>
                 Similarly the reference.postMessage sends messages to the worker.
             </p>
             <p>
-                Here is another example that imports barebones.js and accepts a vector as a message and returns a newly calculated one(only the plain array version however). This function has a loop that runs for a long time. The main application thread continues while the worker works away, all without interrupting the main thread. When the worker is done, it passes back the data via a message.
+                Here is another example that imports barebones.js and accepts a vector as a message and returns a newly
+                calculated one(only the plain array version however). This function has a loop that runs for a long
+                time. The main application thread continues while the worker works away, all without interrupting the
+                main thread. When the worker is done, it passes back the data via a message.
             </p>
             <pre>
 const worker_function = () => {
@@ -314,13 +341,15 @@ sample_worker.postMessage({ type: 'initialize', url: document.location.href });
 sample_worker.postMessage({ type: 'vector', vector: new Vector(2, 2).array });
             </pre>
             <p>
-                In this one some event handling is implemented. When it receives an object with a type of initialize it imports a script from a computed file path.
+                In this one some event handling is implemented. When it receives an object with a type of initialize it
+                imports a script from a computed file path.
             </p>
             <p>
                 When it receives a vector type object, it performs the operation and then posts a message when complete.
             </p>
             <p>
-                The benefit of web workers really comes into play with operations that can utilize an additional thread of execution on the CPU. Expensive, long-running processes and things that might block the UI.
+                The benefit of web workers really comes into play with operations that can utilize an additional thread
+                of execution on the CPU. Expensive, long-running processes and things that might block the UI.
             </p>
             <p>
                 Read the docs at the end of the lesson for more info.
@@ -328,7 +357,7 @@ sample_worker.postMessage({ type: 'vector', vector: new Vector(2, 2).array });
         </article>
 
         <hr>
-        
+
         <article>
             <h3 class="mag" id="javascript_numbers">JAVASCRIPT NUMBERS</h3>
             <p>
@@ -338,19 +367,23 @@ sample_worker.postMessage({ type: 'vector', vector: new Vector(2, 2).array });
                 For instance, we as humans usually use arabic style number system in base ten.
             </p>
             <p>
-                Computers however use a binary system with base 2. Or some power of two such as octal or hexadecimal which becomes binary.
+                Computers however use a binary system with base 2. Or some power of two such as octal or hexadecimal
+                which becomes binary.
             </p>
             <p>
-                Also since the numbers are represented by bits, only number up to a certain size can be processed by a CPU, in one bite.
+                Also since the numbers are represented by bits, only number up to a certain size can be processed by a
+                CPU, in one bite.
             </p>
             <p>
-                Programming languages other than JAVASCRIPT often are more specific as to the bitwise type of numbers. This gives you more control but also makes things more complex and strict.
+                Programming languages other than JAVASCRIPT often are more specific as to the bitwise type of numbers.
+                This gives you more control but also makes things more complex and strict.
             </p>
             <p>
                 Without getting too deep into the implications of this.
             </p>
             <p>
-                If you need to perform arithmetic on a number that is too large in integer or decimal place, you can use a BigInt, see the docs.
+                If you need to perform arithmetic on a number that is too large in integer or decimal place, you can use
+                a BigInt, see the docs.
             </p>
             <p>
                 The other thing worth noting is that some arithmetic will produce small inaccuracies. Such as:
@@ -366,7 +399,8 @@ console.log(0.1 + 0.2 === 0.3);
                 This is simply due to the differences between the number systems.
             </p>
             <p>
-                One solution is the use the Number.toFixed() method that converts a number to a fixed number of decimal places. Keep in mind it returns a string so you might want to convert back to number.
+                One solution is the use the Number.toFixed() method that converts a number to a fixed number of decimal
+                places. Keep in mind it returns a string so you might want to convert back to number.
             </p>
             <p>
                 For instance, if you are dealing with money, you will likely use Number.toFixed(2).
@@ -376,22 +410,25 @@ console.log(+(0.1 + 0.2).toFixed(2));
 // OUTPUTS 0.3
             </pre>
             <p class="green">
-                Keep these things in mind, if you start noticing weird things happening with your numbers, it might be this type of problem.
+                Keep these things in mind, if you start noticing weird things happening with your numbers, it might be
+                this type of problem.
             </p>
         </article>
 
         <hr>
-        
+
         <article>
             <h3 class="mag" id="local_storage">LOCAL STORAGE</h3>
             <p>
                 There may be times when you want to store some persistent data, like saving a game.
             </p>
             <p>
-                If you are not using a database, then the Local Storage API provides a very simple way of storing some semi-permanent data on the users computer. It only takes and gives string values though
+                If you are not using a database, then the Local Storage API provides a very simple way of storing some
+                semi-permanent data on the users computer. It only takes and gives string values though
             </p>
             <blockquote class="yellow">
-                NOTE: If you want a more permanent and structured data storage method on the client side, use IndexedDB. However know that it is not as easy to use as localStorage.
+                NOTE: If you want a more permanent and structured data storage method on the client side, use IndexedDB.
+                However know that it is not as easy to use as localStorage.
             </blockquote>
             <p>
                 Say you have a score that you want to save. So simple.
@@ -411,10 +448,12 @@ console.log(localStorage.score);
                 This is very useful. However you may want to store some more complex data such as arrays and objects.
             </p>
             <p>
-                There is a nice formal syntax called JSON(JAVASCRIPT OBJECT NOTATION) that you can convert your data to and from so that it can be stored in string form in localStorage.
+                There is a nice formal syntax called JSON(JAVASCRIPT OBJECT NOTATION) that you can convert your data to
+                and from so that it can be stored in string form in localStorage.
             </p>
             <p>
-                You can encode a combination of array or object of arrays or objects that ultimately contain only primitive values into JSON.
+                You can encode a combination of array or object of arrays or objects that ultimately contain only
+                primitive values into JSON.
             </p>
             <pre>
 const json_example =  [
@@ -433,7 +472,8 @@ console.log(stringified);
 // OUTPUTS [{"x":7,"y":{"z":2,"j":9}}]
             </pre>
             <p>
-                As you can see it serializes the data. This type of data can then be stored in localStorage. For example in a game:
+                As you can see it serializes the data. This type of data can then be stored in localStorage. For example
+                in a game:
             </p>
             <pre>
 const game_state = {
@@ -456,7 +496,9 @@ console.log(game_state.score);
                 This methodology allows for storing some more complex data.
             </p>
             <p>
-                However you are going to want your application to work the first time as well as every subsequent time. The first time you start up your app, there will be no value in localStorage for your game. So how do you initialize?
+                However you are going to want your application to work the first time as well as every subsequent time.
+                The first time you start up your app, there will be no value in localStorage for your game. So how do
+                you initialize?
             </p>
             <pre>
 localStorage.game_state = localStorage.game_state || JSON.stringify({
@@ -468,7 +510,9 @@ localStorage.game_state = localStorage.game_state || JSON.stringify({
                 This ensures there is always a starting value to access. You can then access and alter it.
             </p>
             <p class="green">
-                LocalStorage is a nice and simple way to store some semi-permanent and not too important or secure data for your web applications on the client computer. Don't go overkill with LocalStorage. If you need better data storage, use a database, or IndexedDB.
+                LocalStorage is a nice and simple way to store some semi-permanent and not too important or secure data
+                for your web applications on the client computer. Don't go overkill with LocalStorage. If you need
+                better data storage, use a database, or IndexedDB.
             </p>
         </article>
 
@@ -492,7 +536,9 @@ localStorage.game_state = localStorage.game_state || JSON.stringify({
                 Games with good user interface and performance will have many game states.
             </p>
             <p>
-                For the purpose of making games with barebones.js classes, states allow you to define and activate and suspend different branches of your universe tree. This provides modularization as will as performance gains as you are not wasting resources on inactive or suspended branches, only the live branch.
+                For the purpose of making games with barebones.js classes, states allow you to define and activate and
+                suspend different branches of your universe tree. This provides modularization as will as performance
+                gains as you are not wasting resources on inactive or suspended branches, only the live branch.
             </p>
             <p>
                 A game state can be any instance of Interface, but is usually an extension of List.
@@ -564,7 +610,8 @@ class StateManager extends List {
 }
             </pre>
             <p>
-                Essentially the state manager acts as a filter that can hold many game states but only works on one state at a time.
+                Essentially the state manager acts as a filter that can hold many game states but only works on one
+                state at a time.
             </p>
             <p>
                 You can switch to states without problems using the request methods:
@@ -585,10 +632,12 @@ this.root.state_manager.request_switch_to(this.root.state_manager.find_id('PAUSE
 this.root.state_manager.request_switch_to_previous_state();
             </pre>
             <p>
-                Using these methods you can easily navigate game or application states from anywhere in the universe tree.
+                Using these methods you can easily navigate game or application states from anywhere in the universe
+                tree.
             </p>
             <p class="green">
-                As part of this lesson is to improve the user interface of your games, you will make every screen or menu a unique game state, as well as the play state.
+                As part of this lesson is to improve the user interface of your games, you will make every screen or
+                menu a unique game state, as well as the play state.
             </p>
         </article>
 
@@ -597,10 +646,12 @@ this.root.state_manager.request_switch_to_previous_state();
         <article>
             <h3 class="mag" id="grids">GRIDS</h3>
             <p>
-                There are going to be times when you are going to want to organize universe_objects into a grid or table like format.
+                There are going to be times when you are going to want to organize universe_objects into a grid or table
+                like format.
             </p>
             <p>
-                If you were making a side-scroller or tile game you might have every universe_object in the game within grids.
+                If you were making a side-scroller or tile game you might have every universe_object in the game within
+                grids.
             </p>
             <p>
                 GridList is a very powerful tile or pattern generation and management tool that barebones.js provides.
@@ -690,25 +741,32 @@ class GridList extends List {
                 <li>NUMBER OF ROWS</li>
             </ul>
             <p>
-                Once these parameters have been set, the grid then has enough information to place all of the objects inserted into it at predefined coordinates.
+                Once these parameters have been set, the grid then has enough information to place all of the objects
+                inserted into it at predefined coordinates.
             </p>
             <p>
                 Since GridList extends List it functions nearly the same, but with a few differences and additions.
             </p>
             <p>
-                You can use the add method, and GridList will place the added object at a position on the corresponding table based on the parameters.
+                You can use the add method, and GridList will place the added object at a position on the corresponding
+                table based on the parameters.
             </p>
             <p>
-                Another method, replace_at, allows you to place or replace a specific item on the grid, in this way the grid can be filled sparsely.
+                Another method, replace_at, allows you to place or replace a specific item on the grid, in this way the
+                grid can be filled sparsely.
             </p>
             <p>
-                The last thing worth noting is that you can use get_anchor_position to re-acquire the expected position that an object would be on the grid. With this you can move the position of an item in the grid and then float or snap it back into place later.
+                The last thing worth noting is that you can use get_anchor_position to re-acquire the expected position
+                that an object would be on the grid. With this you can move the position of an item in the grid and then
+                float or snap it back into place later.
             </p>
             <blockquote class="red">
-                WARNING: Layer sorting is disabled for GridLists so that the grid is layered from top to bottom, left to right by default.
+                WARNING: Layer sorting is disabled for GridLists so that the grid is layered from top to bottom, left to
+                right by default.
             </blockquote>
             <p>
-                If you completed the challenge from the previous lesson and viewed the solution code. That code used a gridlist for the enemy formation.
+                If you completed the challenge from the previous lesson and viewed the solution code. That code used a
+                gridlist for the enemy formation.
             </p>
             <p>
                 This keno game will use a grid to organize all of the play tiles easily in a for loop.
@@ -870,10 +928,12 @@ class Label extends Interface {
                 </ul>
             </ul>
             <p>
-                Once the parameters are set, the rest is just like any other universe_object. You can change the contents and the instance will recalculate the bounding box with the change.
+                Once the parameters are set, the rest is just like any other universe_object. You can change the
+                contents and the instance will recalculate the bounding box with the change.
             </p>
             <p class="green">
-                Labels can provide you with an easy means to draw text to a canvas. However, use them sparingly and prefer the use of image assets and or DOM elements.
+                Labels can provide you with an easy means to draw text to a canvas. However, use them sparingly and
+                prefer the use of image assets and or DOM elements.
             </p>
         </article>
 
@@ -885,7 +945,8 @@ class Label extends Interface {
                 Another key feature of a user interface is the button.
             </p>
             <p>
-                barebones.js provides a ButtonSprite class as well as two sub-classes that inherit from Sprite. This means they require an image asset to work.
+                barebones.js provides a ButtonSprite class as well as two sub-classes that inherit from Sprite. This
+                means they require an image asset to work.
             </p>
             <pre>
 class ButtonSprite extends Sprite {
@@ -984,13 +1045,17 @@ else if (this._back_button.up) {
                 There are also two additional button classes, BinaryButtonSprite and TernaryButtonSprite.
             </p>
             <p>
-                They both work essentially the same. BinaryButtonSprite requires that you give it a two component or more spritesheet and when it is pressed it switches between the two frame indices. Along with this switch it's on/off property changes to reflect.
+                They both work essentially the same. BinaryButtonSprite requires that you give it a two component or
+                more spritesheet and when it is pressed it switches between the two frame indices. Along with this
+                switch it's on/off property changes to reflect.
             </p>
             <p>
-                TernaryButtonSprite works the same way but needs a three component sprite or more and the third index is the image that will be shown while the button is DOWN only.
+                TernaryButtonSprite works the same way but needs a three component sprite or more and the third index is
+                the image that will be shown while the button is DOWN only.
             </p>
             <p>
-                The buttons use cursor cues to modify the state of the mouse cursor so that they are interactive like a DOM element would be.
+                The buttons use cursor cues to modify the state of the mouse cursor so that they are interactive like a
+                DOM element would be.
             </p>
             <p class="green">
                 Buttons are a useful feature and can be as creative as the image assets that they use.
@@ -998,14 +1063,15 @@ else if (this._back_button.up) {
         </article>
 
         <hr>
-        
+
         <article>
             <h3 class="mag" id="button_labels">BUTTON LABELS</h3>
             <p>
                 Button labels work essentially the same as ButtonSprites but are based on a Label instead of a Sprite.
             </p>
             <p>
-                Because the Sprite and Label are mainly incompatible and JAVASCRIPT does not nativley allow multiple inheritance, some code duplication occurs.
+                Because the Sprite and Label are mainly incompatible and JAVASCRIPT does not nativley allow multiple
+                inheritance, some code duplication occurs.
             </p>
             <pre>
 class ButtonLabel extends Label {
@@ -1050,7 +1116,8 @@ class ButtonLabel extends Label {
 }
             </pre>
             <p class="green">
-                Just keep in mind that button labels accept all of the same options as a Label but also function like a ButtonSprite.
+                Just keep in mind that button labels accept all of the same options as a Label but also function like a
+                ButtonSprite.
             </p>
         </article>
 
@@ -1065,7 +1132,8 @@ class ButtonLabel extends Label {
                 Common examples are volume or difficulty controls in a menu.
             </p>
             <p>
-                A slider is an input like component that acts like a ButtonSprite that slides along a line and represents a value.
+                A slider is an input like component that acts like a ButtonSprite that slides along a line and
+                represents a value.
             </p>
             <p>
                 They work the same as a DOM range type input element.
@@ -1150,7 +1218,8 @@ class SliderButtonSprite extends ButtonSprite {
                 line_color controls the color of the line that the sprite slides upon.
             </p>
             <p>
-                starting_value sets the value that the slider starts out with. Defaults to 0.5. This number must be from 0 to 1.
+                starting_value sets the value that the slider starts out with. Defaults to 0.5. This number must be from
+                0 to 1.
             </p>
             <p>
                 length represents the width of the whole element, how far the slider can travel.
@@ -1247,10 +1316,13 @@ class AnimatedSprite extends Sprite {
                 The class works like a collection of spritesheets that are intended to be looped over like a film reel.
             </p>
             <p>
-                The benefit of this is that you could create a game character with many different sprites representing a single universe_object.
+                The benefit of this is that you could create a game character with many different sprites representing a
+                single universe_object.
             </p>
             <p>
-                For example the character might have a standing still animation. Then a running right or left animation. A jumping animation. All of the animations are in the form of spritesheets. This class allows you to keep them all in a single instance.
+                For example the character might have a standing still animation. Then a running right or left animation.
+                A jumping animation. All of the animations are in the form of spritesheets. This class allows you to
+                keep them all in a single instance.
             </p>
             <p>
                 To use the class, instantiate it like you would any normal sprite.
@@ -1261,7 +1333,10 @@ this.money_wagger = this.add(new AnimatedSprite({
 }));
             </pre>
             <p>
-                Next use the add method to load up each spritesheet for the character or object. It expects an options object with the spritesheet, frame_rate(speed of animation), bouncing(boolean representing whether the animation repeats or bounces back and fourth), and sub_animation_name which is the tag for that spritesheet so you can switch to it later.
+                Next use the add method to load up each spritesheet for the character or object. It expects an options
+                object with the spritesheet, frame_rate(speed of animation), bouncing(boolean representing whether the
+                animation repeats or bounces back and fourth), and sub_animation_name which is the tag for that
+                spritesheet so you can switch to it later.
             </p>
             <pre>
 this.money_wagger.add({
@@ -1270,13 +1345,16 @@ this.money_wagger.add({
 });
             </pre>
             <p>
-                Once you have loaded up the different animations, simply use the switch_to method to switch to the animation you want to be active at any point in time. Use the sub_animation_name to target the animation you want to switch to.
+                Once you have loaded up the different animations, simply use the switch_to method to switch to the
+                animation you want to be active at any point in time. Use the sub_animation_name to target the animation
+                you want to switch to.
             </p>
             <pre>
 this.money_wagger.switch_to('money_wagger');
             </pre>
             <p class="green">
-                AnimatedSprites can be a single animation or a collection of hundreds, it is up too you. They provide a way to animate spritesheets and group together states of animation into a single universe_object.
+                AnimatedSprites can be a single animation or a collection of hundreds, it is up too you. They provide a
+                way to animate spritesheets and group together states of animation into a single universe_object.
             </p>
         </article>
 
@@ -1302,10 +1380,12 @@ this.money_wagger.switch_to('money_wagger');
                 Massive resources are expended to determine the best and most profitable ways to configure the games.
             </p>
             <p>
-                This game uses a payout table that was made from a combination of statistics, psychology, and user testing.
+                This game uses a payout table that was made from a combination of statistics, psychology, and user
+                testing.
             </p>
             <p>
-                Essentially the table ensures that the house always wins in the long run. But increases the amount of dopamine releasing "wins" for the player to keep them engaged.
+                Essentially the table ensures that the house always wins in the long run. But increases the amount of
+                dopamine releasing "wins" for the player to keep them engaged.
             </p>
             <pre>
 [
@@ -1323,7 +1403,8 @@ this.money_wagger.switch_to('money_wagger');
 ] // 0, 1, 2, 3,  4,  5,   6,    7 ,   8 ,   9 ,   10 CATCHES
             </pre>
             <p>
-                The number of picks(numbers) that the player selected before playing vs the number of catches determines the multiplier against the players bet.
+                The number of picks(numbers) that the player selected before playing vs the number of catches determines
+                the multiplier against the players bet.
             </p>
             <p>
                 So that is how keno works.
@@ -1346,7 +1427,7 @@ this.money_wagger.switch_to('money_wagger');
         </article>
 
         <hr>
-        
+
         <article>
             <h3 class="mag" id="boilerplate">BOILERPLATE</h3>
             <p>
@@ -1427,16 +1508,18 @@ window.addEventListener('DOMContentLoaded', () => {
                 There are more classes this time to represent the various objects and states.
             </p>
             <p>
-                In the universe initializations at the bottom, alpha is disabled for performance increase since there is no need for transparency. The pay table is also input.
+                In the universe initializations at the bottom, alpha is disabled for performance increase since there is
+                no need for transparency. The pay table is also input.
             </p>
         </article>
 
         <hr>
-        
+
         <article>
             <h3 class="mag" id="audio_lists">AUDIO LISTS</h3>
             <p>
-                There are four audio list class extensions in this game to represent the complex code generated audio assets.
+                There are four audio list class extensions in this game to represent the complex code generated audio
+                assets.
             </p>
             <pre>
 class NightmareSound extends AudioToneList {
@@ -1493,12 +1576,13 @@ class JackpotSound extends AudioToneList {
                 BigWinSound represents a medium win. It is a repeat of the previous but tripled across three octaves.
             </p>
             <p>
-                JackpotSound represents the biggest win state possible. It is a repeating series of increasing frequencies. Sounds like an alarm going off.
+                JackpotSound represents the biggest win state possible. It is a repeating series of increasing
+                frequencies. Sounds like an alarm going off.
             </p>
         </article>
 
         <hr>
-        
+
         <article>
             <h3 class="mag" id="keno_universe_class">KENO UNIVERSE CLASS</h3>
             <p>
@@ -1621,7 +1705,8 @@ class Keno extends Universe {
                 <li>STATEMANAGER SWITCHES TO CURRENT GAME STATE</li>
             </ul>
             <p>
-                The set_settings method overrides the localStorage settings and stores them in root state for the application.
+                The set_settings method overrides the localStorage settings and stores them in root state for the
+                application.
             </p>
             <p>
                 Finally four more single tone sounds are declared in root state as methods.
@@ -1629,7 +1714,7 @@ class Keno extends Universe {
         </article>
 
         <hr>
-        
+
         <article>
             <h3 class="mag" id="help_screen">HELP SCREEN</h3>
             <p>
@@ -1672,7 +1757,8 @@ class HelpScreenState extends List {
 }
             </pre>
             <p>
-                The help screen consists of a ButtonLabel in the top left of the screen that when clicked will switch to the previous game state.
+                The help screen consists of a ButtonLabel in the top left of the screen that when clicked will switch to
+                the previous game state.
             </p>
             <p>
                 The only other thing in this game state is a label describing the rules of the game.
@@ -1804,7 +1890,8 @@ class SettingsScreenState extends List {
         <article>
             <h3 class="mag" id="intro_screen">INTRO SCREEN</h3>
             <p>
-                The intro screen just shows the intro message and when pressed shows a second message for a short time before switching to play.
+                The intro screen just shows the intro message and when pressed shows a second message for a short time
+                before switching to play.
             </p>
             <pre>
 class TitleScreenState extends List {
@@ -1904,13 +1991,16 @@ class Tile extends List {
                 The tile is a List that contains a Label with it's corresponding number and a Sprite for the border.
             </p>
             <p>
-                It also has properties for selected and hit. Selected for when the player has selected that tile. Hit for when the computer has selected it.
+                It also has properties for selected and hit. Selected for when the player has selected that tile. Hit
+                for when the computer has selected it.
             </p>
             <p>
                 Within update the frame_index of the border sprite is updated to reflect the aformentioned properties.
             </p>
             <p>
-                Additionally it changes it's selected state when clicked or swiped by the user. However it does not allow itself to be selected unless there are less than ten other tiles already selected, the maximum amount.
+                Additionally it changes it's selected state when clicked or swiped by the user. However it does not
+                allow itself to be selected unless there are less than ten other tiles already selected, the maximum
+                amount.
             </p>
         </article>
 
@@ -1952,7 +2042,7 @@ class SpecialButtonSprite extends ButtonSprite {
         </article>
 
         <hr>
-        
+
         <article>
             <h3 class="mag" id="play_state">PLAY STATE</h3>
             <p>
@@ -2340,19 +2430,31 @@ class PlayState extends List {
                 <li>UI IS REFRESHED</li>
             </ul>
             <p>
-                The play method is called when the player clicks the play button. Within it only continues if the player has selected a valid set of number tiles and has enough money to cover the bet. The the animation is started with the flag set. The bet is deducted from the bank. The computers previous picks are cleared, if any. Then the computer makes its selections.
+                The play method is called when the player clicks the play button. Within it only continues if the player
+                has selected a valid set of number tiles and has enough money to cover the bet. The the animation is
+                started with the flag set. The bet is deducted from the bank. The computers previous picks are cleared,
+                if any. Then the computer makes its selections.
             </p>
             <p>
-                The play_end method is called when the play animation is completed. Within this method the payout is calculated based on the number of catches, selections, the bet, and the pay table. If there is a payout, the win label displays the win amount and the bank is credited. Additionally depending on the amount of the payout, or more specifically the number of relative catches, a sound is played. If a higher category of win is achieved, the moneywagger is made visible, possibly scaled up.
+                The play_end method is called when the play animation is completed. Within this method the payout is
+                calculated based on the number of catches, selections, the bet, and the pay table. If there is a payout,
+                the win label displays the win amount and the bank is credited. Additionally depending on the amount of
+                the payout, or more specifically the number of relative catches, a sound is played. If a higher category
+                of win is achieved, the moneywagger is made visible, possibly scaled up.
             </p>
             <p>
-                The animate method happens before play_end and after play. Essentially what it does is, based on the root speed setting, lights up the numbers on the board based on the picks of the computer and plays corresponding sounds. If a catch occurs a different sound happens than a miss. This continues on until it runs out of computer picks then it calls play_end.
+                The animate method happens before play_end and after play. Essentially what it does is, based on the
+                root speed setting, lights up the numbers on the board based on the picks of the computer and plays
+                corresponding sounds. If a catch occurs a different sound happens than a miss. This continues on until
+                it runs out of computer picks then it calls play_end.
             </p>
             <p>
-                The clear_computer_picks method is self explanatory. It clears all of the computer picks from the board and hides the moneywagger and win labels.
+                The clear_computer_picks method is self explanatory. It clears all of the computer picks from the board
+                and hides the moneywagger and win labels.
             </p>
             <p>
-                The update_buttons method simply checks the state of all of the user interface objects and handles interaction, as defined above.
+                The update_buttons method simply checks the state of all of the user interface objects and handles
+                interaction, as defined above.
             </p>
             <p>
                 The _bet_up and _bet_down methods update the bet amount and truncate any ghost number values.
@@ -2367,10 +2469,12 @@ class PlayState extends List {
                 The random_picks method returns a set of n random numbers out of 80.
             </p>
             <p>
-                The randomize_picks methods clears the user selections and then using the random_picks method calculates new random player selections of the same quantity. The board reflects these selections.
+                The randomize_picks methods clears the user selections and then using the random_picks method calculates
+                new random player selections of the same quantity. The board reflects these selections.
             </p>
             <p>
-                The populated_table getter loops over the pay table with the current game state information to create a string representing the proper payouts to display to the player.
+                The populated_table getter loops over the pay table with the current game state information to create a
+                string representing the proper payouts to display to the player.
             </p>
             <p>
                 The selected_count getter returns the number of tiles that are currently selected.
@@ -2379,41 +2483,65 @@ class PlayState extends List {
                 The catch_count getter does the same but for catches.
             </p>
             <p>
-                Finally starting_table_index is a utility method for determining what amount of catches translate to different win state sounds and displays. This way the win states are not about the money amount, but rather relative catches.
+                Finally starting_table_index is a utility method for determining what amount of catches translate to
+                different win state sounds and displays. This way the win states are not about the money amount, but
+                rather relative catches.
             </p>
             <p class="green">
-                That's keno! This walkthrough was at a much faster pace and higher level, you are recommended to study the code itself and mess around with it. The challenge for this lesson asks you to do just that.
+                That's keno! This walkthrough was at a much faster pace and higher level, you are recommended to study
+                the code itself and mess around with it. The challenge for this lesson asks you to do just that.
             </p>
         </article>
 
         <hr>
-        
+
         <article>
             <h3 class="mag" id="future_studies">FUTURE STUDIES</h3>
             <h4>WEBGL 3D GRAPHICS</h4>
             <p>
-                WebGL2.0 is a very low level API offered in browsers that allows you to create extremely fast 3D graphics and access the GPU directly. The API has a very steep learning curve and you will be expected to work with linear algebra and matrices. This being said it gives you a level of power and control that very little else can provide.
+                WebGL2.0 is a very low level API offered in browsers that allows you to create extremely fast 3D
+                graphics and access the GPU directly. The API has a very steep learning curve and you will be expected
+                to work with linear algebra and matrices. This being said it gives you a level of power and control that
+                very little else can provide.
             </p>
             <h4>SVG</h4>
             <p>
-                Scalable Vector Graphics is a similar API to that of canvas but with a whole mini language of it's own and way more methods and effects. It is very fast and designed specifically for the web.
+                Scalable Vector Graphics is a similar API to that of canvas but with a whole mini language of it's own
+                and way more methods and effects. It is very fast and designed specifically for the web.
             </p>
             <h4>GAME AND ANIMATION LIBRARIES</h4>
             <p>
-                The ultimate solution for the smart programmer is to use the tried and true animation and gaming libraries that are available to build your games. Nothing can compare to doing something from scratch, you have an intimate understanding of every piece of your application and 100% full creative control. However, with this comes steep learning curves, worn out fingers, and a lot of time spent recreating the wheel that could have been spent creating new things. It is for this reason that I reccomend getting acquainted with a modern library for the type of project you are working on. That is, the more you know about the bare bones the better you will be able to utilize these libraries and tools. Don't forsake your learning for easy shortcuts.
+                The ultimate solution for the smart programmer is to use the tried and true animation and gaming
+                libraries that are available to build your games. Nothing can compare to doing something from scratch,
+                you have an intimate understanding of every piece of your application and 100% full creative control.
+                However, with this comes steep learning curves, worn out fingers, and a lot of time spent recreating the
+                wheel that could have been spent creating new things. It is for this reason that I reccomend getting
+                acquainted with a modern library for the type of project you are working on. That is, the more you know
+                about the bare bones the better you will be able to utilize these libraries and tools. Don't forsake
+                your learning for easy shortcuts.
             </p>
             <h4>OTHER LANGUAGES</h4>
             <p>
-                As much as it is wonderful, JAVASCRIPT has many limitations. Other programming languages are much better suited for performance intensive or highly object oriented programming. Typescript is a language that is essentially JAVASCRIPT with extras. It allows you to implement OOP and type control with a smooth and familiar syntax. Also a low level language like C, Java, or Python is going to give you much more performance power, math power, and access to so much more. For the domain, JAVASCRIPT gets the job done. You are however recommended to look around and starting mastering another language once you have mastered this one.
+                As much as it is wonderful, JAVASCRIPT has many limitations. Other programming languages are much better
+                suited for performance intensive or highly object oriented programming. Typescript is a language that is
+                essentially JAVASCRIPT with extras. It allows you to implement OOP and type control with a smooth and
+                familiar syntax. Also a low level language like C, Java, or Python is going to give you much more
+                performance power, math power, and access to so much more. For the domain, JAVASCRIPT gets the job done.
+                You are however recommended to look around and starting mastering another language once you have
+                mastered this one.
             </p>
         </article>
 
         <hr>
-        
+
         <article>
             <h3 class="mag" id="final_thoughts">FINAL THOUGHTS</h3>
             <p>
-                I think that the thought of learning programming sounds very boring to most people and they are not wrong. It is for that reason that making the process fun and the products satisfying so much more important. For me, making games added that much needed flavor to the learning process. I really hope that it can do the same for you. If you create something amazing from the things you learned from these lessons and want to show it off, I would love too see it.
+                I think that the thought of learning programming sounds very boring to most people and they are not
+                wrong. It is for that reason that making the process fun and the products satisfying so much more
+                important. For me, making games added that much needed flavor to the learning process. I really hope
+                that it can do the same for you. If you create something amazing from the things you learned from these
+                lessons and want to show it off, I would love too see it.
             </p>
             <p class="mag">
                 AUTHOR: Falken Brown

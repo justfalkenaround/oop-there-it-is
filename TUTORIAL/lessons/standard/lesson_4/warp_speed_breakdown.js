@@ -61,10 +61,10 @@ const warp = (() => {
 
         async update() {
             this.velocity =
-                {
-                    x: (this.position.x - this.window_data.center.x) / (this.parent && this.parent.speed || 100),
-                    y: (this.position.y - this.window_data.center.y) / (this.parent && this.parent.speed || 100)
-                };
+            {
+                x: (this.position.x - this.window_data.center.x) / (this.parent && this.parent.speed || 100),
+                y: (this.position.y - this.window_data.center.y) / (this.parent && this.parent.speed || 100)
+            };
             await color('star_update_velocity');
             this.position.x += this.velocity.x;
             await color('star_update_position_x');
@@ -94,10 +94,10 @@ const warp = (() => {
 
         async reset() {
             this.position =
-                {
-                    x: (Math.floor(Math.random() * (this.window_data.width / 2)) + (this.window_data.width / 4)),
-                    y: (Math.floor(Math.random() * (this.window_data.height / 2)) + (this.window_data.height / 4)),
-                };
+            {
+                x: (Math.floor(Math.random() * (this.window_data.width / 2)) + (this.window_data.width / 4)),
+                y: (Math.floor(Math.random() * (this.window_data.height / 2)) + (this.window_data.height / 4)),
+            };
             this.height = (Math.floor(Math.random() * 3) + 1);
             this.dom_node.style.height = this.dom_node.style.width = `${this.height}px`;
             await color('star_reset');

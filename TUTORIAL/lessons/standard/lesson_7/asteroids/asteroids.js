@@ -166,10 +166,10 @@ const asteroids = (() => {
                 position = this.root.canvas_manager.bounding_box.scaled_up_by(1.5, 1.5).random_within;
             }
             const velocity = this.root.canvas_manager
-                    .bounding_box
-                    .random_within_middle
-                    .minus(position)
-                    .normalized();
+                .bounding_box
+                .random_within_middle
+                .minus(position)
+                .normalized();
             const variance = help.clamp(Math.random() * 2, 1, 2);
             const roid = this.request_add(new Asteroid(
                 {

@@ -123,10 +123,12 @@
         <article>
             <h3 class="mag" id="queues">QUEUES</h3>
             <p>
-                As you delve deeper into the world of game design, you will want to become familiar with some math and computer science(CS) concepts that will really improve your abilities and understanding.
+                As you delve deeper into the world of game design, you will want to become familiar with some math and
+                computer science(CS) concepts that will really improve your abilities and understanding.
             </p>
             <p>
-                One common CS concept is that of a queue. The definition is specific and complex for CS, that is not important for this lesson.
+                One common CS concept is that of a queue. The definition is specific and complex for CS, that is not
+                important for this lesson.
             </p>
             <p>
                 A queue is essentially a list of things that may happen or exist in a specific order.
@@ -135,22 +137,29 @@
                 A queue and a stack are very similar, but have differences.
             </p>
             <p>
-                You can compare a queue to a line at the grocery store. The person at the front of the line is served, and then they leave the line, the line is then one person shorter.
+                You can compare a queue to a line at the grocery store. The person at the front of the line is served,
+                and then they leave the line, the line is then one person shorter.
             </p>
             <p>
-                People can enter or leave the line at any time, but they can only be served if they are at the front of the line.
+                People can enter or leave the line at any time, but they can only be served if they are at the front of
+                the line.
             </p>
             <p>
                 Queues in JAVASCRIPT are usually represented as arrays.
             </p>
             <p>
-                barebones.js uses a queue like structure to offset the addition of new objects into a universe to the time slot between update/render propagations. This avoids errors stemming from the change in tree structure while iterating from occurring.
+                barebones.js uses a queue like structure to offset the addition of new objects into a universe to the
+                time slot between update/render propagations. This avoids errors stemming from the change in tree
+                structure while iterating from occurring.
             </p>
             <p>
-                You should be aware however that if you have an instance of list, there may still be objects within it's queue that need to be cleared or handled if you are for instance resetting.
+                You should be aware however that if you have an instance of list, there may still be objects within it's
+                queue that need to be cleared or handled if you are for instance resetting.
             </p>
             <p>
-                You can implement queue or stacks of your own to represent whatever you like. If you remember from lesson 2 of this tutorial, you used a work stack to represent the characters that still needed to be added to the DOM in sequence over time.
+                You can implement queue or stacks of your own to represent whatever you like. If you remember from
+                lesson 2 of this tutorial, you used a work stack to represent the characters that still needed to be
+                added to the DOM in sequence over time.
             </p>
         </article>
 
@@ -162,27 +171,39 @@
                 When it comes to games, often times you are going to want to represent angles, direction, or circles.
             </p>
             <p>
-                For instance, for our asteroids game, you want to shoot a projectile in the direction your ship's cannon is facing, but how?
+                For instance, for our asteroids game, you want to shoot a projectile in the direction your ship's cannon
+                is facing, but how?
             </p>
             <p>
                 This is where a little trigonometry becomes un-avoidable, sorry.
             </p>
             <img class="inverted" alt="math soup" src="../../../img/all_of_trig.png">
             <p>
-                However unlike in academia, you don't need years and tears to understand trigonometry at it's core. You probably only need about five minutes and this section.
+                However unlike in academia, you don't need years and tears to understand trigonometry at it's core. You
+                probably only need about five minutes and this section.
             </p>
             <blockquote class="yellow">
-                AUTHOR NOTE: It is my opinion that most of the symbols, jargon, and methodology in traditional mathematics teaching is FLUFF, to put it in kind words. The actual math is pretty simple and easy to break down and understand if you think about it. Academics PURPOSEFULLY complicate the process of learning math to make it so that they, as academics, have value. From their perspective, if everyone knew math, they wouldn't be special anymore. Well I say to them: "Too bad, you're not special anymore and you should feel bad for making math such a pain in the a$$ for so many people, including myself."
+                AUTHOR NOTE: It is my opinion that most of the symbols, jargon, and methodology in traditional
+                mathematics teaching is FLUFF, to put it in kind words. The actual math is pretty simple and easy to
+                break down and understand if you think about it. Academics PURPOSEFULLY complicate the process of
+                learning math to make it so that they, as academics, have value. From their perspective, if everyone
+                knew math, they wouldn't be special anymore. Well I say to them: "Too bad, you're not special anymore
+                and you should feel bad for making math such a pain in the a$$ for so many people, including myself."
             </blockquote>
             <p class="red">
-                If you are entirely opposed to learning any math, I get it. Though I warn against putting off the inevitable; if you so wish, you can skip this section and complete the rest of the lessons without much trouble. The Vector class of barebones.js abstracts the trigonometric functions into a couple methods that are simple to use.
+                If you are entirely opposed to learning any math, I get it. Though I warn against putting off the
+                inevitable; if you so wish, you can skip this section and complete the rest of the lessons without much
+                trouble. The Vector class of barebones.js abstracts the trigonometric functions into a couple methods
+                that are simple to use.
             </p>
             <p>
                 So first to explain the distance calculation used up until this point.
             </p>
-            <img style="min-width: 400px;" class="inverted" alt="wiki trigonometric graphic" src="../../../img/pythagorean.png">
+            <img style="min-width: 400px;" class="inverted" alt="wiki trigonometric graphic"
+                src="../../../img/pythagorean.png">
             <p>
-                The Pythagorean theorem states that for a right triangle "a squared plus b squared is equal to c squared."
+                The Pythagorean theorem states that for a right triangle "a squared plus b squared is equal to c
+                squared."
             </p>
             <p class="red">
                 Cool story but who cares?
@@ -200,7 +221,8 @@
                 Side a is the difference(subtraction) between the y values of point A and point B.
             </p>
             <p>
-                Then you just imagine that the two points together make a right triangle, which they always do, and apply the theorem. Then get the square root of the output.
+                Then you just imagine that the two points together make a right triangle, which they always do, and
+                apply the theorem. Then get the square root of the output.
             </p>
             <pre>
 distance(a, b) {
@@ -215,23 +237,32 @@ distance(a, b) {
 }
             </pre>
             <p class="green">
-                The length of the hypotenuse returned is in fact the distance between the two points! F#$king mathemagics!
+                The length of the hypotenuse returned is in fact the distance between the two points! F#$king
+                mathemagics!
             </p>
             <p>
-                Then there is the unit circle: The unit circle is an imaginary circle around any point that has a radius of one unit. In canvas a unit is a pixel before canvas or other scaling.
+                Then there is the unit circle: The unit circle is an imaginary circle around any point that has a radius
+                of one unit. In canvas a unit is a pixel before canvas or other scaling.
             </p>
-            <img style="min-width: 400px;" class="inverted" alt="wiki trigonometric graphic" src="../../../img/sine_cosine.png">
+            <img style="min-width: 400px;" class="inverted" alt="wiki trigonometric graphic"
+                src="../../../img/sine_cosine.png">
             <p>
-                The vector coordinates for any point on the unit circle represent the direction vector from the center of the circle along the line to that point on the circle outward(the white line marked 1 in the image above).
+                The vector coordinates for any point on the unit circle represent the direction vector from the center
+                of the circle along the line to that point on the circle outward(the white line marked 1 in the image
+                above).
             </p>
             <p>
-                The next thing you might want to do is calculate the direction vector on the unit circle from the rotation of a universe_object. You want to know what direction the ships cannon is facing so that when it fires the projectile goes in that direction.
+                The next thing you might want to do is calculate the direction vector on the unit circle from the
+                rotation of a universe_object. You want to know what direction the ships cannon is facing so that when
+                it fires the projectile goes in that direction.
             </p>
             <p>
                 The solution is to use sine and cosine of the angle to acquire the direction vector.
             </p>
             <blockquote class="green">
-                NOTE ON ANGLES: In math and JAVASCRIPT, angles are usually represented as a number of RADIANS. However humans usually use degrees. There are 360 degrees in a circle, and (Math.PI * 2) radians in a circle. To convert from one to another:
+                NOTE ON ANGLES: In math and JAVASCRIPT, angles are usually represented as a number of RADIANS. However
+                humans usually use degrees. There are 360 degrees in a circle, and (Math.PI * 2) radians in a circle. To
+                convert from one to another:
                 <pre>
 const
   radians_to_degrees: rads => rads * (180 / Math.PI),
@@ -239,14 +270,21 @@ const
                 </pre>
             </blockquote>
             <blockquote class="yellow">
-                WARNING: For whatever reason, the direction on the unit circle for a rotation angle of 0 is straight to the RIGHT. Intuition suggests it should be straight UP. Keep this in mind when performing your calculations, you may need to shift 90 degrees or ((Math.PI * 2) / 4) radians in order to face straight up for zero rotation.
+                WARNING: For whatever reason, the direction on the unit circle for a rotation angle of 0 is straight to
+                the RIGHT. Intuition suggests it should be straight UP. Keep this in mind when performing your
+                calculations, you may need to shift 90 degrees or ((Math.PI * 2) / 4) radians in order to face straight
+                up for zero rotation.
             </blockquote>
             <p class="green">
-                Looking at the image of the unit circle you can see that the cosine or sine of an angle in radians represent the x and y coordinates, respectively, on the unit circle, of the direction vector from an angle in radians. READ THIS AGAIN.
+                Looking at the image of the unit circle you can see that the cosine or sine of an angle in radians
+                represent the x and y coordinates, respectively, on the unit circle, of the direction vector from an
+                angle in radians. READ THIS AGAIN.
             </p>
-            <img style="min-width: 400px;" class="inverted" alt="wiki trigonometric graphic" src="../../../img/sine_cosine.png">
+            <img style="min-width: 400px;" class="inverted" alt="wiki trigonometric graphic"
+                src="../../../img/sine_cosine.png">
             <p>
-                What this means is that you can input an angle in radians, and get back a direction vector. That is exactly what the method of the Vector class does.
+                What this means is that you can input an angle in radians, and get back a direction vector. That is
+                exactly what the method of the Vector class does.
             </p>
             <pre class="yellow">
 static radians_to_unit_circle_vector(rads = 0) {
@@ -254,7 +292,9 @@ static radians_to_unit_circle_vector(rads = 0) {
 }
             </pre>
             <p>
-                Keep in mind that the direction vector returned will always be within the range of 0 to 1. This may not be the velocity that you desire. If you want a higher or lower magnitude(speed) for your velocity, just multiply the direction vector by a scaling factor.
+                Keep in mind that the direction vector returned will always be within the range of 0 to 1. This may not
+                be the velocity that you desire. If you want a higher or lower magnitude(speed) for your velocity, just
+                multiply the direction vector by a scaling factor.
             </p>
             <pre>
 const
@@ -272,12 +312,15 @@ console.log(velocity);
 // OUTPUTS Vector { x: -2, y: 2.4492935982947064e-16 }
             </pre>
             <blockquote class="blue">
-                NOTE: Sometimes javascript will represent very large, in length of decimal or integer digits, numbers, using the exponent notation.
+                NOTE: Sometimes javascript will represent very large, in length of decimal or integer digits, numbers,
+                using the exponent notation.
                 <pre>
 1.2246467991473532e-16
                 </pre>
                 <p>
-                    This just means that the number in its natural form would take more bits that are available by default for JAVASCRIPT to store a number. So JAVASCRIPT does it's best to keep the percision of the number to some extent.
+                    This just means that the number in its natural form would take more bits that are available by
+                    default for JAVASCRIPT to store a number. So JAVASCRIPT does it's best to keep the percision of the
+                    number to some extent.
                 </p>
                 <p>
                     The number above is just really small, and so would have a bunch of leading zeroes.
@@ -288,13 +331,16 @@ console.log(velocity);
                 </pre>
             </blockquote>
             <p>
-                One last thing you may want to do in the scope of these applications is to acquire a rotation angle in radians FROM a direction vector.
+                One last thing you may want to do in the scope of these applications is to acquire a rotation angle in
+                radians FROM a direction vector.
             </p>
             <p>
-                For instance you wanted to know the angle of rotation that your ship would need in order to face an incoming asteroid.
+                For instance you wanted to know the angle of rotation that your ship would need in order to face an
+                incoming asteroid.
             </p>
             <blockquote class="yellow">
-                NOTE: The direction vector from one point to another point can always be acquired by subtracting one from the other. Order defines direction to or from.
+                NOTE: The direction vector from one point to another point can always be acquired by subtracting one
+                from the other. Order defines direction to or from.
             </blockquote>
             <p>
                 The way would be to acquire the direction vector between the two points.
@@ -318,7 +364,7 @@ console.log(Math.atan2(direction_vector.y, direction_vector.x))
                 Remember this is the angle from straight RIGHT on the unit circle, clockwise, in radians.
             </p>
             <p>
-                
+
                 The barebones.js Vector class includes a method to do this exact thing:
             </p>
             <pre>
@@ -352,10 +398,12 @@ console.log(ship_position.angle_to(asteroid_position));
                 That's it for the trigonometry!
             </p>
             <p>
-                That wasn't too bad right. That covers most of the trigonometric functionality you would want for a 2D game and honestly the main points of trigonometry as a whole!
+                That wasn't too bad right. That covers most of the trigonometric functionality you would want for a 2D
+                game and honestly the main points of trigonometry as a whole!
             </p>
             <p class="red">
-                Screw those old mathematicians who over-complicated everything, it isn't that hard once you break it down in normal terms.
+                Screw those old mathematicians who over-complicated everything, it isn't that hard once you break it
+                down in normal terms.
             </p>
         </article>
 
@@ -367,7 +415,8 @@ console.log(ship_position.angle_to(asteroid_position));
                 The loading image and audio assets in the web browser environment can take time.
             </p>
             <p>
-                Since you don't want the application, which depends on these assets, to start up until after the assets have loaded, you have to define a loading protocol.
+                Since you don't want the application, which depends on these assets, to start up until after the assets
+                have loaded, you have to define a loading protocol.
             </p>
             <p>
                 This is exactly what the AssetManager class of barebones.js does.
@@ -423,16 +472,20 @@ class AssetManager extends List {
                 It has two async methods, load and load_all.
             </p>
             <p>
-                Load takes in an options object that should have the type of asset(image or audio), the source of the asset, and an optional id for the asset, and any other parameters such as columns and rows for a spritesheet, as covered in lesson 3.
+                Load takes in an options object that should have the type of asset(image or audio), the source of the
+                asset, and an optional id for the asset, and any other parameters such as columns and rows for a
+                spritesheet, as covered in lesson 3.
             </p>
             <p>
                 For image assets an instance of SpriteSheet is constructed asyncrounously.
             </p>
             <p>
-                For audio tracks the assets is loaded and the audio buffer decoded and stored with the asset for later use.
+                For audio tracks the assets is loaded and the audio buffer decoded and stored with the asset for later
+                use.
             </p>
             <blockquote class="yellow">
-               NOTE: The loading of assets should only be done once, in an async initialize method extension of the universe root instance.
+                NOTE: The loading of assets should only be done once, in an async initialize method extension of the
+                universe root instance.
             </blockquote>
             <pre>
 async initialize() {
@@ -444,10 +497,12 @@ async initialize() {
 }
             </pre>
             <p>
-                One last feature of the image asset loading is the collision mask flag. If you enable it, per pixel collision detection will be enabled for that asset. More on that in the sections to come.
+                One last feature of the image asset loading is the collision mask flag. If you enable it, per pixel
+                collision detection will be enabled for that asset. More on that in the sections to come.
             </p>
             <blockquote class="red">
-               WARNING: Activating a collision mask on an image asset that violates CORS will throw an error. See section on CORS.
+                WARNING: Activating a collision mask on an image asset that violates CORS will throw an error. See
+                section on CORS.
             </blockquote>
             <pre>
 async initialize() {
@@ -460,7 +515,9 @@ async initialize() {
 }
             </pre>
             <p>
-                You can also see that there is a load_all method that accepts an array of asset options objects, loads and returns an array of loaded assets. This method might be preferred for increased performance as the assets are loaded simultaneously instead of sequentially.
+                You can also see that there is a load_all method that accepts an array of asset options objects, loads
+                and returns an array of loaded assets. This method might be preferred for increased performance as the
+                assets are loaded simultaneously instead of sequentially.
             </p>
             <p>
                 Image assets are stored as instances of the barebones.js SpriteSheet class:
@@ -516,10 +573,13 @@ class SpriteSheet extends Interface {
 }
             </pre>
             <p>
-                SpriteSheet is a utility class that encapsulates the logic for slicing spritesheet image assets and some management of collision masks. More on that later.
+                SpriteSheet is a utility class that encapsulates the logic for slicing spritesheet image assets and some
+                management of collision masks. More on that later.
             </p>
             <p>
-                The important thing to remember, like divisions_x and divisions_y in lesson 3 of this course, spritesheets accept columns and rows that represent how many element the image asset has within it. This defaults to 1 by 1 if no options are input.
+                The important thing to remember, like divisions_x and divisions_y in lesson 3 of this course,
+                spritesheets accept columns and rows that represent how many element the image asset has within it. This
+                defaults to 1 by 1 if no options are input.
             </p>
         </article>
 
@@ -528,16 +588,21 @@ class SpriteSheet extends Interface {
         <article>
             <h3 class="mag" id="advanced_collision_detection">ADVANCED COLLISION DETECTION</h3>
             <p>
-                There will probably be times when the collision between rectangles and circles is not accurate enough to represent your universe_objects.
+                There will probably be times when the collision between rectangles and circles is not accurate enough to
+                represent your universe_objects.
             </p>
             <p>
-                For instance, the ship of the asteroids game is not a rectangle or a circle. If you used rectangle bounding box collision with the asteroids, then the collisions would happen before the asteroid and the ship ever ACTUALLY collide.
+                For instance, the ship of the asteroids game is not a rectangle or a circle. If you used rectangle
+                bounding box collision with the asteroids, then the collisions would happen before the asteroid and the
+                ship ever ACTUALLY collide.
             </p>
             <p>
-                The collision would occur when the sprites invisible rectangles collide, unreliable and the player is going to notice the bug.
+                The collision would occur when the sprites invisible rectangles collide, unreliable and the player is
+                going to notice the bug.
             </p>
             <p>
-                Similarly, circles would be problematic because no matter how you size the circle around or within the ship, false collisions will be registered, or real collisions will be missed.
+                Similarly, circles would be problematic because no matter how you size the circle around or within the
+                ship, false collisions will be registered, or real collisions will be missed.
             </p>
             <p>
                 Bounding boxes and circles only work properly when the shape they represent is circular or rectangular.
@@ -549,16 +614,20 @@ class SpriteSheet extends Interface {
                 This is a time when you might want to use per pixel collision detection(PPCD).
             </p>
             <p>
-                PPCD is essentially the process of checking every pixel between the overlapping bounding box rectangles to see if there is a collision at the pixel level.
+                PPCD is essentially the process of checking every pixel between the overlapping bounding box rectangles
+                to see if there is a collision at the pixel level.
             </p>
             <p>
-                PPCD is an expensive process all around so keep that in mind. Too many PPCD sprites can cause the game to slow down.
+                PPCD is an expensive process all around so keep that in mind. Too many PPCD sprites can cause the game
+                to slow down.
             </p>
             <p>
-                The PPCD logic is something that is built into barebones.js already, however it is useful to understand how it works.
+                The PPCD logic is something that is built into barebones.js already, however it is useful to understand
+                how it works.
             </p>
             <p>
-                In order to enable PPCD for an image asset simply pass the activate_collision_mask property into the options object during loading.
+                In order to enable PPCD for an image asset simply pass the activate_collision_mask property into the
+                options object during loading.
             </p>
             <pre>
 async initialize() {
@@ -571,19 +640,30 @@ async initialize() {
 }
             </pre>
             <p>
-                The spritesheet will automatically attempt to render the image onto an offscreen canvas and read the pixel data, specifically the alpha channel(transparency), into something called a collision mask.
+                The spritesheet will automatically attempt to render the image onto an offscreen canvas and read the
+                pixel data, specifically the alpha channel(transparency), into something called a collision mask.
             </p>
             <p>
                 This collision mask represents the numeric solidness of the image in that state of scale and rotation.
             </p>
             <p>
-                Keep in mind that a sprite with rotation or scale changes live will have to generate a new mask with every frame. This is very expensive so rotation of PPCD sprites should be limited or avoided.
+                Keep in mind that a sprite with rotation or scale changes live will have to generate a new mask with
+                every frame. This is very expensive so rotation of PPCD sprites should be limited or avoided.
             </p>
             <blockquote class="red">
-                WARNING: In this current implementation of barebones.js, I the author did not feel that it would be fair to expect a student to study linear algebra in an INTRO to game design course. For this reason there are a few bugs in the PPCD for the library. Scaling does not work properly with PPCD sprites, period. Rotation only works with single component spritesheets, that is images with only one row and column, for PPCD. Finally since the methods for creating collision masks do not use in memory matrices, it is VERY expensive. The future of this library would include a matrix class and PPCD built upon a transformation matrix instead of drawing to an offscreen canvas. This is an opportunity for extension if you are feeling up to it as a student. Otherwise just keep in mind these things while using PPCD.
+                WARNING: In this current implementation of barebones.js, I the author did not feel that it would be fair
+                to expect a student to study linear algebra in an INTRO to game design course. For this reason there are
+                a few bugs in the PPCD for the library. Scaling does not work properly with PPCD sprites, period.
+                Rotation only works with single component spritesheets, that is images with only one row and column, for
+                PPCD. Finally since the methods for creating collision masks do not use in memory matrices, it is VERY
+                expensive. The future of this library would include a matrix class and PPCD built upon a transformation
+                matrix instead of drawing to an offscreen canvas. This is an opportunity for extension if you are
+                feeling up to it as a student. Otherwise just keep in mind these things while using PPCD.
             </blockquote>
             <p>
-                If you look closely at the asteroids game, PPCD is used, but the only object that can rotate is the ship, therefore limiting the recreation of collision masks. Also the images are all at their natural scale and the ship is a single component sprite.
+                If you look closely at the asteroids game, PPCD is used, but the only object that can rotate is the
+                ship, therefore limiting the recreation of collision masks. Also the images are all at their natural
+                scale and the ship is a single component sprite.
             </p>
             <p>
                 Just remember that in order ot activate PPCD, enable it in the loading of the spritesheets.
@@ -604,19 +684,27 @@ async initialize() {
                 CORS can be a real pain in the asterisk.
             </p>
             <p class="yellow">
-                CORS will only be an issue in this course when it comes to PPCD. If you are not using PPCD, this won't matter to you.
+                CORS will only be an issue in this course when it comes to PPCD. If you are not using PPCD, this won't
+                matter to you.
             </p>
             <p>
-                CORS is a security protocol for web browsers that attempts to reduce the risk of malicious data entering the users computer via images and other assets.
+                CORS is a security protocol for web browsers that attempts to reduce the risk of malicious data entering
+                the users computer via images and other assets.
             </p>
             <p>
-                So in essence what happens is that if you try to access the pixel data from a canvas that uses images that were loaded from a source that is not considered SAME ORIGIN, the browser will throw a security error.
+                So in essence what happens is that if you try to access the pixel data from a canvas that uses images
+                that were loaded from a source that is not considered SAME ORIGIN, the browser will throw a security
+                error.
             </p>
             <p>
-                If an application is being served by a server, CORS headers can be set in conjunction with the crossOrigin attribute to get around the problem.
+                If an application is being served by a server, CORS headers can be set in conjunction with the
+                crossOrigin attribute to get around the problem.
             </p>
             <p>
-                However, since the examples in this course are intended to be able to run LOCALLY, there will be a problem. Browsers consider images loaded from the file:// protocol(locally) to be of unsecure origin. What this means is that you will have to do some workaround if you want to use PPCD on images that exist locally on your machine.
+                However, since the examples in this course are intended to be able to run LOCALLY, there will be a
+                problem. Browsers consider images loaded from the file:// protocol(locally) to be of unsecure origin.
+                What this means is that you will have to do some workaround if you want to use PPCD on images that exist
+                locally on your machine.
             </p>
             <p class="green">
                 DATA URLS TO THE RESCUE
@@ -625,16 +713,21 @@ async initialize() {
                 If you convert your images and assets to DATA URL they will not be considered unsecure!
             </p>
             <p>
-                Data urls are just a way of encoding files into a string that is a URL. The whole file data exists within the url string.
+                Data urls are just a way of encoding files into a string that is a URL. The whole file data exists
+                within the url string.
             </p>
             <p>
-                If you look in the ASSOCIATED_FILES files directory of this course, you will find a tool called DATA_URL_GENERATOR.
+                If you look in the ASSOCIATED_FILES files directory of this course, you will find a tool called
+                DATA_URL_GENERATOR.
             </p>
             <p>
-                The use of this tool is pretty easy. Just open the index.html in a browser. Use the file input to select the file you want to encode. Then copy and paste the url that is dumped to the page.
+                The use of this tool is pretty easy. Just open the index.html in a browser. Use the file input to select
+                the file you want to encode. Then copy and paste the url that is dumped to the page.
             </p>
             <p>
-                You can create a JAVASCRIPT file to hold all of your data url assets. In the asteroids game it is just a file called data_urls.js and it just contains one global DATA_URL object with all of the images needed for the game encoded as data urls.
+                You can create a JAVASCRIPT file to hold all of your data url assets. In the asteroids game it is just a
+                file called data_urls.js and it just contains one global DATA_URL object with all of the images needed
+                for the game encoded as data urls.
             </p>
             <pre>
 const DATA_URLS = {
@@ -656,17 +749,20 @@ const DATA_URLS = {
         </article>
 
         <hr>
-        
+
         <article>
             <h3 class="mag" id="sprites">SPRITES</h3>
             <p>
-                Sprites are a integral component to 2d game development. Essentially for barebones.js they are a universe_object that comes with all of the logic to render a spritesheet image asset.
+                Sprites are a integral component to 2d game development. Essentially for barebones.js they are a
+                universe_object that comes with all of the logic to render a spritesheet image asset.
             </p>
             <p>
-                A sprite could be a player, a background tile, the whole background image, an enemy, or any other universe_object that is an image or segment of an image.
+                A sprite could be a player, a background tile, the whole background image, an enemy, or any other
+                universe_object that is an image or segment of an image.
             </p>
             <p>
-                The barebones.js Sprite class encapsulates all of the tricky bits of managing image objects in the universe.
+                The barebones.js Sprite class encapsulates all of the tricky bits of managing image objects in the
+                universe.
             </p>
             <pre>
 class Sprite extends Interface {
@@ -813,7 +909,8 @@ class Sprite extends Interface {
 }
             </pre>
             <p>
-                This is one of the bigger and more complex classes of the library, so here is a brief description of the main methods and getters, the rest are pretty self explanatory:
+                This is one of the bigger and more complex classes of the library, so here is a brief description of the
+                main methods and getters, the rest are pretty self explanatory:
             </p>
             <ul>
                 <li>
@@ -821,22 +918,26 @@ class Sprite extends Interface {
                     <ul>
                         <li>ACCEPTS OPTIONS OBJECT THAT MUST CONTAIN A SPRITESHEET</li>
                         <li>ACCEPTS AN ORIGIN GETTER METHOD FOR INITIALIZATION OF DEFAULTS TO ORIGIN CENTER</li>
-                        <li>ACCEPTS A FRAME INDEX REPRESENTING THE LEFT TO RIGHT INDEX OF THE SUB IMAGE OF THE SPRITESHEET IF APPLICABLE</li>
+                        <li>ACCEPTS A FRAME INDEX REPRESENTING THE LEFT TO RIGHT INDEX OF THE SUB IMAGE OF THE
+                            SPRITESHEET IF APPLICABLE</li>
                         <li>AUTOMATICALLY ENABLED AS UNIVERSE OBJECT</li>
                     </ul>
                 </li>
                 <li>
                     update
                     <ul>
-                        <li>AUTOMATICALLY DETECTS CHANGES IN ROTATION OR SCALE AND GENERATES A NEW COLLISION MASK AFTER CHANGES</li>
-                        <li>GENERATION OF NEW MASKS IS VERY EXPENSIVE -- ROTATION AND SCALING SHOULD BE MINIMIZED FOR SPRITES WITH MASKS</li>
+                        <li>AUTOMATICALLY DETECTS CHANGES IN ROTATION OR SCALE AND GENERATES A NEW COLLISION MASK AFTER
+                            CHANGES</li>
+                        <li>GENERATION OF NEW MASKS IS VERY EXPENSIVE -- ROTATION AND SCALING SHOULD BE MINIMIZED FOR
+                            SPRITES WITH MASKS</li>
                     </ul>
                 </li>
                 <li>
                     render
                     <ul>
                         <li>ONLY RENDERS VISIBLE SPRITES</li>
-                        <li>AUTOMATICALLY EXECUTES THE RENDERING PIPELINE FOR IMAGES TAKING INTO ACCOUNT ALL FACTORS</li>
+                        <li>AUTOMATICALLY EXECUTES THE RENDERING PIPELINE FOR IMAGES TAKING INTO ACCOUNT ALL FACTORS
+                        </li>
                     </ul>
                 </li>
                 <li>
@@ -844,14 +945,16 @@ class Sprite extends Interface {
                     <ul>
                         <li>METHOD DETERMINES IF TWO INSTANCES OF SPRITE COLLIDE</li>
                         <li>FIRST DETERMINES IF THE BOUNDING BOXES INTERSECT</li>
-                        <li>THEN IF BOTH SPRITES HAVE COLLISION MASKS PER PIXEL COLLISION DETECTION IS PERFORMED FOR THE OVERLAPPING SECTION OF THE BOUNDING BOXES</li>
+                        <li>THEN IF BOTH SPRITES HAVE COLLISION MASKS PER PIXEL COLLISION DETECTION IS PERFORMED FOR THE
+                            OVERLAPPING SECTION OF THE BOUNDING BOXES</li>
                         <li>RETURNS BOOLEAN</li>
                     </ul>
                 </li>
                 <li>
                     get_alpha
                     <ul>
-                        <li>RETURNS THE ALPHA CHANNEL FOR A SPECIFIC COLUMN AND ROW OF A COLLISION MASK TAKING SHEET INDEX INTO ACCOUNT</li>
+                        <li>RETURNS THE ALPHA CHANNEL FOR A SPECIFIC COLUMN AND ROW OF A COLLISION MASK TAKING SHEET
+                            INDEX INTO ACCOUNT</li>
                     </ul>
                 </li>
                 <li>
@@ -863,12 +966,14 @@ class Sprite extends Interface {
                 <li>
                     get bounding_box
                     <ul>
-                        <li>RETURNS THE RECTANGLE REPRESENTING THE POSITION AND SIZE OF THE IMAGE THAT WILL BE RENDERED ON THE CANVAS</li>
+                        <li>RETURNS THE RECTANGLE REPRESENTING THE POSITION AND SIZE OF THE IMAGE THAT WILL BE RENDERED
+                            ON THE CANVAS</li>
                     </ul>
                 </li>
             </ul>
             <p>
-                Sprites are universe objects that manage their own position, velocity, rendering, and all other factors. They can be created like so:
+                Sprites are universe objects that manage their own position, velocity, rendering, and all other factors.
+                They can be created like so:
             </p>
             <pre>
 <span class="yellow">class Ship extends Sprite { }</span>
@@ -920,13 +1025,15 @@ class Asteroids extends Universe {
                 Loaded audio is an audio track, or section within, that is loaded from an audio file.
             </p>
             <blockquote class="yellow">
-                REMINDER: Loaded audio tracks are handled by the AssetManager class just like image assets. See Loading Assets section.
+                REMINDER: Loaded audio tracks are handled by the AssetManager class just like image assets. See Loading
+                Assets section.
             </blockquote>
             <p>
                 Both forms can be played, modified, and looped.
             </p>
             <p>
-                barebones.js has two classes for the creation and management of audio, AudioManager and AudioToneList. They both utilise the Web Audio API for web browsers.
+                barebones.js has two classes for the creation and management of audio, AudioManager and AudioToneList.
+                They both utilise the Web Audio API for web browsers.
             </p>
             <p>
                 Lets go over the AudioManager class first and how to use it within a game.
@@ -1153,7 +1260,8 @@ class AudioManager extends List {
                         <li>OPTIONAL DURATION OF PLAY</li>
                         <li>OPTIONAL VOLUME</li>
                         <li>OPTIONAL ENDLESS FLAG REPRESENTING ENDLESS PLAY UNTIL TOLD TO STOP</li>
-                        <li>OPTIONAL TYPE REPRESENTING THE WAVEFORM TYPE, DEFAULTS TO SQUARE, OTHER OPTIONS ARE SINE AND SAWTOOTH AMONG OTHERS</li>
+                        <li>OPTIONAL TYPE REPRESENTING THE WAVEFORM TYPE, DEFAULTS TO SQUARE, OTHER OPTIONS ARE SINE AND
+                            SAWTOOTH AMONG OTHERS</li>
                         <li>PLAYS TONE FOR THE SPECIFIED TIME PERIOD WITH SETTINGS</li>
                     </ul>
                 </li>
@@ -1209,7 +1317,8 @@ class Asteroid extends Sprite {
 }
             </pre>
             <p>
-                You just load up the track, then you use the this.audio.play_track method to play the track. In the code above, a very short subsection of the track is being played.
+                You just load up the track, then you use the this.audio.play_track method to play the track. In the code
+                above, a very short subsection of the track is being played.
             </p>
             <p>
                 Looping a track works similarly.
@@ -1229,16 +1338,19 @@ track.stop();
                 The looping will continue until the stop method of the track itself is called.
             </p>
             <p>
-                This is all well and good, if you have audio assets ready to go, use them. However, there may be times when you want to generate audio it it's raw form.
+                This is all well and good, if you have audio assets ready to go, use them. However, there may be times
+                when you want to generate audio it it's raw form.
             </p>
             <p>
                 Luckily the Web Audio API allows exactly this!
             </p>
             <p>
-                The applications are endless, you could create a musical app, or use machine learning to generate symphonies that no human could ever create.
+                The applications are endless, you could create a musical app, or use machine learning to generate
+                symphonies that no human could ever create.
             </p>
             <p>
-                For the purpose of 2d game design, generating some sounds through code can be a great way to add some audio effects, and in the context of retro games, some retro feel.
+                For the purpose of 2d game design, generating some sounds through code can be a great way to add some
+                audio effects, and in the context of retro games, some retro feel.
             </p>
             <p>
                 Tones of any valid frequency can be played via the this.audio.play_tone() method.
@@ -1256,19 +1368,23 @@ this.audio.play_tone({ duration: 0.5, scale: 4, note: 'C', volume: 0.3 });
                 This will play middle C for half a second.
             </p>
             <p>
-                There are options to change the waveform of the oscillator node. Out of the box options are 'square' as default, 'sine', 'triangle', and 'sawtooth'. These change the way a tone sounds.
+                There are options to change the waveform of the oscillator node. Out of the box options are 'square' as
+                default, 'sine', 'triangle', and 'sawtooth'. These change the way a tone sounds.
             </p>
             <pre>
 this.audio.play_tone({ duration: 0.5, scale: 4, note: 'C', volume: 0.3, type: 'triangle' });
             </pre>
             <p>
-                You can play a tone endlessly by the endless flag. The note will play until the stop method is called on the note.
+                You can play a tone endlessly by the endless flag. The note will play until the stop method is called on
+                the note.
             </p>
             <pre>
 this.audio.play_tone({ endless: true });
             </pre>
             <p>
-                So you can certainly play around and come up with some interesting sounds. However for the purpose of a game, you might want to compose some combinations of tones as sound effects or even music. This is where the AudioToneList comes into play.
+                So you can certainly play around and come up with some interesting sounds. However for the purpose of a
+                game, you might want to compose some combinations of tones as sound effects or even music. This is where
+                the AudioToneList comes into play.
             </p>
             <pre>
 class AudioToneList extends Interface {
@@ -1314,7 +1430,8 @@ class AudioToneList extends Interface {
 }
             </pre>
             <p>
-                The AudioToneList class of barebones.js cannot be constructed directly, instead you should extend it into your own musical class instances.
+                The AudioToneList class of barebones.js cannot be constructed directly, instead you should extend it
+                into your own musical class instances.
             </p>
             <p>
                 Simply extend the class and override a new play method that adds tone to the list.
@@ -1352,7 +1469,9 @@ this.win_sound.loop();
 this.win_sound.stop();
             </pre>
             <p>
-                The sound object above is comprised of only two tones. However you can do all kinds of crazy stuff. Use loops and or math to generate tones. Compose background music for you game that will loop forever. Make sounds for wins and losses. The sky is the limit.
+                The sound object above is comprised of only two tones. However you can do all kinds of crazy stuff. Use
+                loops and or math to generate tones. Compose background music for you game that will loop forever. Make
+                sounds for wins and losses. The sky is the limit.
             </p>
             <p>
                 This is an example of a randomly generated sound object that plays a bunch of crazy bleeps and bloops:
@@ -1372,7 +1491,9 @@ class NightmareSound extends AudioToneList {
 }
             </pre>
             <p>
-                If you wanted to you could write a song on your keyboard(or look up the sheet music) and then type up the notes into code. You could even write a function to read sheet music data into a playable sound object.
+                If you wanted to you could write a song on your keyboard(or look up the sheet music) and then type up
+                the notes into code. You could even write a function to read sheet music data into a playable sound
+                object.
             </p>
             <p class="yellow">
                 As a mini challenge, can you write a happy birthday sound object?
@@ -1384,7 +1505,8 @@ class NightmareSound extends AudioToneList {
         <article>
             <h3 class="mag" id="user_interface">USER INTERFACE</h3>
             <p>
-                Now that you are delving into game design, you need to start taking more time to consider the user, or player.
+                Now that you are delving into game design, you need to start taking more time to consider the user, or
+                player.
             </p>
             <p>
                 The player, in the web environment might be on a tablet, cell phone, laptop or desktop.
@@ -1393,22 +1515,28 @@ class NightmareSound extends AudioToneList {
                 They may or may not have a mouse, keyboard, or touchscreen.
             </p>
             <p>
-                Your goal as a game designer should be to make the experience to the player as seamless as possible. It should be intuitive.
+                Your goal as a game designer should be to make the experience to the player as seamless as possible. It
+                should be intuitive.
             </p>
             <blockquote class="red">
-                Sometimes you just can't really avoid excluding certain users. For instance, in the asteroids game, it requires keyboard controls. In an ideal world, you would also implement touch controls. However if this is not going to happen, you should at least notify the user that a keyboard is required.
+                Sometimes you just can't really avoid excluding certain users. For instance, in the asteroids game, it
+                requires keyboard controls. In an ideal world, you would also implement touch controls. However if this
+                is not going to happen, you should at least notify the user that a keyboard is required.
             </blockquote>
             <p>
-                Since the visual side of things is taken care of with canvas, the next step is to respond to input from the user.
+                Since the visual side of things is taken care of with canvas, the next step is to respond to input from
+                the user.
             </p>
             <p>
                 In barebones.js three types of user input are accepted: Mouse, keyboard and touch.
             </p>
             <p>
-                The logic for all of these input types is build into Interface and Universe. There are also four manager classes for user input as well.
+                The logic for all of these input types is build into Interface and Universe. There are also four manager
+                classes for user input as well.
             </p>
             <p class="yellow">
-                You do not have to be familiar with these classes at all to use them. Every instance of interface within the universe has access to the user interface data.
+                You do not have to be familiar with these classes at all to use them. Every instance of interface within
+                the universe has access to the user interface data.
             </p>
             <p>
                 That being said here is a brief rundown.
@@ -1471,7 +1599,8 @@ class KeyboardManager extends Interface {
 }
             </pre>
             <p>
-                The KeyboardManager class utilises another utility class called ButtonState to store the state, at any one point in time, of any key that has ever been pressed up until that point.
+                The KeyboardManager class utilises another utility class called ButtonState to store the state, at any
+                one point in time, of any key that has ever been pressed up until that point.
             </p>
             <p>
                 At any point in time you can, within the update method of a universe_object, check the state of a key.
@@ -1490,7 +1619,9 @@ class Example extends Sprite {
 }
             </pre>
             <p>
-                And using is_pressed you can determine if the key was JUST PRESSED. Pressed only happens once with every key stroke or press. So if the user holds down enter, down will be true until they let up, but pressed will only be true for a single tick.
+                And using is_pressed you can determine if the key was JUST PRESSED. Pressed only happens once with every
+                key stroke or press. So if the user holds down enter, down will be true until they let up, but pressed
+                will only be true for a single tick.
             </p>
             <pre>
 class Example extends Sprite {
@@ -1583,7 +1714,8 @@ class MouseManager extends Interface {
 }
             </pre>
             <p>
-                The MouseManager class tracks the state of the mouse. That is the position of the mouses cursor, and the button states for left, middle and right.
+                The MouseManager class tracks the state of the mouse. That is the position of the mouses cursor, and the
+                button states for left, middle and right.
             </p>
             <p>
                 The position of the mouse is a vector that is update with every move of the mouse.
@@ -1635,10 +1767,14 @@ if (this.mouse.contains_mouse<span class="yellow">_press</span>(this.root.canvas
 }
             </pre>
             <p>
-                These managers also allow for direct propagation of events via the handle_input interface methods. However you are warned against using these if possible. Many events, like mouse events, occur VERY OFTEN. If you are responding to input with even moderately expensive operations, you can easily overload your application.
+                These managers also allow for direct propagation of events via the handle_input interface methods.
+                However you are warned against using these if possible. Many events, like mouse events, occur VERY
+                OFTEN. If you are responding to input with even moderately expensive operations, you can easily overload
+                your application.
             </p>
             <p>
-                You are instead recommended to respond to input within the update methods, which happen at most once every tick.
+                You are instead recommended to respond to input within the update methods, which happen at most once
+                every tick.
             </p>
             <h4>TOUCH</h4>
             <pre>
@@ -1741,13 +1877,16 @@ class TouchManager extends Interface {
                 The TouchManager class handles the most complex of input types, touch.
             </p>
             <p>
-                Since there are zero to however many fingers you have possible touches on the screen at any point in time, it is slightly more complicated to track.
+                Since there are zero to however many fingers you have possible touches on the screen at any point in
+                time, it is slightly more complicated to track.
             </p>
             <p>
-                What the class does is track data on starting position, change in position, and more on each touch from the time it starts to the end.
+                What the class does is track data on starting position, change in position, and more on each touch from
+                the time it starts to the end.
             </p>
             <p>
-                The class also provides methods to retrieve a touch object, if it exists. As well as to check the state of the touches.
+                The class also provides methods to retrieve a touch object, if it exists. As well as to check the state
+                of the touches.
             </p>
             <p>
                 To check if there is a touch down within a shape:
@@ -1787,7 +1926,10 @@ if (touch_object) {
                 You can do a lot with this, such as determining the direction and magnitude of a finger swipe.
             </p>
             <p class="green">
-                As it turns out, the player is going to expect to be able to control SOMETHING in order for it to be a game. The user interface classes of barebones.js abstract away some of the tricky stuff related to certain types of input. However you are encouraged to play with, and become familiar with these types of inputs at the event level as well.
+                As it turns out, the player is going to expect to be able to control SOMETHING in order for it to be a
+                game. The user interface classes of barebones.js abstract away some of the tricky stuff related to
+                certain types of input. However you are encouraged to play with, and become familiar with these types of
+                inputs at the event level as well.
             </p>
         </article>
 
@@ -1799,7 +1941,9 @@ if (touch_object) {
                 In the realm of game development, among others, randomness is integral.
             </p>
             <blockquote class="red">
-                WARNING: Math.random() is not a sufficient means of random number generation for anything security or data science. You are encouraged to use Web Crypto API or other random number generators for those purposes.
+                WARNING: Math.random() is not a sufficient means of random number generation for anything security or
+                data science. You are encouraged to use Web Crypto API or other random number generators for those
+                purposes.
             </blockquote>
             <p>
                 Randomness(kinda) can be achieved through the use of Math.random().
@@ -1809,10 +1953,13 @@ console.log(Math.random());
 // OUTPUTS A RANDOM NUMBER BETWEEN 0 AND 1
             </pre>
             <p>
-                Math.random, as with anything in the universe as we know it, is not truly random. Without getting into the metaphysical stuff, you can just know that Math.random produces a random number that is good enough to fool PEOPLE. Since PEOPLE play your games, this works out.
+                Math.random, as with anything in the universe as we know it, is not truly random. Without getting into
+                the metaphysical stuff, you can just know that Math.random produces a random number that is good enough
+                to fool PEOPLE. Since PEOPLE play your games, this works out.
             </p>
             <p>
-                Randomness adds an element of chance and newness to games and levels within those games. This keeps players from getting too used to or bored with your games as quickly.
+                Randomness adds an element of chance and newness to games and levels within those games. This keeps
+                players from getting too used to or bored with your games as quickly.
             </p>
             <p>
                 Say you want to flip a coin. It is as easy as:
@@ -1832,7 +1979,9 @@ else {
 const color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255})`;
             </pre>
             <p>
-                Randomness can be used in a variety of creative ways. Mostly what you want to remember is that randomness can be an alternative to making many levels to a game. Instead randomize the content of a single level so it feels like a new level.
+                Randomness can be used in a variety of creative ways. Mostly what you want to remember is that
+                randomness can be an alternative to making many levels to a game. Instead randomize the content of a
+                single level so it feels like a new level.
             </p>
         </article>
 
@@ -1844,54 +1993,74 @@ const color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random
                 The field of game design is MASSIVE and has been around a lot longer than computers.
             </p>
             <p>
-                The general theme has stayed the same however. The game designer creates a set of rules and goals for the purpose of challenge or entertainment.
+                The general theme has stayed the same however. The game designer creates a set of rules and goals for
+                the purpose of challenge or entertainment.
             </p>
             <p>
-                In old times the players or moderators of a game had to enforce the rules of the game. Now since the games you are creating are digital, you can ENCODE the rules into the game itself.
+                In old times the players or moderators of a game had to enforce the rules of the game. Now since the
+                games you are creating are digital, you can ENCODE the rules into the game itself.
             </p>
             <p class="yellow">
                 A game should provide an experience.
             </p>
             <p>
-                A game can be fun but easy, annoying but addicting, hard but captivating, interactive, nostalgic, awe inspiring, time consuming, cognitive intensive or any other type.
+                A game can be fun but easy, annoying but addicting, hard but captivating, interactive, nostalgic, awe
+                inspiring, time consuming, cognitive intensive or any other type.
             </p>
             <p>
-                The point is that they all are made, designed, with the experience of the player first and foremost on mind.
+                The point is that they all are made, designed, with the experience of the player first and foremost on
+                mind.
             </p>
             <p>
-                Honestly there are a ton of games out there. The best way to learn how to make them is probably to play them, then attempt to recreate them, researching methodology along the way.
+                Honestly there are a ton of games out there. The best way to learn how to make them is probably to play
+                them, then attempt to recreate them, researching methodology along the way.
             </p>
             <p>
-                Maybe make a game on nothing but memory. Or maybe you have a general idea for a game. Start building each part piece by piece until you have built something incredible.
+                Maybe make a game on nothing but memory. Or maybe you have a general idea for a game. Start building
+                each part piece by piece until you have built something incredible.
             </p>
             <p>
-                You could go out and study game design and theory for years and maybe that will help you. Inversely this may actually stifle your creativity. As a creative you want to create something new, not learn to create what was already created, right?
+                You could go out and study game design and theory for years and maybe that will help you. Inversely this
+                may actually stifle your creativity. As a creative you want to create something new, not learn to create
+                what was already created, right?
             </p>
             <p>
-                Honestly there probably is not right or wrong way to design a game. That being said here are some general things to attempt or think about on your journey:
+                Honestly there probably is not right or wrong way to design a game. That being said here are some
+                general things to attempt or think about on your journey:
             </p>
             <h4>EDGE CASES</h4>
             <p>
-                Do your best to think of and patch every hole in the logic of your game. The game provides a level of illusion, and if the player finds a way to break the illusion, it is a failure of the designer. Adequate user testing is a great way to find things you overlooked in the building process.
+                Do your best to think of and patch every hole in the logic of your game. The game provides a level of
+                illusion, and if the player finds a way to break the illusion, it is a failure of the designer. Adequate
+                user testing is a great way to find things you overlooked in the building process.
             </p>
             <h4>FORCE ACTION</h4>
             <p>
-                Keeping the focus and active engagement of the player is major to building the captivating illusion. Don't give the player too much chance to get distracted if possible.
+                Keeping the focus and active engagement of the player is major to building the captivating illusion.
+                Don't give the player too much chance to get distracted if possible.
             </p>
             <h4>ASSUME IGNORANCE</h4>
             <p>
-                Assume the player is coming from a place of ignorance, and has never played a game before. If you design in this user friendly way, users of all experience levels will appreciate the seamless interface. That being said, sticking to conventions that gamers expect such as WASD key controls is good too.
+                Assume the player is coming from a place of ignorance, and has never played a game before. If you design
+                in this user friendly way, users of all experience levels will appreciate the seamless interface. That
+                being said, sticking to conventions that gamers expect such as WASD key controls is good too.
             </p>
             <h4>CLARITY OF GOAL</h4>
             <p>
-                The player should never lose track of their goal as the player. Nor should they get stuck or trapped within a part of the game with no path forward without knowing so. This type of thing will just frustrate the player and they might give up.
+                The player should never lose track of their goal as the player. Nor should they get stuck or trapped
+                within a part of the game with no path forward without knowing so. This type of thing will just
+                frustrate the player and they might give up.
             </p>
             <h4>VARYING DIFFICULTY</h4>
             <p>
-                If your game is too easy, especially after initial play, your players will get bored fast. Inversely if your game is too difficult right off the bat, players might not invest the effort to try and play it. A good balance or variance is smart. This could mean user adjusted difficulty, levels of increasing difficulty, or player to player subjective diffiulty.
+                If your game is too easy, especially after initial play, your players will get bored fast. Inversely if
+                your game is too difficult right off the bat, players might not invest the effort to try and play it. A
+                good balance or variance is smart. This could mean user adjusted difficulty, levels of increasing
+                difficulty, or player to player subjective diffiulty.
             </p>
             <p class="green">
-                All that said it is up too you how you learn to design games. You are however recommended to just start building games and let the rest come naturally.
+                All that said it is up too you how you learn to design games. You are however recommended to just start
+                building games and let the rest come naturally.
             </p>
         </article>
 
@@ -1912,7 +2081,8 @@ const color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random
                 You can rotate and move this ship using the WASD and LEFT RIGHT ARROW keys.
             </p>
             <p>
-                You can fire the ships cannon by pressing the SPACE bar. The cannon will fire a projectile in the direction the ship is facing.
+                You can fire the ships cannon by pressing the SPACE bar. The cannon will fire a projectile in the
+                direction the ship is facing.
             </p>
             <p>
                 If the ship leaves the screen, the game resets.
@@ -1924,27 +2094,32 @@ const color = `rgb(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random
                 If the asteroids bump into eachother the reflect velocities and bounce away from eachother.
             </p>
             <p>
-                If an asteroid gets too far out in the universe, it is redirected to a path that will come near the player ship.
+                If an asteroid gets too far out in the universe, it is redirected to a path that will come near the
+                player ship.
             </p>
             <p>
                 If the ship collides with an asteroid, the game resets.
             </p>
             <p>
-                If the ship fires a projectile that impacts an asteroid, then the asteroid explodes, potentially splitting into smaller asteroids.
+                If the ship fires a projectile that impacts an asteroid, then the asteroid explodes, potentially
+                splitting into smaller asteroids.
             </p>
             <p>
-                Every time a asteroid is destroyed completely, more asteroids appear in the universe, forever, until the player eventually crashes.
+                Every time a asteroid is destroyed completely, more asteroids appear in the universe, forever, until the
+                player eventually crashes.
             </p>
             <blockquote class="red">
-                AUTHOR NOTE: I don't know if this is even close to a real game of asteroids... It has been a long time since I have played so this is just how I remember it.
+                AUTHOR NOTE: I don't know if this is even close to a real game of asteroids... It has been a long time
+                since I have played so this is just how I remember it.
             </blockquote>
             <p>
-                The game is pretty bare. There are no menus or scoreboards. There is certainly room for improvement. However for this lesson it will do.
+                The game is pretty bare. There are no menus or scoreboards. There is certainly room for improvement.
+                However for this lesson it will do.
             </p>
             <p>
                 Now on to the code.
             </p>
-                        <p>
+            <p>
                 First thing first you are going to see similar boilerplate code as that of the last lesson.
             </p>
             <pre>
@@ -1978,7 +2153,8 @@ window.addEventListener('DOMContentLoaded', () => {
 });
             </pre>
             <blockquote class="yellow">
-                NOTE: The height and width properties of a universe set the size and aspect ratio of the canvas. This game has a 2 to 1 ratio, width to height.
+                NOTE: The height and width properties of a universe set the size and aspect ratio of the canvas. This
+                game has a 2 to 1 ratio, width to height.
             </blockquote>
             <p>
                 Four barebones.js classes are being imported.
@@ -2051,10 +2227,14 @@ class Ship extends Sprite {
                 A ship is still just a sprite with some additional logic.
             </p>
             <p>
-                First, if the player presses the space key, a new projectile is instantiated and queued into the universe. Simultaneously a cannon firing tone is played.
+                First, if the player presses the space key, a new projectile is instantiated and queued into the
+                universe. Simultaneously a cannon firing tone is played.
             </p>
             <p>
-                Within the instantiation of the new projectile the projectile gets a duplicate position as that of the ship. Then it also receives a velocity that reflects the direction(rotation) of the ship. Note that this had to be rotated 45 degrees counterclockwise in order to adjust since the ship is facing straight up in the image, not right. See section on trigonometry.
+                Within the instantiation of the new projectile the projectile gets a duplicate position as that of the
+                ship. Then it also receives a velocity that reflects the direction(rotation) of the ship. Note that this
+                had to be rotated 45 degrees counterclockwise in order to adjust since the ship is facing straight up in
+                the image, not right. See section on trigonometry.
             </p>
             <p>
                 Next the movement and rotation of the ship is mapped to various keyboard keydowns.
@@ -2090,10 +2270,13 @@ class Asteroid extends Sprite {
                 Within the constructor, two thing occur.
             </p>
             <p>
-                A flag is declared as true by default to represent whether the asteroid is overlapping another asteroid. Since this is possible when an asteroid is given a random position within the universe, it is something that has to be handled.
+                A flag is declared as true by default to represent whether the asteroid is overlapping another asteroid.
+                Since this is possible when an asteroid is given a random position within the universe, it is something
+                that has to be handled.
             </p>
             <p>
-                Second, a random rotation is generated ONCE. Since this game uses PPCD, live rotations are expensive. However initializing asteroids and calculating the rotation once is not too bad.
+                Second, a random rotation is generated ONCE. Since this game uses PPCD, live rotations are expensive.
+                However initializing asteroids and calculating the rotation once is not too bad.
             </p>
             <p>
                 Next is the update method.
@@ -2123,10 +2306,14 @@ class Asteroid extends Sprite {
                 Two additional things are happening here.
             </p>
             <p>
-                One, the awaiting_space flag is updated to reflect whether or not the asteroid is overlapping another asteroid. This check is only done if the flag is still enabled. Essentially the asteroid will keep checking to see if it is ready to engage with other objects safely.
+                One, the awaiting_space flag is updated to reflect whether or not the asteroid is overlapping another
+                asteroid. This check is only done if the flag is still enabled. Essentially the asteroid will keep
+                checking to see if it is ready to engage with other objects safely.
             </p>
             <p>
-                Second, an invisible box is drawn 1.5 times the size of the canvas, around the canvas. If the asteroid is out of these bounds, it receives a velocity that directs it back into the middle of the canvas. It bounces off the invisible boundary and travels back inward.
+                Second, an invisible box is drawn 1.5 times the size of the canvas, around the canvas. If the asteroid
+                is out of these bounds, it receives a velocity that directs it back into the middle of the canvas. It
+                bounces off the invisible boundary and travels back inward.
             </p>
             <p>
                 Next is the impact method:
@@ -2184,7 +2371,8 @@ class Asteroid extends Sprite {
                 The asteroid is deleted.
             </p>
             <p>
-                A small subsection of the crash sound audio buffer is played. This creates some audio feedback to the user that an impact has occurred.
+                A small subsection of the crash sound audio buffer is played. This creates some audio feedback to the
+                user that an impact has occurred.
             </p>
             <p>
                 Then there is also the if else blocks.
@@ -2219,7 +2407,8 @@ else {
 }
             </pre>
             <p>
-                If the spritesheet for the asteroid is the smallest one available, number 8, then it cannot break into any smaller pieces and the else block is executed.
+                If the spritesheet for the asteroid is the smallest one available, number 8, then it cannot break into
+                any smaller pieces and the else block is executed.
             </p>
             <p>
                 The else block simply queues a whole new asteroid to the universe somewhere else.
@@ -2240,13 +2429,17 @@ else {
                 The position is a duplicate of the parent asteroid.
             </p>
             <p>
-                The tricky bit is the velocity. Since you want the smaller pieces to scatter in all directions away from eachother, calculating symmetrical points on a unit circle makes sense.
+                The tricky bit is the velocity. Since you want the smaller pieces to scatter in all directions away from
+                eachother, calculating symmetrical points on a unit circle makes sense.
             </p>
             <p>
-                Essentially, depending on how many loop iterations will occur, a velocity based on a point on the unit circle is calculated. Then every iteration the point is rotated, producing an even distribution. This way the smaller asteroids are always floating away from their starting position.
+                Essentially, depending on how many loop iterations will occur, a velocity based on a point on the unit
+                circle is calculated. Then every iteration the point is rotated, producing an even distribution. This
+                way the smaller asteroids are always floating away from their starting position.
             </p>
             <p>
-                This unit circle velocity is added to the parent velocity so that even though they split, they inherit the inertia of their parent.
+                This unit circle velocity is added to the parent velocity so that even though they split, they inherit
+                the inertia of their parent.
             </p>
             <p>
                 The last bit is the bump method.
@@ -2265,7 +2458,9 @@ class Asteroid extends Sprite {
 }
             </pre>
             <p>
-                The bump method, which is called when two asteroids collide, will cause them to bounce away from eachother. This is done by adding the two asteroid velocities together, and then mirroring them on both axis.
+                The bump method, which is called when two asteroids collide, will cause them to bounce away from
+                eachother. This is done by adding the two asteroid velocities together, and then mirroring them on both
+                axis.
             </p>
             <p>
                 Technically this might violate the laws of physics but who really cares.
@@ -2297,7 +2492,8 @@ class Asteroids extends Universe {
 }
             </pre>
             <p>
-                Since this application relies of image and audio assets, loading of the assets must be done in an async initialize method extension of the root universe class.
+                Since this application relies of image and audio assets, loading of the assets must be done in an async
+                initialize method extension of the root universe class.
             </p>
             <pre>
 class Asteroids extends Universe {
@@ -2371,16 +2567,22 @@ class Asteroids extends Universe {
                 A couple things to note here.
             </p>
             <p>
-                All of the image and audio assets are being loaded from a DATA_URL object to get around the CORS errors for PPCD.
+                All of the image and audio assets are being loaded from a DATA_URL object to get around the CORS errors
+                for PPCD.
             </p>
             <p>
                 Since PPCD is being used, activate_collision_mask flags are enabled.
             </p>
             <blockquote class="yellow">
-                NOTE: Since AssetManager is an instance of List and all of the assets are given id's. You could instead access them by using this.assets.find_id(ID), anywhere in the universe tree. This method is memoized for performance. This application instead stores named references to the assets as part of the universe and accessed by children via root. Both are valid approaches. If you had many more assets, it may make more sense to use the find_id method instead.
+                NOTE: Since AssetManager is an instance of List and all of the assets are given id's. You could instead
+                access them by using this.assets.find_id(ID), anywhere in the universe tree. This method is memoized for
+                performance. This application instead stores named references to the assets as part of the universe and
+                accessed by children via root. Both are valid approaches. If you had many more assets, it may make more
+                sense to use the find_id method instead.
             </blockquote>
             <p>
-                After all of the asset loading, a single instance of PlayerShip is added to the universe. It is centered on the screen.
+                After all of the asset loading, a single instance of PlayerShip is added to the universe. It is centered
+                on the screen.
             </p>
             <p>
                 Finally the instance reset method is called, as reset and initialize and interweaved here.
@@ -2453,19 +2655,23 @@ class Asteroids extends Universe {
                 This method can be called by asteroids to request that a new asteroid be added to the universe tree.
             </p>
             <p>
-                First a position for the new asteroid is calculated. A random position within the invisible boundary around the canvas. The canvas bounding box scaled by 1.5.
+                First a position for the new asteroid is calculated. A random position within the invisible boundary
+                around the canvas. The canvas bounding box scaled by 1.5.
             </p>
             <p>
-                Next a quick and dirty loop continues to recalculate random positions until it is outside the canvas. You don't want the players ship to be immediately surrounded by or colliding with asteroids.
+                Next a quick and dirty loop continues to recalculate random positions until it is outside the canvas.
+                You don't want the players ship to be immediately surrounded by or colliding with asteroids.
             </p>
             <p>
-                Then a velocity is calculated. This will be directed towards a random spot within the middle of the canvas, so that the asteroid will pass through or by the ships location.
+                Then a velocity is calculated. This will be directed towards a random spot within the middle of the
+                canvas, so that the asteroid will pass through or by the ships location.
             </p>
             <p>
                 Next a random speed variance is calculated to mix up the speed of asteroids a bit more.
             </p>
             <p>
-                Finally the Asteroid is instantiated and queued into the universe. With the speed variance applied to the velocity.
+                Finally the Asteroid is instantiated and queued into the universe. With the speed variance applied to
+                the velocity.
             </p>
             <pre>
 class Asteroids extends Universe {
@@ -2575,7 +2781,8 @@ class Asteroids extends Universe {
                 Within, the inner element is defined.
             </p>
             <p>
-                Objects that have already been flagged for deletion are skipped. Also if both elements are projectiles skip.
+                Objects that have already been flagged for deletion are skipped. Also if both elements are projectiles
+                skip.
             </p>
             <p>
                 Now collision detection between the two elements is checked.
@@ -2584,10 +2791,12 @@ class Asteroids extends Universe {
                 If collision occurs:
             </p>
             <p>
-                If both elements are asteroids and both are active within the universe(not overlapping) then the bump method is called on each with the opposing velocity.
+                If both elements are asteroids and both are active within the universe(not overlapping) then the bump
+                method is called on each with the opposing velocity.
             </p>
             <p>
-                Otherwise it can be assumed that it is a collision between an asteroid and a projectile. An impact event.
+                Otherwise it can be assumed that it is a collision between an asteroid and a projectile. An impact
+                event.
             </p>
             <p>
                 At this point the asteroids impact method is called, and the projectile is deleted.
@@ -2670,10 +2879,13 @@ class Asteroids extends Universe {
                 In this implementation of the game, all that happens for a game over is a reset.
             </p>
             <p>
-                That being said it is common to do some other stuff when a game over happens. Maybe some sound, a menu or scoreboard. There are lots of options.
+                That being said it is common to do some other stuff when a game over happens. Maybe some sound, a menu
+                or scoreboard. There are lots of options.
             </p>
             <p class="green">
-                That concludes the code for the asteroids game! Take your time and do your best with the challenge for this lesson. The final lesson will tie in everything you have learned so far to create an extremely popular game, keno.
+                That concludes the code for the asteroids game! Take your time and do your best with the challenge for
+                this lesson. The final lesson will tie in everything you have learned so far to create an extremely
+                popular game, keno.
             </p>
         </article>
 
@@ -2691,8 +2903,7 @@ class Asteroids extends Universe {
             <h3 class="mag" id="challenge">CHALLENGE</h3>
             <p>We started with a retro theme, why stop now? Your challenge will be to create a game of galaga or
                 something similar.</p>
-            <video controls alt="a canvas galaga game" type="video/mov"
-                src="../../../video/galaga_game.mov"></video>
+            <video controls alt="a canvas galaga game" type="video/mov" src="../../../video/galaga_game.mov"></video>
             <blockquote class="blue">
                 NOTE: This is not supposed to be easy, but just because it is hard work, doesn't mean it can't be fun.
             </blockquote>

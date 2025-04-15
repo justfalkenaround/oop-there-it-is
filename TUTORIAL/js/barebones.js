@@ -42,7 +42,7 @@ const BAREBONES = (() => {
             }
             return output;
         },
-        
+
         worker_script_to_url: worker_function => {
             const
                 stringified = worker_function.toString(),
@@ -149,7 +149,7 @@ const BAREBONES = (() => {
             if (max < 0.0000001) return this.duplicate();
             return this.divided_by(max, max);
         }
-        
+
         angle_to(vec, b) {
             const temp = Vector.require_vector_or_numeric(vec, b);
             return Vector.radians_from_vector(temp.minus(this));
@@ -405,7 +405,7 @@ const BAREBONES = (() => {
         set audio(v) {
             this.root === this ? (this.root._audio = v) : null;
         }
-        
+
         get assets() {
             return this.root._assets;
         }
@@ -755,7 +755,7 @@ const BAREBONES = (() => {
             this.line_height = this._options.line_height || +this.font_size.replace('px', '');
             this._stroke_start = this.stroke;
         }
-        
+
         update() {
             if (!this.memoize && this._previous_contents !== this.contents) {
                 this._previous_contents = this.contents;
